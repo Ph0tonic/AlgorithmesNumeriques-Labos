@@ -162,7 +162,27 @@ class FloatingType{
     let e1 = this._exponentDecimal(f1.exponent);
     let e2 = this._exponentDecimal(f2.exponent);
     let diff = Math.abs(e1-e2);
+
+    let swap = false;
     if(e1 > e2){
+      swap = true;
+    }else if(e1 === e2){
+      //Detect if swap neccessairy when they have the same exponent
+      let i=0;
+      let end = false;
+      while(i<f1.m && swap!=true && end != true){
+        if(f1.mantissa[i]!=true && f2.mantissa[i] === true){
+          end = true;
+        }
+        else if(f1.mantissa[i]===true && f2.mantissa[i]!=true){
+          swap = true;
+          console.log('Test');
+        }
+        i++;
+      }
+    }
+
+    if(swap){
       //Echange des deux valeurs
       let temp = f2;
       f2 = f1;
@@ -172,7 +192,6 @@ class FloatingType{
       e2 = e1;
       e1 = temp
     }
-    //TODO Vérification du plus grand nombre si les exposants sont identiques et échange
 
     //We base our new number on the greatest(exponent) number
     let f = f2.clone();
@@ -199,6 +218,7 @@ class FloatingType{
         hold = logicOp.hold(f1.mantissa[i],f2.mantissa[i],hold);
       }
 
+      //Step 3 - Normalise result
       if(hold){
         //Add hold and increase the exponent
         exp++;
@@ -223,24 +243,30 @@ class FloatingType{
       let binary = [];
       binary.length = length;
       for(let i=length-1;i>=0;i--){
-        binary[i] = f1.mantissa[i] != f2.mantissa[i];
+        binary[i] = (f1.mantissa[i] != f2.mantissa[i]);
         if(f1.mantissa[i] != f2.mantissa[i]){
           //Update f1
           let j = i-1;
-          while(j>0 && f1.mantissa[j+1]==false){
-            f1.mantissa[j] = !f1.mantissa[j];
+          while(j>0 && f2.mantissa[j+1]==false){
+            f2.mantissa[j] = !f2.mantissa[j];
             j--;
           }
         }
       }
+
+      //Step 3 - Normalise result
+      while(binary[0] != true){
+        binary.shift();
+        exp--;
+      }
+      binary.shift() // Hide hidden bit
       f.binary = binary;
+
+      f.exponent = f._exponentToBinary(exp);
     }
 
-    //Step 3 - Normalise result
-
-
     //Step 4 - Check overflow and underflow
-
+    //TODO
 
     return f;
   }
@@ -292,10 +318,11 @@ class FloatingType{
     //Code here with this to access Object property
     let exp = this._exponentDecimal();
     let mant = this._mantissaDecimal();
-    console.log(exp);
 
     //Affichage simplifiée
-    let result = (this.sign?'-':'+');
+    let signe  = (this.sign?'-':'+');
+
+    let result = signe;
     result += mant;
     result += "*2^"+exp+"\n";
 
@@ -323,14 +350,16 @@ class FloatingType{
     if(temp[1]){
       calculated += ""+temp[1].split('e')[0];
     }
-    console.log(pointPosition);
+
     if(pointPosition<0){
       calculated = Array(-pointPosition+1).join("0") + calculated;
       pointPosition = 1;
     }
     calculated = calculated.slice(0, pointPosition) + '.' + calculated.slice(pointPosition);
 
-    result += " -> "+calculated;
+    result += " -> ";
+    result += signe;
+    result += calculated;
     return result;
   }
   _mantissaDecimal(){
@@ -394,3 +423,7 @@ function pi(){
     oneSixteen = oneSixteen.mult(oneSixteen);
   }
 }
+
+
+let b = new FloatingType('-1.125');
+let a = new FloatingType('1.5');
