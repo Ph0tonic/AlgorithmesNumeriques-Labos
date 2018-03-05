@@ -23,6 +23,9 @@ class FloatingType{
     this.m = 23;
 
     if(value){
+      if(Number.isInteger(value)){
+        value = value.toString();
+      }
       this._init(value);
     }else {
       this.sign = false;
@@ -105,17 +108,15 @@ class FloatingType{
     //TODO Vérification de value
     //Step 1 - signe
     this.sign = (value.charAt(0) === '-');
-
-    //Step 2 - Convert whole number to binary
     if(this.sign){
       value = value.substring(1);
     }
-    let parts = value.split('.');
 
-    //Step 3 - Whole number to Binary
+    //Step 2 - Whole number to Binary
+    let parts = value.split('.');
     let whole = this._wholeToBinary(parseInt(parts[0]));
 
-    //Step 4 - Fraction section to binary
+    //Step 3 - Fraction section to binary
     let decimal = this._decimalToBinary(parts[1]|0);
 
     //Step 4 - Join together
@@ -176,7 +177,6 @@ class FloatingType{
         }
         else if(f1.mantissa[i]===true && f2.mantissa[i]!=true){
           swap = true;
-          console.log('Test');
         }
         i++;
       }
@@ -243,12 +243,12 @@ class FloatingType{
       let binary = [];
       binary.length = length;
       for(let i=length-1;i>=0;i--){
-        binary[i] = (f1.mantissa[i] != f2.mantissa[i]);
-        if(f1.mantissa[i] != f2.mantissa[i]){
-          //Update f1
+        binary[i] = (f1.mantissa[i] != f2.mantissa[i] && f2.mantissa[i] == true);
+        if(f1.mantissa[i] != f2.mantissa[i] && f1.mantissa[i] === true){
+          //Update f2
           let j = i-1;
-          while(j>0 && f2.mantissa[j+1]==false){
-            f2.mantissa[j] = !f2.mantissa[j];
+          while(j>0 && f2.mantissa[j+1]!=false){
+            f2.mantissa[j] = !(f2.mantissa[j] === true);
             j--;
           }
         }
@@ -281,7 +281,7 @@ class FloatingType{
   mult(n){
     //TODO update for n beeing an FloatingType Value and not an int --> For PI bonus
     //Return a new FloatingType after multiplication by an int value
-    let result = new FloatingType('0');
+    let result = new FloatingType(0);
     if(n>0) {
       for(let i=0;i<n;i++){
         result = result.add(this);
@@ -313,7 +313,29 @@ class FloatingType{
 
     return float;
   }
+  toStr(){
+    //TODO Supprimer - Fonction avec utilisation d'un type float pour tests
+    //TODO ajout du signe
+    let exp = this._exponentDecimal();
+    let length=this.mantissa.length;
+    let stepAddition = 5;
+    let result = 1; // valeur caché, compensation
 
+    // Limitation du travail
+    while(this.mantissa[length-1] != true && length >= 1){
+      length--;
+    }
+
+    for(let i=0;i<length;i++){
+      if(this.mantissa[i]){
+        result += 1/Math.pow(2,i+1);
+      }
+    }
+
+    result *= Math.pow(2,exp);
+    return result;
+
+  }
   toString(){
     //Code here with this to access Object property
     let exp = this._exponentDecimal();
@@ -385,7 +407,7 @@ class FloatingType{
 
   _exponentDecimal(){
     let tot = 0;
-    let size = this.exponent.length;
+    let size = this.e;
     for(let i=0;i<size;i++){
       let n = this.exponent[i] ? 1 : 0;
       tot = tot*2+n;
@@ -418,12 +440,11 @@ function pi(){
   let four = new FloatingType('4');
   let oneSixteen = new FloatingType('0.0625');
 
-  for(let i=0;i<12;i++){
+  for(let n=0;n<12;n++){
     pi.add((four.divBy(new FloatingType(8*n+1)).sub(FloatingType.oneBy(4*n+2)).sub(FloatingType.oneBy(8*n+6))).mult(oneSixteen));
     oneSixteen = oneSixteen.mult(oneSixteen);
   }
 }
-
 
 let b = new FloatingType('-1.125');
 let a = new FloatingType('1.5');
