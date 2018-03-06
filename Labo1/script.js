@@ -1,13 +1,13 @@
 /**
- *  Author: Bastien Wermeille
+ *  Author: Bastien Wermeille, Damian Petroff & Raphael Margueron
  *  Date: Février-Mars 2018
- *  Goal: Representation of a floating with only int and boolean
+ *  Goal: Representation of a floating value with only int and boolean
  */
 
 class logicOp{
   static xor(a,b,c){
     /* bin = (a^b)^c = a&b&c || a&!c&!c || !a&b&!c || !a&!b&c */
-    return a&&b&&c || a&&(!b)&&(!c) || (!a)&&b&&(!c) || (!a)&&(!b)&&c;
+    return a&&b&&c || a&&b!=true&&c!=true || a!=true&&b&&c!=true || a!=true&&b!=true&&c;
   }
   static hold(a, b, c){
     /* hold = a&&b || a&&c || b&&c */
@@ -34,6 +34,7 @@ class FloatingType{
       this.mantissa = [];
       this.mantissa.length = this.m;
     }
+    this._cleanMantissa();
   }
 
   clone() {
@@ -44,6 +45,13 @@ class FloatingType{
     float.mantissa = this.mantissa.slice(0);
     float.m = this.m;
     return float;
+  }
+
+  _cleanMantissa(){
+    for(let i=0;i<this.m;i++){
+      if(this.mantissa[i]!=true)
+        this.mantissa[i]=false
+    }
   }
 
   _wholeToBinary(whole){
@@ -140,9 +148,7 @@ class FloatingType{
     binaryMantissa.length = this.m;
 
     //Step 6+7 - Exponent to Binary
-    let binaryExponent = this._exponentToBinary(exponent);
-
-    this.exponent = binaryExponent;
+    this.exponent = this._exponentToBinary(exponent);
     this.mantissa = binaryMantissa;
   }
 
@@ -160,8 +166,8 @@ class FloatingType{
     let f2 = value.clone();
 
     //Step 0.5 -> put smaller one in f1
-    let e1 = this._exponentDecimal(f1.exponent);
-    let e2 = this._exponentDecimal(f2.exponent);
+    let e1 = f1._exponentDecimal(f1.exponent);
+    let e2 = f2._exponentDecimal(f2.exponent);
     let diff = Math.abs(e1-e2);
 
     let swap = false;
@@ -227,14 +233,12 @@ class FloatingType{
 
       //Hide the hidden bit
       binary.shift();
+
       f.mantissa = binary.slice(0);
       f.mantissa.length = f.m;
-
       f.exponent = f._exponentToBinary(exp);
 
     }else{
-      //TODO addition of a negativ number
-
       //Sign equal to the greatest exponent number
       f.sign = f2.sign;
 
@@ -242,15 +246,17 @@ class FloatingType{
       let length = f1.mantissa.length; // Use f1.length because it's the smallest and then the longer number
       let binary = [];
       binary.length = length;
+
       for(let i=length-1;i>=0;i--){
-        binary[i] = (f1.mantissa[i] != f2.mantissa[i] && f2.mantissa[i] == true);
-        if(f1.mantissa[i] != f2.mantissa[i] && f1.mantissa[i] === true){
+        binary[i] = (f1.mantissa[i] != true && f2.mantissa[i] === true || f2.mantissa[i] != true && f1.mantissa[i]===true);
+        if(f2.mantissa[i] != true && f1.mantissa[i] === true){
           //Update f2
-          let j = i-1;
-          while(j>0 && f2.mantissa[j+1]!=false){
+          let j = i;
+          while(j>0 && f2.mantissa[j]!=true){
             f2.mantissa[j] = !(f2.mantissa[j] === true);
             j--;
           }
+          f2.mantissa[j] = !(f2.mantissa[j] === true);
         }
       }
 
@@ -260,7 +266,8 @@ class FloatingType{
         exp--;
       }
       binary.shift() // Hide hidden bit
-      f.binary = binary;
+      f.mantissa = binary;
+      f.mantissa.length = f.m;
 
       f.exponent = f._exponentToBinary(exp);
     }
@@ -268,12 +275,13 @@ class FloatingType{
     //Step 4 - Check overflow and underflow
     //TODO
 
+    f._cleanMantissa();
     return f;
   }
 
   sub(value){
     //Return a new FloatingType after substraction
-    f1 = value.clone();
+    let f1 = value.clone();
     f1.sign = !f1.sign;
     return this.add(f1);
   }
@@ -447,4 +455,4 @@ function pi(){
 }
 
 let b = new FloatingType('-1.125');
-let a = new FloatingType('1.5');
+let a = new FloatingType('11');
