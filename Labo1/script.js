@@ -287,19 +287,79 @@ class FloatingType{
   }
 
   mult(n){
-    //TODO update for n beeing an FloatingType Value and not an int --> For PI bonus
-    //Return a new FloatingType after multiplication by an int value
-    let result = new FloatingType(0);
-    if(n>0) {
-      for(let i=0;i<n;i++){
-        result = result.add(this);
-      }
-      return result;
-    }else if (n<0) {
-      for(let i=0;i<n;i++){
-        result = result.sub(this);
+    if(Number.isInteger(n)){
+      n = new FloatingType(n);
+    }
+
+    let f1 = n.clone();
+    let f2 = this.clone();
+    f1.mantissa.unshift(true);
+    f2.mantissa.unshift(true);
+    let result = f1.clone();
+
+    //Step 1 - addition of the exponent
+    let exp = f1._exponentDecimal() + f2._exponentDecimal();
+
+    //Step 2 - multiplication of the mantissa
+    let binary = result.mantissa.slice(0);
+
+    //f1*f2
+//      1.000 = f1
+//   ×  1.110 = f2
+//   -----------
+//          0000
+//         1000
+//        1000
+//   +   1000
+//   -----------
+//       1110000  ===> 1.110000
+    let k = 0; //Compensation lorsque l'on ajoute un bit supplémentaire à binary
+
+    f1.mantissa.length = 6;
+    f2.mantissa.length = 6;
+
+    for(let i=1;i<f2.mantissa.length;i++){
+      let hold = false;
+      if(f2.mantissa[i]){
+        let j = 0;
+        for(j=f1.mantissa.length-1;j>=0;j--){
+          let newHold = logicOp.hold(f1.mantissa[j],binary[i+j+k],hold);
+          binary[i+j+k] = logicOp.xor(f1.mantissa[j],binary[i+j+k],hold);
+          hold = newHold;
+        }
+        //Ajout d'une éventuelle retenue
+        while(hold){
+          if(i+j+k>=0){
+            let newHold = logicOp.hold(binary[i+j+k],hold,false);
+            binary[i+j+k] = logicOp.xor(binary[i+j+k],hold,false);
+            hold = newHold;
+          }else{
+            binary.unshift(true);
+            hold = false;
+            k++;
+            exp++;
+          }
+          j--;
+        }
       }
     }
+
+    //Step 3 - Normalise mantissa
+    while(binary[0]!=true){
+      exp--;
+      binary.shift();
+    }
+    binary.shift();
+    result.mantissa = binary;
+    result.exponent = result._exponentToBinary(exp);
+
+    //Step 4 - Round result
+    result.mantissa.length = result.m;
+
+    //Step 5 - Adjust sign
+    result.sign = logicOp.xor(f1.sign,f2.sign,false);
+
+    return result;
   }
 
   divBy(n){
@@ -308,7 +368,7 @@ class FloatingType{
   }
 
   static oneBy(n){
-    //TODO 1/n -> creation of a new value, somme de fractions 1/2^n avec n appartenant à R
+    //TODO 1/n = n^-1 -> creation of a new value, somme de fractions 1/2^n avec n appartenant à R
     let float = new FloatingType();
     if(n<0){
       n = -n;
@@ -443,7 +503,6 @@ function pi(){
   let infiniTest = 12;
   let pi = 0;
 
-  let one = new FloatingType('1');
   let two = new FloatingType('2');
   let four = new FloatingType('4');
   let oneSixteen = new FloatingType('0.0625');
@@ -456,3 +515,4 @@ function pi(){
 
 let b = new FloatingType('-1.125');
 let a = new FloatingType('11');
+let c = new FloatingType('1.875')
