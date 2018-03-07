@@ -13,6 +13,44 @@ class logicOp{
     /* hold = a&&b || a&&c || b&&c */
     return a&&b || a&&c || b&&c;
   }
+  static gte(arrayA,arrayB){
+    let length = arrayA.length;
+    let i=0;
+    for(let i=0;i<length;i++){
+      if(arrayA[i] === true && arrayB[i] != true){
+        return true;
+      }else if(arrayA[i]!=true && arrayB[i] === true ){
+        return false;
+      }
+    }
+    return true;
+  }
+  static isSubstractable(a,b){
+    // a-b > 0
+    logicOp.minimise(a);
+    logicOp.minimise(b);
+
+    if(a.length<b.length){
+      return false;
+    }else if(a.length==b.length){
+      for(let i=0;i<a.length;i++){
+        if(a[i]==true && b[i]!=true){
+          return true
+        }else if(a[i]!=true && b[i]==true){
+          return false
+        }
+      }
+    }
+    return true;
+  }
+  static minimise(a){
+    let n=0;
+    while(a[0] != true && a.length > 0){
+        a.shift();
+        n++;
+    }
+    return n;
+  }
 }
 
 class FloatingType{
@@ -177,15 +215,7 @@ class FloatingType{
       //Detect if swap neccessairy when they have the same exponent
       let i=0;
       let end = false;
-      while(i<f1.m && swap!=true && end != true){
-        if(f1.mantissa[i]!=true && f2.mantissa[i] === true){
-          end = true;
-        }
-        else if(f1.mantissa[i]===true && f2.mantissa[i]!=true){
-          swap = true;
-        }
-        i++;
-      }
+      swap = logicOp.gte(f1.mantissa,f2.mantissa);
     }
 
     if(swap){
@@ -247,6 +277,7 @@ class FloatingType{
       let binary = [];
       binary.length = length;
 
+      //Substraction
       for(let i=length-1;i>=0;i--){
         binary[i] = (f1.mantissa[i] != true && f2.mantissa[i] === true || f2.mantissa[i] != true && f1.mantissa[i]===true);
         if(f2.mantissa[i] != true && f1.mantissa[i] === true){
@@ -261,10 +292,7 @@ class FloatingType{
       }
 
       //Step 3 - Normalise result
-      while(binary[0] != true){
-        binary.shift();
-        exp--;
-      }
+      exp -= logicOp.minimise(binary);
       binary.shift() // Hide hidden bit
       f.mantissa = binary;
       f.mantissa.length = f.m;
@@ -313,10 +341,13 @@ class FloatingType{
 //   +   1000
 //   -----------
 //       1110000  ===> 1.110000
-    let k = 0; //Compensation lorsque l'on ajoute un bit supplémentaire à binary
 
-    f1.mantissa.length = 6;
-    f2.mantissa.length = 6;
+    //Info about i, j and k
+    // i : indice for looping over the multiplicator
+    // j : indice for looping over the multiplied number
+    // k : indice to compensate an hold, added at the front of the number
+
+    let k = 0; //Compensation lorsque l'on ajoute un bit supplémentaire à binary
 
     for(let i=1;i<f2.mantissa.length;i++){
       let hold = false;
@@ -345,10 +376,7 @@ class FloatingType{
     }
 
     //Step 3 - Normalise mantissa
-    while(binary[0]!=true){
-      exp--;
-      binary.shift();
-    }
+    exp -= logicOp.minimise(binary);
     binary.shift();
     result.mantissa = binary;
     result.exponent = result._exponentToBinary(exp);
@@ -364,22 +392,130 @@ class FloatingType{
 
   divBy(n){
     //Return a new FloatingType after division by an int
-    return this.mult(FloatingType.oneBy(n));
+    //TODO remove this line
+    //return this.mult(FloatingType.oneBy(n));
+
+    if(Number.isInteger(n)){
+      n = new FloatingType(n);
+    }
+
+    let f1 = this.clone();
+    let f2 = n.clone();
+    f1.mantissa.unshift(true);
+    f2.mantissa.unshift(true);
+    let result = f1.clone();
+
+    //if(f2.isZero() || f2.isNaN() || f2.isInfinity()){
+      //TODO UPDATE Those particulary cases
+      //return
+    //}
+
+    //Step 1 - substraction of the exponent
+    let exp = f1._exponentDecimal() - f2._exponentDecimal();
+
+    //Step 2 - division of the mantissa
+  //  f1/f2
+  //      1.000 = f1
+  //   /  1.110 = f2
+  //   -----------
+  //   1000   |   1101
+  //   ----       0.1000111011
+  //   10000
+  //  - 1101
+  //    0011
+  //    -----
+  //     0110
+  //     ----
+  //      1100
+  //      ----
+  //      11000
+  //      -1101
+  //       10110
+  //       -1101
+  //        10010
+  //        -1101
+  //         01010
+  //          ----
+  //          10100
+  //          -1101
+  //           01110
+  //           -1101
+  //            0001
+  // ...
+
+    let dividend = f1.mantissa.slice(0);
+    let divisor = f2.mantissa.slice(0);
+    let binary = [];
+
+    //Minimize divisor
+    logicOp.minimise(divisor);
+    while(divisor[divisor.length-1]!=true && divisor.length>0){
+      divisor.pop();
+    }
+
+    let temp = dividend.slice(0,divisor.length);
+    dividend = dividend.slice(divisor.length);
+    let end = false;
+    let nbOp = 0;
+    while(!end && nbOp <= result.mantissa.length+2){ //Ajout de marge
+      if(logicOp.isSubstractable(temp,divisor)){
+        //Substraction
+        binary.push(true);
+
+        //temp - divisor
+        for(let i=divisor.length-1;i>=0;i--){
+          let k = temp.length-divisor.length;
+          let take = divisor[i] === true && temp[i+k] != true;
+          temp[i+k] = (temp[i+k] != true && divisor[i] === true || divisor[i] != true && temp[i+k]===true);
+          if(take){
+            let j = i-1;
+            while(j+k>0 && temp[j+k]!=true){
+              temp[j+k] = !(temp[j+k] === true);
+              j--;
+            }
+            temp[j+k] = !(temp[j+k] === true);
+          }
+          //console.log("temp : "+temp);
+        }
+
+        //Remove the first element in all cases
+        logicOp.minimise(temp);
+
+        if(temp.length == 0 && dividend.length == 0){
+          end = true;
+        }
+      }else{
+        binary.push(false);
+      }
+
+      //Add value
+      if(dividend.length>0){
+        temp.push(dividend.shift());
+      } else {
+        temp.push(false);
+      }
+
+      nbOp++;
+    }
+
+    //Step 3 - Normalise mantissa
+    exp -= logicOp.minimise(binary);
+    binary.shift();
+    result.mantissa = binary;
+    result.exponent = result._exponentToBinary(exp);
+
+    //Step 4 - Round result
+    result.mantissa.length = result.m;
+
+    //Step 5 - Adjust sign
+    result.sign = logicOp.xor(f1.sign,f2.sign,false);
+
+    return result;
   }
 
   static oneBy(n){
-    //TODO 1/n = n^-1 -> creation of a new value, somme de fractions 1/2^n avec n appartenant à R
-    let float = new FloatingType();
-    if(n<0){
-      n = -n;
-      float.sign = true;
-    }
-    let i = 0;
-    while(n>0 && i<float.m){
-
-    }
-
-    return float;
+    let float = new FloatingType(1);
+    return float.divBy(n);
   }
   toStr(){
     //TODO Supprimer - Fonction avec utilisation d'un type float pour tests
@@ -494,25 +630,44 @@ let inputNumber = new FloatingType('18.3333');
 function dynamic(idInput,idResult){
   let float = new FloatingType(document.getElementById(idInput).value);
   document.getElementById(idResult).innerHTML = float.toString();
-  console.log(float.toString());
 }
 
 function pi(){
   //    Somme de o à l'infini de ((4/(8n+1)-2/(8n+4)-1/(8n+5)-1/(8n+6))*(1/16)^n)
   // -> Somme de o à l'infini de ((4/(8n+1)-1/(4n+2)-1/(8n+5)-1/(8n+6))*(1/16)^n)
   let infiniTest = 12;
-  let pi = 0;
+  let pi = new FloatingType(0);
 
-  let two = new FloatingType('2');
-  let four = new FloatingType('4');
-  let oneSixteen = new FloatingType('0.0625');
+  let two = new FloatingType(2);
+  let four = new FloatingType(4);
+  let oneSixteen = new FloatingType(1);
 
   for(let n=0;n<12;n++){
-    pi.add((four.divBy(new FloatingType(8*n+1)).sub(FloatingType.oneBy(4*n+2)).sub(FloatingType.oneBy(8*n+6))).mult(oneSixteen));
-    oneSixteen = oneSixteen.mult(oneSixteen);
+    let t1 = four.divBy(new FloatingType(8*n+1));
+    //console.log("1");
+    //console.log(t1+"\n"+t1.toStr());
+    let t2 = t1.sub(FloatingType.oneBy(4*n+2));
+    //console.log("2");
+    //console.log(t2+"\n"+t2.toStr());
+    let t3 = t2.sub(FloatingType.oneBy(8*n+6));
+    //console.log("3");
+    //console.log(t3+"\n"+t3.toStr());
+    let t4 = t3.mult(oneSixteen);
+    //console.log("4");
+    //console.log(t4+"\n"+t4.toStr());
+    pi = pi.add(t4);
+    console.log("pi");
+    console.log(pi+"\n"+pi.toStr());
+
+    //pi.add(four.divBy(new FloatingType(8*n+1)).sub(FloatingType.oneBy(4*n+2)).sub(FloatingType.oneBy(8*n+6)).mult(oneSixteen));
+    oneSixteen = oneSixteen.mult(FloatingType.oneBy(16));
   }
+  return pi;
 }
 
 let b = new FloatingType('-1.125');
 let a = new FloatingType('11');
 let c = new FloatingType('1.875')
+
+let d = new FloatingType('91.34375');
+let e = new FloatingType('0.14453125')
