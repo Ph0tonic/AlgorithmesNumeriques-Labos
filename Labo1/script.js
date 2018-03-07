@@ -58,7 +58,8 @@ class FloatingType{
     //Size for field exponent
     this.e = 8;
     //Size field mantissa
-    this.m = 23;
+    //this.m = 23;
+    this.m = 50;
 
     if(value){
       if(Number.isInteger(value)){
@@ -105,6 +106,10 @@ class FloatingType{
 
   _decimalToBinary(decimal){
     //Convert an int as an decimal part in binary
+    if(decimal == undefined){
+      decimal = 0;
+    }
+
     let length = decimal.length | decimal.toString().length; // /!\ compter avant le parse afin de ne pas supprimer les 0 éventuelles zéro se trouvant au début de la chaine: 12.002 -> 002
     decimal = parseInt(decimal);
     let binary = [];
@@ -163,7 +168,7 @@ class FloatingType{
     let whole = this._wholeToBinary(parseInt(parts[0]));
 
     //Step 3 - Fraction section to binary
-    let decimal = this._decimalToBinary(parts[1]|0);
+    let decimal = this._decimalToBinary(parts[1]);
 
     //Step 4 - Join together
     let wholeSize = whole.length;
@@ -635,7 +640,7 @@ function dynamic(idInput,idResult){
 function pi(){
   //    Somme de o à l'infini de ((4/(8n+1)-2/(8n+4)-1/(8n+5)-1/(8n+6))*(1/16)^n)
   // -> Somme de o à l'infini de ((4/(8n+1)-1/(4n+2)-1/(8n+5)-1/(8n+6))*(1/16)^n)
-  let infiniTest = 12;
+  let infiniTest = 200;
   let pi = new FloatingType(0);
 
   let two = new FloatingType(2);
@@ -643,23 +648,7 @@ function pi(){
   let oneSixteen = new FloatingType(1);
 
   for(let n=0;n<12;n++){
-    let t1 = four.divBy(new FloatingType(8*n+1));
-    //console.log("1");
-    //console.log(t1+"\n"+t1.toStr());
-    let t2 = t1.sub(FloatingType.oneBy(4*n+2));
-    //console.log("2");
-    //console.log(t2+"\n"+t2.toStr());
-    let t3 = t2.sub(FloatingType.oneBy(8*n+6));
-    //console.log("3");
-    //console.log(t3+"\n"+t3.toStr());
-    let t4 = t3.mult(oneSixteen);
-    //console.log("4");
-    //console.log(t4+"\n"+t4.toStr());
-    pi = pi.add(t4);
-    console.log("pi");
-    console.log(pi+"\n"+pi.toStr());
-
-    //pi.add(four.divBy(new FloatingType(8*n+1)).sub(FloatingType.oneBy(4*n+2)).sub(FloatingType.oneBy(8*n+6)).mult(oneSixteen));
+    pi = pi.add(four.divBy(new FloatingType(8*n+1)).sub(FloatingType.oneBy(4*n+2)).sub(FloatingType.oneBy(8*n+5)).sub(FloatingType.oneBy(8*n+6)).mult(oneSixteen));
     oneSixteen = oneSixteen.mult(FloatingType.oneBy(16));
   }
   return pi;
