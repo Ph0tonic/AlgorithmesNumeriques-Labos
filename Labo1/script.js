@@ -5,7 +5,7 @@
  */
 
 class logicOp{
-  static xor(a,b,c){
+  static xor(a,b,c){ // Utilisation de !=true à cause du système à trois état avec undefined!!!
     /* bin = (a^b)^c = a&b&c || a&!c&!c || !a&b&!c || !a&!b&c */
     return a&&b&&c || a&&b!=true&&c!=true || a!=true&&b&&c!=true || a!=true&&b!=true&&c;
   }
@@ -16,7 +16,7 @@ class logicOp{
   static gte(arrayA,arrayB){
     let length = arrayA.length;
     let i=0;
-    for(let i=0;i<length;i++){
+    for(let i=0;i<length;++i){
       if(arrayA[i] === true && arrayB[i] != true){
         return true;
       }else if(arrayA[i]!=true && arrayB[i] === true ){
@@ -33,7 +33,7 @@ class logicOp{
     if(a.length<b.length){
       return false;
     }else if(a.length==b.length){
-      for(let i=0;i<a.length;i++){
+      for(let i=0;i<a.length;++i){
         if(a[i]==true && b[i]!=true){
           return true
         }else if(a[i]!=true && b[i]==true){
@@ -53,13 +53,17 @@ class logicOp{
   }
 }
 
+
+/*
+ *  Underscore is standard to say "Should not be accessed from outside"
+ */
 class FloatingType{
   constructor(value) {
     //Size for field exponent
-    this.e = 8;
+    this.e = 11;
     //Size field mantissa
     //this.m = 23;
-    this.m = 50;
+    this.m = 52;
 
     if(value){
       if(Number.isInteger(value)){
@@ -87,9 +91,9 @@ class FloatingType{
   }
 
   _cleanMantissa(){
-    for(let i=0;i<this.m;i++){
+    for(let i=0;i<this.m;++i){
       if(this.mantissa[i]!=true)
-        this.mantissa[i]=false
+        this.mantissa[i]=false;
     }
   }
 
@@ -135,7 +139,7 @@ class FloatingType{
     exponent += this._dOffset();
 
     let binary = [];
-    for(let i=0;i<this.e;i++){
+    for(let i=0;i<this.e;++i){
       binary.unshift(!!(exponent%2)); //!! pour que les valeurs soient des booléens et non pas un 0 ou un 1
       exponent-=exponent%2;
       exponent/=2;
@@ -143,7 +147,6 @@ class FloatingType{
     return binary;
   }
 
-  //Underscore is standard to say "Should not be accessed from outside"
   _init(value){
 
     /** Steps to folow:
@@ -157,6 +160,9 @@ class FloatingType{
     */
 
     //TODO Vérification de value
+
+    //TODO Check 0 or NaN
+
     //Step 1 - signe
     this.sign = (value.charAt(0) === '-');
     if(this.sign){
@@ -225,13 +231,8 @@ class FloatingType{
 
     if(swap){
       //Echange des deux valeurs
-      let temp = f2;
-      f2 = f1;
-      f1 = temp
-
-      temp = e2;
-      e2 = e1;
-      e1 = temp
+      f2 = [f1, f1 = f2][0];
+      e2 = [e1, e1 = e2][0];
     }
 
     //We base our new number on the greatest(exponent) number
@@ -242,7 +243,7 @@ class FloatingType{
     f1.mantissa.unshift(true); // Affichage du bit caché
     f2.mantissa.unshift(true); // Affichage du bit caché
     if(diff>0){
-      for(let i=0;i<diff;i++){
+      for(let i=0;i<diff;++i){
         f1.mantissa.unshift(false);
       }
     }
@@ -254,7 +255,7 @@ class FloatingType{
       let hold = false;
       let binary = [];
       binary.length = length;
-      for(let i=length-1;i>=0;i--){
+      for(let i=length-1;i>=0;--i){
         binary[i] = logicOp.xor(f1.mantissa[i],f2.mantissa[i],hold);
         hold = logicOp.hold(f1.mantissa[i],f2.mantissa[i],hold);
       }
@@ -283,14 +284,14 @@ class FloatingType{
       binary.length = length;
 
       //Substraction
-      for(let i=length-1;i>=0;i--){
+      for(let i=length-1;i>=0;--i){
         binary[i] = (f1.mantissa[i] != true && f2.mantissa[i] === true || f2.mantissa[i] != true && f1.mantissa[i]===true);
         if(f2.mantissa[i] != true && f1.mantissa[i] === true){
           //Update f2
           let j = i;
           while(j>0 && f2.mantissa[j]!=true){
             f2.mantissa[j] = !(f2.mantissa[j] === true);
-            j--;
+            --j;
           }
           f2.mantissa[j] = !(f2.mantissa[j] === true);
         }
@@ -354,11 +355,11 @@ class FloatingType{
 
     let k = 0; //Compensation lorsque l'on ajoute un bit supplémentaire à binary
 
-    for(let i=1;i<f2.mantissa.length;i++){
+    for(let i=1;i<f2.mantissa.length;++i){
       let hold = false;
       if(f2.mantissa[i]){
         let j = 0;
-        for(j=f1.mantissa.length-1;j>=0;j--){
+        for(j=f1.mantissa.length-1;j>=0;--j){
           let newHold = logicOp.hold(f1.mantissa[j],binary[i+j+k],hold);
           binary[i+j+k] = logicOp.xor(f1.mantissa[j],binary[i+j+k],hold);
           hold = newHold;
@@ -372,10 +373,10 @@ class FloatingType{
           }else{
             binary.unshift(true);
             hold = false;
-            k++;
-            exp++;
+            ++k;
+            ++exp;
           }
-          j--;
+          --j;
         }
       }
     }
@@ -460,6 +461,10 @@ class FloatingType{
 
     let temp = dividend.slice(0,divisor.length);
     dividend = dividend.slice(divisor.length);
+    while(dividend[dividend.length-1]!=true && dividend.length>0){
+      dividend.pop();
+    }
+
     let end = false;
     let nbOp = 0;
     while(!end && nbOp <= result.mantissa.length+2){ //Ajout de marge
@@ -468,7 +473,7 @@ class FloatingType{
         binary.push(true);
 
         //temp - divisor
-        for(let i=divisor.length-1;i>=0;i--){
+        for(let i=divisor.length-1;i>=0;--i){
           let k = temp.length-divisor.length;
           let take = divisor[i] === true && temp[i+k] != true;
           temp[i+k] = (temp[i+k] != true && divisor[i] === true || divisor[i] != true && temp[i+k]===true);
@@ -527,7 +532,6 @@ class FloatingType{
     //TODO ajout du signe
     let exp = this._exponentDecimal();
     let length=this.mantissa.length;
-    let stepAddition = 5;
     let result = 1; // valeur caché, compensation
 
     // Limitation du travail
@@ -535,7 +539,7 @@ class FloatingType{
       length--;
     }
 
-    for(let i=0;i<length;i++){
+    for(let i=0;i<length;++i){
       if(this.mantissa[i]){
         result += 1/Math.pow(2,i+1);
       }
@@ -617,7 +621,7 @@ class FloatingType{
   _exponentDecimal(){
     let tot = 0;
     let size = this.e;
-    for(let i=0;i<size;i++){
+    for(let i=0;i<size;++i){
       let n = this.exponent[i] ? 1 : 0;
       tot = tot*2+n;
     }
@@ -630,8 +634,14 @@ class FloatingType{
   }
 }
 
-let inputNumber = new FloatingType('18.3333');
+function dynamic(idInput,idResult){
+  let float = new FloatingType(document.getElementById(idInput).value);
+  document.getElementById(idResult).innerHTML = float.toString();
+}
 
+document.onLoad(function(){
+  document.getElementById(idResult).innerHTML = pi.toString();
+});
 function dynamic(idInput,idResult){
   let float = new FloatingType(document.getElementById(idInput).value);
   document.getElementById(idResult).innerHTML = float.toString();
@@ -647,13 +657,14 @@ function pi(){
   let four = new FloatingType(4);
   let oneSixteen = new FloatingType(1);
 
-  for(let n=0;n<12;n++){
+  for(let n=0;n<infiniTest;++n){
     pi = pi.add(four.divBy(new FloatingType(8*n+1)).sub(FloatingType.oneBy(4*n+2)).sub(FloatingType.oneBy(8*n+5)).sub(FloatingType.oneBy(8*n+6)).mult(oneSixteen));
     oneSixteen = oneSixteen.mult(FloatingType.oneBy(16));
   }
   return pi;
 }
 
+//TODO Supprimer, valeurs pour tests
 let b = new FloatingType('-1.125');
 let a = new FloatingType('11');
 let c = new FloatingType('1.875')
