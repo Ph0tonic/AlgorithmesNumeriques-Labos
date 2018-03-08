@@ -664,6 +664,12 @@ function pi(){
   return pi;
 }
 
+function printBody()
+{
+  let mypi = pi();
+  document.getElementById("pi").innerHTML = mypi.toStr();
+}
+
 //TODO Supprimer, valeurs pour tests
 let b = new FloatingType('-1.125');
 let a = new FloatingType('11');
