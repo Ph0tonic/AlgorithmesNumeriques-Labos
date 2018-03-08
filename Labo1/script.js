@@ -6,14 +6,14 @@
 
 class logicOp{
   static xor(a,b,c){ // Utilisation de !=true à cause du système à trois état avec undefined!!!
-    /* bin = (a^b)^c = a&b&c || a&!c&!c || !a&b&!c || !a&!b&c */
+    /* bin = (a^b)^c = a&b&c || a&!b&!c || !a&b&!c || !a&!b&c */
     return a&&b&&c || a&&b!=true&&c!=true || a!=true&&b&&c!=true || a!=true&&b!=true&&c;
   }
   static hold(a, b, c){
     /* hold = a&&b || a&&c || b&&c */
     return a&&b || a&&c || b&&c;
   }
-  static gte(arrayA,arrayB){
+  static gte(arrayA,arrayB){ // Graeter or equal, Les deux tableaux doivent être de la même taille
     let length = arrayA.length;
     let i=0;
     for(let i=0;i<length;++i){
@@ -25,7 +25,7 @@ class logicOp{
     }
     return true;
   }
-  static isSubstractable(a,b){
+  static isSubstractable(a,b){ //a: Vérifie si a>b, a et b pas forcément de la même taille
     // a-b > 0
     logicOp.minimise(a);
     logicOp.minimise(b);
@@ -43,7 +43,7 @@ class logicOp{
     }
     return true;
   }
-  static minimise(a){
+  static minimise(a){ // Supprime les 0 non significatifs (à gauche)
     let n=0;
     while(a[0] != true && a.length > 0){
         a.shift();
@@ -109,7 +109,7 @@ class FloatingType{
   }
 
   _decimalToBinary(decimal){
-    //Convert an int as an decimal part in binary
+    //Converts the decimal place of a number in binary
     if(decimal == undefined){
       decimal = 0;
     }
@@ -139,7 +139,7 @@ class FloatingType{
     exponent += this._dOffset();
 
     let binary = [];
-    for(let i=0;i<this.e;++i){
+    for(let i=0; i<this.e; ++i){
       binary.unshift(!!(exponent%2)); //!! pour que les valeurs soient des booléens et non pas un 0 ou un 1
       exponent-=exponent%2;
       exponent/=2;
@@ -224,8 +224,6 @@ class FloatingType{
       swap = true;
     }else if(e1 === e2){
       //Detect if swap neccessairy when they have the same exponent
-      let i=0;
-      let end = false;
       swap = logicOp.gte(f1.mantissa,f2.mantissa);
     }
 
@@ -398,9 +396,6 @@ class FloatingType{
 
   divBy(n){
     //Return a new FloatingType after division by an int
-    //TODO remove this line
-    //return this.mult(FloatingType.oneBy(n));
-
     if(Number.isInteger(n)){
       n = new FloatingType(n);
     }
@@ -639,14 +634,6 @@ function dynamic(idInput,idResult){
   document.getElementById(idResult).innerHTML = float.toString();
 }
 
-/*window.onLoad(function(){
-  document.getElementById(idResult).innerHTML = pi.toString();
-});/**/
-function dynamic(idInput,idResult){
-  let float = new FloatingType(document.getElementById(idInput).value);
-  document.getElementById(idResult).innerHTML = float.toString();
-}
-
 function pi(){
   //    Somme de o à l'infini de ((4/(8n+1)-2/(8n+4)-1/(8n+5)-1/(8n+6))*(1/16)^n)
   // -> Somme de o à l'infini de ((4/(8n+1)-1/(4n+2)-1/(8n+5)-1/(8n+6))*(1/16)^n)
@@ -660,14 +647,15 @@ function pi(){
   for(let n=0;n<infiniTest;++n){
     pi = pi.add(four.divBy(new FloatingType(8*n+1)).sub(FloatingType.oneBy(4*n+2)).sub(FloatingType.oneBy(8*n+5)).sub(FloatingType.oneBy(8*n+6)).mult(oneSixteen));
     oneSixteen = oneSixteen.mult(FloatingType.oneBy(16));
+    console.log(pi.toStr())
   }
   return pi;
 }
 
 function printBody()
 {
-  let mypi = pi();
-  document.getElementById("pi").innerHTML = mypi.toStr();
+  let estimatedPi = pi();
+  document.getElementById("pi").innerHTML = estimatedPi.toStr();
 }
 
 //TODO Supprimer, valeurs pour tests
