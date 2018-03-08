@@ -639,9 +639,9 @@ function dynamic(idInput,idResult){
   document.getElementById(idResult).innerHTML = float.toString();
 }
 
-document.onLoad(function(){
+/*window.onLoad(function(){
   document.getElementById(idResult).innerHTML = pi.toString();
-});
+});/**/
 function dynamic(idInput,idResult){
   let float = new FloatingType(document.getElementById(idInput).value);
   document.getElementById(idResult).innerHTML = float.toString();
