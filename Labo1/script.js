@@ -63,14 +63,21 @@ class FloatingType{
     //Size field mantissa
     this.m = 52;
 
+    if(value === "Infinity"){
+      value = Infinity;
+    }
 
-    if(value || value === 0){
+    if(value === "NaN"){
+      value = NaN;
+    }
+
+    if((value || value === 0) && !isNaN(value)){
 
       if(Number.isInteger(value)){
         value = value.toString();
       }
 
-      if(value===Infinity){
+      if(value===Infinity || value == "Infinity"){
         //Infinity
         this.sign = false;
         this.exponent = this._exponentToBinary(Math.pow(2,this.e)-1-this._dOffset());
@@ -363,6 +370,12 @@ class FloatingType{
 
       //Step 3 - Normalise result
       exp -= logicOp.minimise(binary);
+      if(binary.length==0){
+        //Result = 0
+        binary = [false];
+        exp = -this._dOffset();
+      }
+
       binary.shift() // Hide hidden bit
       f.mantissa = binary;
       f.mantissa.length = f.m;
@@ -500,7 +513,7 @@ class FloatingType{
       return f2;
     }
 
-    if(f2.isInfinity() && f1.isInfinity()){
+    if(f2.isZero() && f1.isInfinity()){
       return new FloatingType(NaN);
     }
 
@@ -669,7 +682,7 @@ class FloatingType{
     }
 
     result *= Math.pow(2,exp);
-    return result;
+    return (this.sign?-1:1)*result;
 
   }
 
@@ -697,7 +710,6 @@ class FloatingType{
     let result = signe;
     result += mant;
     result += "*2^"+exp+"\n";
-
 
     let calculated = mant;
     let pointPosition = 1;
@@ -771,6 +783,35 @@ class FloatingType{
   }
 }
 
+$(document).ready(function(){
+  let estimatedPi = pi();
+  $("#pi").html(estimatedPi.toStr());
+
+  $('#btnAdd').on('click',function(){
+    let a = new FloatingType($('#a1').val());
+    let b = new FloatingType($('#b1').val());
+    $('#addition').text(a.add(b).toStr());
+  });
+
+  $('#btnSub').on('click',function(){
+    let a = new FloatingType($('#a2').val());
+    let b = new FloatingType($('#b2').val());
+    $('#substraction').text(a.sub(b).toStr());
+  });
+
+  $('#btnMult').on('click',function(){
+    let a = new FloatingType($('#a3').val());
+    let b = new FloatingType($('#b3').val());
+    $('#multiplication').text(a.mult(b).toStr());
+  });
+
+  $('#btnDiv').on('click',function(){
+    let a = new FloatingType($('#a4').val());
+    let b = new FloatingType($('#b4').val());
+    $('#division').text(a.divBy(b).toStr());
+  });
+});
+
 function dynamic(idInput,idResult){
   let float = new FloatingType(document.getElementById(idInput).value);
   document.getElementById(idResult).innerHTML = float.toString();
@@ -795,8 +836,6 @@ function pi(){
 
 function printBody()
 {
-  let estimatedPi = pi();
-  document.getElementById("pi").innerHTML = estimatedPi.toStr();
 }
 
 //TODO Supprimer, valeurs pour tests

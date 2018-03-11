@@ -3,39 +3,105 @@
 <header>
   <meta charset="utf-8">
   <title>Labo 1 - Algo num</title>
-  <script src="script.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 </header>
-<body onload="printBody()">
-  <h1>Labo 1 - Algo num</h1>
-  <p>Auteurs:</p>
-  <ul>
-    <li>Raphael Margueron</li>
-    <li>Damian Petroff</li>
-    <li>Bastien Wermeille</li>
-  </ul>
-  <div>
-    <h2>Partie 1</h2>
-    <input type="number" id="entry" step="any"></input>
-    <input type="button" onClick="dynamic('entry','result');"></input>
-    <h3>Résultats</h3>
-    <div></div>
-    <p>Résultat:<span id="result"></span></p>
-  </div>
-  <div>
-    <h2>Partie 2 - Bonus addition</h2>
-  </div>
-  <div>
-    <h2>Partie 3 - Mega Bonus - Pi</h2>
-    <p>Valeur de pi : </p>
-    π ~= <span id="pi"><script>pi().toStr();</script></span>
-  </div>
-  <div>
-    <h2>Sources</h2>
-    <ul>
-      <li><a href="https://ryanstutorials.net/binary-tutorial/binary-floating-point.php">https://ryanstutorials.net/binary-tutorial/binary-floating-point.php</a></li>
-      <li><a href="http://cstl-csm.semo.edu/xzhang/Class%20Folder/CS280/Workbook_HTML/FLOATING_tut.htm">http://cstl-csm.semo.edu/xzhang/Class%20Folder/CS280/Workbook_HTML/FLOATING_tut.htm</a></li>
-      <li><a href="https://www.doc.ic.ac.uk/~eedwards/compsys/float/">https://www.doc.ic.ac.uk/~eedwards/compsys/float/</a></li>
-    </ul>
-  </div>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h1>Labo 1 - Algo num</h1>
+      <p>Groupe n° 1 , auteurs:</p>
+      <ul>
+        <li>Raphael Margueron</li>
+        <li>Damian Petroff</li>
+        <li>Bastien Wermeille</li>
+      </ul>
+    </div>
+    <div class="form-inline">
+      <h2>Partie 1</h2>
+      <h3>Décimal à binaire</h3>
+      <div class="form-group">
+        <input type="text" class="form-control" id="entry" placeholder="1320.625">
+      </div>
+      <input type="button" id="btnToBinary"class="btn btn-default" value="Convertir en binaire"></input>
+      <h4>Résultat</h3>
+      <span id="binary"></span>
+      <h3>Binaire à décimal</h3>
+      <div class="form-group" id="inputBinary">
+      </div>
+      <input type="button" id="btnToBinary"class="btn btn-default" value="Convertir en décimal"></input>
+      <h3>Résultat</h3>
+      <span id="decimal"></span>
+    </div>
+    <hr>
+    <div>
+      <h2>Partie 2 - Bonus addition</h2>
+      <h3>Addition (A+B)</h3>
+      <div class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form-control" id="a1" placeholder="A">
+          <span>+</span>
+          <input type="text" class="form-control" id="b1" placeholder="B">
+        </div>
+        <input type="button" id="btnAdd" class="btn btn-default" value="="></input>
+        <span id="addition"></span>
+      <h3>Soustraction (A-B)</h3>
+      <div class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form-control" id="a2" placeholder="A">
+          <span>-</span>
+          <input type="text" class="form-control" id="b2" placeholder="B">
+        </div>
+        <input type="button" id="btnSub" class="btn btn-default" value="="></input>
+        <span id="substraction"></span>
+      </div>
+      <h3>Multiplication</h3>
+      <div class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form-control" id="a3" placeholder="A">
+          <span>*</span>
+          <input type="text" class="form-control" id="b3" placeholder="B">
+        </div>
+        <input type="button" id="btnMult" class="btn btn-default" value="="></input>
+        <span id="multiplication"></span>
+      </div>
+      <h3>Division</h3>
+      <div class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form-control" id="a4" placeholder="A">
+          <span>/</span>
+          <input type="text" class="form-control" id="b4" placeholder="B">
+        </div>
+        <input type="button" id="btnDiv" class="btn btn-default" value="="></input>
+        <span id="division"></span>
+      </div>
+    </div>
+    <hr>
+    <div>
+      <h2>Partie 3 - Mega Bonus - Pi</h2>
+      <p>Approximation de pi, π ~= <span id="pi"></span></p>
+      <p>Formule utilisée : <math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="false"><mi>&#x3C0;</mi></mstyle><mstyle displaystyle="false"><mo>&#x2243;</mo></mstyle><munderover><mo>&#x2211;</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mo>&#x221E;</mo></munderover><mstyle displaystyle="false"><mo>(</mo></mstyle><mfrac><mn>4</mn><mrow><mn>8</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mstyle displaystyle="false"><mo>-</mo></mstyle><mfrac><mn>2</mn><mrow><mn>8</mn><mi>n</mi><mo>+</mo><mn>4</mn></mrow></mfrac><mstyle displaystyle="false"><mo>-</mo></mstyle><mfrac><mn>1</mn><mrow><mn>8</mn><mi>n</mi><mo>+</mo><mn>5</mn></mrow></mfrac><mstyle displaystyle="false"><mo>-</mo></mstyle><mfrac><mn>1</mn><mrow><mn>8</mn><mi>n</mi><mo>+</mo><mn>6</mn></mrow></mfrac><mstyle displaystyle="false"><mo>)</mo></mstyle><mstyle displaystyle="false"><mo>*</mo></mstyle><mstyle displaystyle="false"><mo>(</mo></mstyle><mfrac><mn>1</mn><mn>16</mn></mfrac><mstyle displaystyle="false"><msup><mstyle displaystyle="false"><mo>)</mo></mstyle><mi>n</mi></msup></mstyle></math>
+      </p>
+    </div>
+    <hr>
+    <div>
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://ryanstutorials.net/binary-tutorial/binary-floating-point.php">https://ryanstutorials.net/binary-tutorial/binary-floating-point.php</a></li>
+        <li><a href="http://cstl-csm.semo.edu/xzhang/Class%20Folder/CS280/Workbook_HTML/FLOATING_tut.htm">http://cstl-csm.semo.edu/xzhang/Class%20Folder/CS280/Workbook_HTML/FLOATING_tut.htm</a></li>
+        <li><a href="https://www.doc.ic.ac.uk/~eedwards/compsys/float/">https://www.doc.ic.ac.uk/~eedwards/compsys/float/</a></li>
+        <li><a href="http://www.wiris.com/editor/demo/fr/mathml-latex">http://www.wiris.com/editor/demo/fr/mathml-latex</a></li>
+        <li><a href="https://getbootstrap.com/docs/3.3/">https://getbootstrap.com/docs/3.3/</a></li>
+        <li><a href="https://jquery.com/">https://jquery.com/</a></li>
+      </ul>
+    </div>
+  <div/>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
+  <script src="script.js"></script>
 </body>
 </html>
