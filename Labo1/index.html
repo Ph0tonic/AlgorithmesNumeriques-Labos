@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <!-- Main css -->
+  <link rel="stylesheet" href="style.css" >
 </header>
 <body>
   <div class="container">
@@ -23,13 +25,59 @@
       <h2>Partie 1</h2>
       <h3>Décimal à binaire</h3>
       <div class="form-group">
-        <input type="text" class="form-control" id="entry" placeholder="1320.625">
+        <input type="text" class="form-control" id="entry-decimal" placeholder="1320.625">
       </div>
-      <input type="button" id="btnToBinary"class="btn btn-default" value="Convertir en binaire"></input>
       <h4>Résultat</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Signe</th>
+            <th>Mantisse</th>
+            <th>Exposant</th>
+          </tr>
+        </thead>
+        <tbody id="result-binary">
+        </tbody>
+      </table>
       <span id="binary"></span>
       <h3>Binaire à décimal</h3>
-      <div class="form-group" id="inputBinary">
+      <div class="form-group">
+        <table id="input-binary">
+          <thead>
+            <tr>
+              <th>Signe</th>
+              <th>Mantisse</th>
+              <th>Exposant</th>
+            </tr>
+          </thead>
+          <tbody id >
+            <tr>
+              <td class="signe">
+                <input id="s1" type="checkbox">
+              </td>
+              <td class="exponent">
+                <input id="e1" type="checkbox">
+                <input id="e2" type="checkbox">
+                <input id="e3" type="checkbox">
+                <input id="e4" type="checkbox">
+                <input id="e5" type="checkbox">
+                <input id="e6" type="checkbox">
+                <input id="e7" type="checkbox">
+                <input id="e8" type="checkbox">
+              </td>
+              <td class="mantissa">
+                <input id="e1" type="checkbox">
+                <input id="e2" type="checkbox">
+                <input id="e3" type="checkbox">
+                <input id="e4" type="checkbox">
+                <input id="e5" type="checkbox">
+                <input id="e6" type="checkbox">
+                <input id="e7" type="checkbox">
+                <input id="e8" type="checkbox">
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <input type="button" id="btnToBinary"class="btn btn-default" value="Convertir en décimal"></input>
       <h3>Résultat</h3>

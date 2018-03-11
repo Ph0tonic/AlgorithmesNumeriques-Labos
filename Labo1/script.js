@@ -208,8 +208,6 @@ class FloatingType{
       7. Exponent to binary
     */
 
-    //TODO Vérification de value
-
     //Step 1 - signe
     this.sign = (value.charAt(0) === '-');
     if(this.sign){
@@ -218,6 +216,10 @@ class FloatingType{
 
     //Step 2 - Whole number to Binary
     let parts = value.split('.');
+    if(parts[0].length == 0){
+      parts[0] = 0;
+    }
+
     let whole = this._wholeToBinary(parseInt(parts[0]));
 
     //Step 3 - Fraction section to binary
@@ -784,9 +786,38 @@ class FloatingType{
 }
 
 $(document).ready(function(){
+
+
+  //Ajout de la valeur de pi
   let estimatedPi = pi();
   $("#pi").html(estimatedPi.toStr());
 
+  $('#entry-decimal').on('input',function(){
+    let float = new FloatingType($('#entry-decimal').val());
+
+    //Formulaire de binary to decimal
+    let result = "";
+    result += '<td class="sign"><input id="s1" type="checkbox" disabled '+(float.signe?"checked":"")+'></td>';
+
+    result += '<td class="exponent">';
+    for(let i=0;i<float.e;++i){
+      result += '<input id="e'+i+'" type="checkbox" '+(float.exponent[i]?"checked":"")+' disabled >\t';
+    }
+    result += '</td>';
+
+
+    result += '<td class="mantissa">';
+    for(let i=0;i<float.m;++i){
+      result += '<input id="e'+i+'" type="checkbox" '+(float.mantissa[i]?"checked":"")+' disabled >\t';
+    }
+    result += '</td>';
+
+    $('#result-binary').html(result);
+  })
+
+  $('#entry-decimal').trigger('input');
+
+  //Actions des boutons bonus
   $('#btnAdd').on('click',function(){
     let a = new FloatingType($('#a1').val());
     let b = new FloatingType($('#b1').val());
@@ -832,10 +863,6 @@ function pi(){
     oneSixteen = oneSixteen.mult(FloatingType.oneBy(16));
   }
   return pi;
-}
-
-function printBody()
-{
 }
 
 //TODO Supprimer, valeurs pour tests
