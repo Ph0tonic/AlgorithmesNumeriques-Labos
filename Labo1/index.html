@@ -23,7 +23,7 @@
     </div>
     <div class="form-inline">
       <h2>Partie 1</h2>
-      <h3>Conversion bi-directionnelle</h3>
+      <h3>Conversion bidirectionnelle</h3>
       <div class="form-group">
         <input type="text" class="form-control" id="entry-decimal" placeholder="1320.625">
       </div>
@@ -63,7 +63,7 @@
         <input type="button" id="btnSub" class="btn btn-default" value="="></input>
         <span id="substraction"></span>
       </div>
-      <h3>Multiplication</h3>
+      <h3>Multiplication (A*B)</h3>
       <div class="form-inline">
         <div class="form-group">
           <input type="text" class="form-control" id="a3" placeholder="A">
@@ -73,7 +73,7 @@
         <input type="button" id="btnMult" class="btn btn-default" value="="></input>
         <span id="multiplication"></span>
       </div>
-      <h3>Division</h3>
+      <h3>Division (A/B)</h3>
       <div class="form-inline">
         <div class="form-group">
           <input type="text" class="form-control" id="a4" placeholder="A">
@@ -90,6 +90,36 @@
       <p>Approximation de pi, π ~= <span id="pi"></span></p>
       <p>Formule utilisée : <math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="false"><mi>&#x3C0;</mi></mstyle><mstyle displaystyle="false"><mo>&#x2243;</mo></mstyle><munderover><mo>&#x2211;</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mo>&#x221E;</mo></munderover><mstyle displaystyle="false"><mo>(</mo></mstyle><mfrac><mn>4</mn><mrow><mn>8</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mstyle displaystyle="false"><mo>-</mo></mstyle><mfrac><mn>2</mn><mrow><mn>8</mn><mi>n</mi><mo>+</mo><mn>4</mn></mrow></mfrac><mstyle displaystyle="false"><mo>-</mo></mstyle><mfrac><mn>1</mn><mrow><mn>8</mn><mi>n</mi><mo>+</mo><mn>5</mn></mrow></mfrac><mstyle displaystyle="false"><mo>-</mo></mstyle><mfrac><mn>1</mn><mrow><mn>8</mn><mi>n</mi><mo>+</mo><mn>6</mn></mrow></mfrac><mstyle displaystyle="false"><mo>)</mo></mstyle><mstyle displaystyle="false"><mo>*</mo></mstyle><mstyle displaystyle="false"><mo>(</mo></mstyle><mfrac><mn>1</mn><mn>16</mn></mfrac><mstyle displaystyle="false"><msup><mstyle displaystyle="false"><mo>)</mo></mstyle><mi>n</mi></msup></mstyle></math>
       </p>
+    </div>
+    <hr>
+    <div>
+      <h2>Tests en consoles</h2>
+      <p>Le développement s'est entièrement réalisé en console. Il est possible d'utiliser la classe créée comme suit:</p>
+      <h3>Création d'un objet de type float binaire</h3>
+      <pre><code>let float = new FloatingType('123.12');</code></pre>
+      <p>Paramètres possibles:</p>
+      <ul>
+        <li>Int</li>
+        <li>Chaine de caractère représentant un nombre</li>
+        <li>Infinity</li>
+        <li>NaN</li>
+      </ul>
+      <h3>Opérations disponibles</h3>
+      <p>Plusieurs opérations sont disponibles sur cette classe, à noter qu'un objet est immutable.</p>
+      <pre><code>let a = new FloatingType('123.12');<br>let b = new FloatingType('-12');<br>let result = a.add(b);<br>result.toString();</code></pre>
+      <p>Liste des fonctions disponibles:</p>
+      <ul>
+        <li>toString()</li>
+        <li>add(n)</li>
+        <li>sub(n)</li>
+        <li>mult(n)</li>
+        <li>divBy(n)</li>
+        <li>isNaN()</li>
+        <li>isZero()</li>
+        <li>isInfinity()</li>
+      </ul>
+      <p>Une fonction static est également disponible:</p>
+      <pre><code>let a = FloatingType.oneBy('123.12');</code></pre>
     </div>
     <hr>
     <div>

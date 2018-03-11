@@ -4,7 +4,7 @@
  *  Goal: Representation of a floating value with only int and boolean
  */
 
-class logicOp{
+class LogicOp{
   static xor(a,b,c){ // Utilisation de !=true à cause du système à trois état avec undefined!!!
     /* bin = (a^b)^c = a&b&c || a&!b&!c || !a&b&!c || !a&!b&c */
     return a&&b&&c || a&&b!=true&&c!=true || a!=true&&b&&c!=true || a!=true&&b!=true&&c;
@@ -27,8 +27,8 @@ class logicOp{
   }
   static isSubstractable(a,b){ //a: Vérifie si a>b, a et b pas forcément de la même taille
     // a-b > 0
-    logicOp.minimise(a);
-    logicOp.minimise(b);
+    LogicOp.minimise(a);
+    LogicOp.minimise(b);
 
     if(a.length<b.length){
       return false;
@@ -121,21 +121,21 @@ class FloatingType{
   isNaN(){
     //Exposant décalé = (2^e)-1 & mantissa <> 0
     let mantissaClone = this.mantissa.slice(0);
-    logicOp.minimise(mantissaClone);
+    LogicOp.minimise(mantissaClone);
     return (this._exponentDecimal()+this._dOffset() == Math.pow(2,this.e)-1 && mantissaClone.length != 0);
   }
 
   isZero(){
     //Exponent shiffted = 0 & mantissa = 0
     let mantissaClone = this.mantissa.slice(0);
-    logicOp.minimise(mantissaClone);
+    LogicOp.minimise(mantissaClone);
     return (this._exponentDecimal()+this._dOffset() == 0 && mantissaClone.length == 0);
   }
 
   isInfinity(){
     //Exponent shiffted = 0 & mantissa = 0
     let mantissaClone = this.mantissa.slice(0);
-    logicOp.minimise(mantissaClone);
+    LogicOp.minimise(mantissaClone);
     return (this._exponentDecimal()+this._dOffset() == Math.pow(2,this.e)-1 && mantissaClone.length == 0);
   }
 
@@ -215,9 +215,42 @@ class FloatingType{
     }
 
     //Step 2 - Whole number to Binary
+    if(value.indexOf('e')>=0 && value.indexOf('.')<0){
+      value = value.replace('e','.e');
+      console.log(value);
+    }
+
     let parts = value.split('.');
     if(parts[0].length == 0){
       parts[0] = 0;
+    }
+
+    //Test de valeurs avec e+
+    if(parts.length>1){
+      let secondSplit = parts[1].split('e');
+      parts[1] = secondSplit[0];
+      if(secondSplit.length > 1){
+        parts[2] = secondSplit[1];
+        let shift = parseInt(parts[2]);
+        if(shift>0){
+          for(let i=0;i<shift;i++){
+            parts[0] = parts[0].concat(parts[1].length>0?parts[1].charAt(0):"0");
+            if(parts[1].length>0){
+              parts[1] = parts[1].substring(1, parts[1].length);
+            }
+          }
+        }else{
+          for(let i=0;i>shift;i--){
+            parts[1] = (parts[0].length>0?parts[0].charAt(parts[0].length-1):"0").concat(parts[1]);
+            if(parts[0].length>0){
+              parts[0] = parts[0].substring(0,parts[0].length-1);
+            }
+          }
+        }
+      }
+    }
+    if(parts[0].length==0){
+      parts[0] = "0";
     }
 
     let whole = this._wholeToBinary(parseInt(parts[0]));
@@ -299,7 +332,7 @@ class FloatingType{
       swap = true;
     }else if(e1 === e2){
       //Detect if swap neccessairy when they have the same exponent
-      swap = logicOp.gte(f1.mantissa,f2.mantissa);
+      swap = LogicOp.gte(f1.mantissa,f2.mantissa);
     }
 
     if(swap){
@@ -329,8 +362,8 @@ class FloatingType{
       let binary = [];
       binary.length = length;
       for(let i=length-1;i>=0;--i){
-        binary[i] = logicOp.xor(f1.mantissa[i],f2.mantissa[i],hold);
-        hold = logicOp.hold(f1.mantissa[i],f2.mantissa[i],hold);
+        binary[i] = LogicOp.xor(f1.mantissa[i],f2.mantissa[i],hold);
+        hold = LogicOp.hold(f1.mantissa[i],f2.mantissa[i],hold);
       }
 
       //Step 3 - Normalise result
@@ -371,7 +404,7 @@ class FloatingType{
       }
 
       //Step 3 - Normalise result
-      exp -= logicOp.minimise(binary);
+      exp -= LogicOp.minimise(binary);
       if(binary.length==0){
         //Result = 0
         binary = [false];
@@ -441,15 +474,15 @@ class FloatingType{
     let binary = result.mantissa.slice(0);
 
     //f1*f2
-//      1.000 = f1
-//   ×  1.110 = f2
-//   -----------
-//          0000
-//         1000
-//        1000
-//   +   1000
-//   -----------
-//       1110000  ===> 1.110000
+    //      1.000 = f1
+    //   ×  1.110 = f2
+    //   -----------
+    //          0000
+    //         1000
+    //        1000
+    //   +   1000
+    //   -----------
+    //       1110000  ===> 1.110000
 
     //Info about i, j and k
     // i : indice for looping over the multiplicator
@@ -463,15 +496,15 @@ class FloatingType{
       if(f2.mantissa[i]){
         let j = 0;
         for(j=f1.mantissa.length-1;j>=0;--j){
-          let newHold = logicOp.hold(f1.mantissa[j],binary[i+j+k],hold);
-          binary[i+j+k] = logicOp.xor(f1.mantissa[j],binary[i+j+k],hold);
+          let newHold = LogicOp.hold(f1.mantissa[j],binary[i+j+k],hold);
+          binary[i+j+k] = LogicOp.xor(f1.mantissa[j],binary[i+j+k],hold);
           hold = newHold;
         }
         //Ajout d'une éventuelle retenue
         while(hold){
           if(i+j+k>=0){
-            let newHold = logicOp.hold(binary[i+j+k],hold,false);
-            binary[i+j+k] = logicOp.xor(binary[i+j+k],hold,false);
+            let newHold = LogicOp.hold(binary[i+j+k],hold,false);
+            binary[i+j+k] = LogicOp.xor(binary[i+j+k],hold,false);
             hold = newHold;
           }else{
             binary.unshift(true);
@@ -485,7 +518,7 @@ class FloatingType{
     }
 
     //Step 3 - Normalise mantissa
-    exp -= logicOp.minimise(binary);
+    exp -= LogicOp.minimise(binary);
     binary.shift();
     result.mantissa = binary;
     result.exponent = result._exponentToBinary(exp);
@@ -494,7 +527,7 @@ class FloatingType{
     result.mantissa.length = result.m;
 
     //Step 5 - Adjust sign
-    result.sign = logicOp.xor(f1.sign,f2.sign,false);
+    result.sign = LogicOp.xor(f1.sign,f2.sign,false);
 
     return result;
   }
@@ -543,41 +576,41 @@ class FloatingType{
     let exp = f1._exponentDecimal() - f2._exponentDecimal();
 
     //Step 2 - division of the mantissa
-  //  f1/f2
-  //      1.000 = f1
-  //   /  1.110 = f2
-  //   -----------
-  //   1000   |   1101
-  //   ----       0.1000111011
-  //   10000
-  //  - 1101
-  //    0011
-  //    -----
-  //     0110
-  //     ----
-  //      1100
-  //      ----
-  //      11000
-  //      -1101
-  //       10110
-  //       -1101
-  //        10010
-  //        -1101
-  //         01010
-  //          ----
-  //          10100
-  //          -1101
-  //           01110
-  //           -1101
-  //            0001
-  // ...
+    //  f1/f2
+    //      1.000 = f1
+    //   /  1.110 = f2
+    //   -----------
+    //   1000   |   1101
+    //   ----       0.1000111011
+    //   10000
+    //  - 1101
+    //    0011
+    //    -----
+    //     0110
+    //     ----
+    //      1100
+    //      ----
+    //      11000
+    //      -1101
+    //       10110
+    //       -1101
+    //        10010
+    //        -1101
+    //         01010
+    //          ----
+    //          10100
+    //          -1101
+    //           01110
+    //           -1101
+    //            0001
+    // ...
 
     let dividend = f1.mantissa.slice(0);
     let divisor = f2.mantissa.slice(0);
     let binary = [];
 
     //Minimize divisor
-    logicOp.minimise(divisor);
+    LogicOp.minimise(divisor);
     while(divisor[divisor.length-1]!=true && divisor.length>0){
       divisor.pop();
     }
@@ -591,7 +624,7 @@ class FloatingType{
     let end = false;
     let nbOp = 0;
     while(!end && nbOp <= result.mantissa.length+2){ //Ajout de marge
-      if(logicOp.isSubstractable(temp,divisor)){
+      if(LogicOp.isSubstractable(temp,divisor)){
         //Substraction
         binary.push(true);
 
@@ -612,7 +645,7 @@ class FloatingType{
         }
 
         //Remove the first element in all cases
-        logicOp.minimise(temp);
+        LogicOp.minimise(temp);
 
         if(temp.length == 0 && dividend.length == 0){
           end = true;
@@ -632,7 +665,7 @@ class FloatingType{
     }
 
     //Step 3 - Normalise mantissa
-    exp -= logicOp.minimise(binary);
+    exp -= LogicOp.minimise(binary);
     binary.shift();
     result.mantissa = binary;
     result.exponent = result._exponentToBinary(exp);
@@ -641,7 +674,7 @@ class FloatingType{
     result.mantissa.length = result.m;
 
     //Step 5 - Adjust sign
-    result.sign = logicOp.xor(f1.sign,f2.sign,false);
+    result.sign = LogicOp.xor(f1.sign,f2.sign,false);
 
     return result;
   }
@@ -741,6 +774,7 @@ class FloatingType{
     result += calculated;
     return result;
   }
+
   _mantissaDecimal(){
     let length=this.mantissa.length;
     let stepAddition = 5;
@@ -779,8 +813,6 @@ class FloatingType{
 }
 
 $(document).ready(function(){
-
-
   //Ajout de la valeur de pi
   let estimatedPi = pi();
   $("#pi").html(estimatedPi.toStr());
@@ -852,11 +884,6 @@ $(document).ready(function(){
   });
 });
 
-function dynamic(idInput,idResult){
-  let float = new FloatingType(document.getElementById(idInput).value);
-  document.getElementById(idResult).innerHTML = float.toString();
-}
-
 function pi(){
   //    Somme de o à l'infini de ((4/(8n+1)-2/(8n+4)-1/(8n+5)-1/(8n+6))*(1/16)^n)
   // -> Somme de o à l'infini de ((4/(8n+1)-1/(4n+2)-1/(8n+5)-1/(8n+6))*(1/16)^n)
@@ -875,9 +902,8 @@ function pi(){
 }
 
 //TODO Supprimer, valeurs pour tests
-let b = new FloatingType('-1.125');
 let a = new FloatingType('11');
+let b = new FloatingType('-1.125');
 let c = new FloatingType('1.875')
-
 let d = new FloatingType('91.34375');
 let e = new FloatingType('0.14453125')
