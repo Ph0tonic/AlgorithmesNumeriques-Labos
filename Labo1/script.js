@@ -53,7 +53,6 @@ class logicOp{
   }
 }
 
-
 /*
  *  Underscore is standard to say "Should not be accessed from outside"
  */
@@ -62,20 +61,42 @@ class FloatingType{
     //Size for field exponent
     this.e = 11;
     //Size field mantissa
-    //this.m = 23;
     this.m = 52;
 
-    if(value){
+
+    if(value || value === 0){
+
       if(Number.isInteger(value)){
         value = value.toString();
       }
-      this._init(value);
+
+      if(value===Infinity){
+        //Infinity
+        this.sign = false;
+        this.exponent = this._exponentToBinary(Math.pow(2,this.e)-1-this._dOffset());
+        this.exponent.length = this.e;
+        this.mantissa = [];
+        this.mantissa.length = this.m;
+      }else{
+        //Standard cases
+        this._init(value);
+      }
     }else {
-      this.sign = false;
-      this.exponent = [];
-      this.exponent.length = this.e;
-      this.mantissa = [];
-      this.mantissa.length = this.m;
+      if(Number.isNaN(NaN)){
+        //NaN
+        this.sign = false;
+        this.exponent = this._exponentToBinary(Math.pow(2,this.e)-1-this._dOffset());
+        this.exponent.length = this.e;
+        this.mantissa = [true];
+        this.mantissa.length = this.m;
+      }else{
+        //Initialisation sans valeur
+        this.sign = false;
+        this.exponent = [];
+        this.exponent.length = this.e;
+        this.mantissa = [];
+        this.mantissa.length = this.m;
+      }
     }
     this._cleanMantissa();
   }
@@ -88,6 +109,27 @@ class FloatingType{
     float.mantissa = this.mantissa.slice(0);
     float.m = this.m;
     return float;
+  }
+
+  isNaN(){
+    //Exposant décalé = (2^e)-1 & mantissa <> 0
+    let mantissaClone = this.mantissa.slice(0);
+    logicOp.minimise(mantissaClone);
+    return (this._exponentDecimal()+this._dOffset() == Math.pow(2,this.e)-1 && mantissaClone.length != 0);
+  }
+
+  isZero(){
+    //Exponent shiffted = 0 & mantissa = 0
+    let mantissaClone = this.mantissa.slice(0);
+    logicOp.minimise(mantissaClone);
+    return (this._exponentDecimal()+this._dOffset() == 0 && mantissaClone.length == 0);
+  }
+
+  isInfinity(){
+    //Exponent shiffted = 0 & mantissa = 0
+    let mantissaClone = this.mantissa.slice(0);
+    logicOp.minimise(mantissaClone);
+    return (this._exponentDecimal()+this._dOffset() == Math.pow(2,this.e)-1 && mantissaClone.length == 0);
   }
 
   _cleanMantissa(){
@@ -161,8 +203,6 @@ class FloatingType{
 
     //TODO Vérification de value
 
-    //TODO Check 0 or NaN
-
     //Step 1 - signe
     this.sign = (value.charAt(0) === '-');
     if(this.sign){
@@ -175,6 +215,13 @@ class FloatingType{
 
     //Step 3 - Fraction section to binary
     let decimal = this._decimalToBinary(parts[1]);
+
+    //Step 3.5 - Special case 0
+    if(decimal.length === 0 && whole.length === 0){
+      this.mantissa = [];
+      this.exponent = this._exponentToBinary(-this._dOffset());
+      return;
+    }
 
     //Step 4 - Join together
     let wholeSize = whole.length;
@@ -213,6 +260,25 @@ class FloatingType{
     //Step 0 - Clone des valeurs
     let f1 = this.clone();
     let f2 = value.clone();
+
+    //Special cases
+    if(f1.isZero()){
+      return f2;
+    }else if(f2.isZero()){
+      return f1;
+    }
+
+    if(f1.isNaN()){
+      return f1;
+    }else if(f2.isNaN()){
+      return f2;
+    }
+
+    if(f1.isInfinity()){
+      return f1;
+    }else if(f2.isInfinity()){
+      return f2;
+    }
 
     //Step 0.5 -> put smaller one in f1
     let e1 = f1._exponentDecimal(f1.exponent);
@@ -325,6 +391,30 @@ class FloatingType{
 
     let f1 = n.clone();
     let f2 = this.clone();
+
+    //Special cases
+    if(f1.isNaN()){
+      return f1;
+    }else if(f2.isNaN()){
+      return f2;
+    }
+
+    if(f1.isZero() && f2.isInfinity() || f2.isZero() && f1.isInfinity()){
+      return new FloatingType(NaN);
+    }
+
+    if(f1.isZero()){
+      return f1;
+    }else if(f2.isZero()){
+      return f2;
+    }
+
+    if(f1.isInfinity()){
+      return f1;
+    }else if(f2.isInfinity()){
+      return f2;
+    }
+
     f1.mantissa.unshift(true);
     f2.mantissa.unshift(true);
     let result = f1.clone();
@@ -402,14 +492,37 @@ class FloatingType{
 
     let f1 = this.clone();
     let f2 = n.clone();
+
+    //Special cases
+    if(f1.isNaN()){
+      return f1;
+    }else if(f2.isNaN()){
+      return f2;
+    }
+
+    if(f2.isInfinity() && f1.isInfinity()){
+      return new FloatingType(NaN);
+    }
+
+    if(f2.isZero()){
+      return new FloatingType(Infinity);
+    }
+
+    if(f1.isZero() ){
+      return f1;
+    }
+
+    if(f2.isInfinity()){
+      return new FloatingType(0);
+    }
+
+    if(f1.isInfinity()){
+      return f1;
+    }
+
     f1.mantissa.unshift(true);
     f2.mantissa.unshift(true);
     let result = f1.clone();
-
-    //if(f2.isZero() || f2.isNaN() || f2.isInfinity()){
-      //TODO UPDATE Those particulary cases
-      //return
-    //}
 
     //Step 1 - substraction of the exponent
     let exp = f1._exponentDecimal() - f2._exponentDecimal();
@@ -522,9 +635,24 @@ class FloatingType{
     let float = new FloatingType(1);
     return float.divBy(n);
   }
+
   toStr(){
     //TODO Supprimer - Fonction avec utilisation d'un type float pour tests
     //TODO ajout du signe
+
+    //Special cases
+    if(this.isNaN()){
+      return NaN;
+    }
+
+    if(this.isInfinity()){
+      return Infinity;
+    }
+
+    if(this.isZero()){
+      return 0;
+    }
+
     let exp = this._exponentDecimal();
     let length=this.mantissa.length;
     let result = 1; // valeur caché, compensation
@@ -544,8 +672,22 @@ class FloatingType{
     return result;
 
   }
+
   toString(){
-    //Code here with this to access Object property
+    //Special cases
+    if(this.isNaN()){
+      return NaN;
+    }
+
+    if(this.isInfinity()){
+      return Infinity;
+    }
+
+    if(this.isZero()){
+      return 0;
+    }
+
+    //Code here with "this" to access Object property
     let exp = this._exponentDecimal();
     let mant = this._mantissaDecimal();
 
@@ -647,7 +789,6 @@ function pi(){
   for(let n=0;n<infiniTest;++n){
     pi = pi.add(four.divBy(new FloatingType(8*n+1)).sub(FloatingType.oneBy(4*n+2)).sub(FloatingType.oneBy(8*n+5)).sub(FloatingType.oneBy(8*n+6)).mult(oneSixteen));
     oneSixteen = oneSixteen.mult(FloatingType.oneBy(16));
-    console.log(pi.toStr())
   }
   return pi;
 }
