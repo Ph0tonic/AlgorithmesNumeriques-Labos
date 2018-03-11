@@ -653,8 +653,6 @@ class FloatingType{
 
   toStr(){
     //TODO Supprimer - Fonction avec utilisation d'un type float pour tests
-    //TODO ajout du signe
-
     //Special cases
     if(this.isNaN()){
       return NaN;
@@ -707,12 +705,6 @@ class FloatingType{
     let mant = this._mantissaDecimal();
 
     //Affichage simplifiée
-    let signe  = (this.sign?'-':'+');
-
-    let result = signe;
-    result += mant;
-    result += "*2^"+exp+"\n";
-
     let calculated = mant;
     let pointPosition = 1;
     if(exp>=0){
@@ -743,8 +735,9 @@ class FloatingType{
     }
     calculated = calculated.slice(0, pointPosition) + '.' + calculated.slice(pointPosition);
 
-    result += " -> ";
-    result += signe;
+    //Affichage
+    let signe  = (this.sign?'-':'+');
+    let result = signe;
     result += calculated;
     return result;
   }
@@ -797,25 +790,41 @@ $(document).ready(function(){
 
     //Formulaire de binary to decimal
     let result = "";
-    result += '<td class="sign"><input id="s1" type="checkbox" disabled '+(float.signe?"checked":"")+'></td>';
+    result += '<td class="sign"><input class="input-binary" id="s1" type="checkbox" '+(float.sign?"checked":"")+'></td>';
 
     result += '<td class="exponent">';
     for(let i=0;i<float.e;++i){
-      result += '<input id="e'+i+'" type="checkbox" '+(float.exponent[i]?"checked":"")+' disabled >\t';
+      result += '<input class="input-binary" id="e'+i+'" type="checkbox" '+(float.exponent[i]?"checked":"")+'>\t';
     }
     result += '</td>';
-
 
     result += '<td class="mantissa">';
     for(let i=0;i<float.m;++i){
-      result += '<input id="e'+i+'" type="checkbox" '+(float.mantissa[i]?"checked":"")+' disabled >\t';
+      result += '<input class="input-binary" id="m'+i+'" type="checkbox" '+(float.mantissa[i]?"checked":"")+'>\t';
     }
     result += '</td>';
 
-    $('#result-binary').html(result);
-  })
+    $('#binary').html(result);
+  });
 
   $('#entry-decimal').trigger('input');
+
+  $('#binary').on('input', '.input-binary', function(){
+    //Getting entry data
+    let float = new FloatingType();
+    float.sign = $('#s1').is(':checked');
+
+    for(let i=0;i<float.e;i++){
+      float.exponent[i] = $('#e'+i).is(':checked');
+    }
+
+    for(let i=0;i<float.m;i++){
+      float.mantissa[i] = $('#m'+i).is(':checked');
+    }
+
+    $('#entry-decimal').val(float.toStr());
+  });
+
 
   //Actions des boutons bonus
   $('#btnAdd').on('click',function(){
