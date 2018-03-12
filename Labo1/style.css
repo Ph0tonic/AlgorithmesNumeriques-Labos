@@ -3,3 +3,7 @@ th, td {
    padding: 4px;
    border: 1px solid darkgrey;
 }
+
+a:after {
+    content: attr(href);
+}
