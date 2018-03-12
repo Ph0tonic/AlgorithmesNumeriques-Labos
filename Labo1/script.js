@@ -180,11 +180,15 @@ class FloatingType{
     return binary;
   }
 
+  _checkExponent(exponent){
+    // valide -> true
+    // overflow ou underflow -> false
+    return exponent<=this._dOffset() && exponent>=-this._dOffset()+1;
+  }
+
   _exponentToBinary(exponent){
     //Convert an exponent in Binary
-
     //TODO Adapt for subnormal number
-    //TODO Check for underflow and overflow
     exponent += this._dOffset();
 
     let binary = [];
@@ -378,6 +382,10 @@ class FloatingType{
 
       f.mantissa = binary.slice(0);
       f.mantissa.length = f.m;
+      if(!this._checkExponent(exp)){
+        //Overflow or Underflow -> Infinity
+        return new FloatingType(Infinity);
+      }
       f.exponent = f._exponentToBinary(exp);
 
     }else{
@@ -415,11 +423,12 @@ class FloatingType{
       f.mantissa = binary;
       f.mantissa.length = f.m;
 
+      if(!this._checkExponent(exp)){
+        //Overflow or Underflow -> Infinity
+        return new FloatingType(Infinity);
+      }
       f.exponent = f._exponentToBinary(exp);
     }
-
-    //Step 4 - Check overflow and underflow
-    //TODO
 
     f._cleanMantissa();
     return f;
@@ -521,6 +530,10 @@ class FloatingType{
     exp -= LogicOp.minimise(binary);
     binary.shift();
     result.mantissa = binary;
+    if(!this._checkExponent(exp)){
+      //Overflow or Underflow -> Infinity
+      return new FloatingType(Infinity);
+    }
     result.exponent = result._exponentToBinary(exp);
 
     //Step 4 - Round result
@@ -668,6 +681,11 @@ class FloatingType{
     exp -= LogicOp.minimise(binary);
     binary.shift();
     result.mantissa = binary;
+
+    if(!this._checkExponent(exp)){
+      //Overflow or Underflow -> Infinity
+      return new FloatingType(Infinity);
+    }
     result.exponent = result._exponentToBinary(exp);
 
     //Step 4 - Round result
