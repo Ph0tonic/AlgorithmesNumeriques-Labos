@@ -834,44 +834,46 @@ $(document).ready(function(){
   $("#pi").html(estimatedPi.toStr());
 
   $('#entry-decimal').on('input',function(){
-    let float = new FloatingType($('#entry-decimal').val());
+      let float = new FloatingType($('#entry-decimal').val());
 
-    //Formulaire de binary to decimal
-    let result = "";
-    result += '<td class="sign"><input class="input-binary" id="s1" type="checkbox" '+(float.sign?"checked":"")+'></td>';
+      //Formulaire de binary to decimal
+      let result = "";
+      result += '<td class="sign"><input class="input-binary" id="s1" type="checkbox" '+(float.sign?"checked":"")+'></td>';
 
-    result += '<td class="exponent">';
-    for(let i=0;i<float.e;++i){
-      result += '<input class="input-binary" id="e'+i+'" type="checkbox" '+(float.exponent[i]?"checked":"")+'>\t';
-    }
-    result += '</td>';
+      result += '<td class="exponent">';
+      for(let i=0;i<float.e;++i){
+        result += '<input class="input-binary" id="e'+i+'" type="checkbox" '+(float.exponent[i]?"checked":"")+'>\t';
+      }
+      result += '</td>';
 
-    result += '<td class="mantissa">';
-    for(let i=0;i<float.m;++i){
-      result += '<input class="input-binary" id="m'+i+'" type="checkbox" '+(float.mantissa[i]?"checked":"")+'>\t';
-    }
-    result += '</td>';
+      result += '<td class="mantissa">';
+      for(let i=0;i<float.m;++i){
+        result += '<input class="input-binary" id="m'+i+'" type="checkbox" '+(float.mantissa[i]?"checked":"")+'>\t';
+      }
+      result += '</td>';
 
-    $('#binary').html(result);
+      $('#binary').html(result);
   });
 
-  $('#entry-decimal').trigger('input');
+  setTimeout(function(){
+    $('#entry-decimal').trigger('input');
 
-  $('#binary').on('input', '.input-binary', function(){
-    //Getting entry data
-    let float = new FloatingType();
-    float.sign = $('#s1').is(':checked');
+    $('#binary').change('.input-binary', function(){
+      //Getting entry data
+      let float = new FloatingType();
+      float.sign = $('#s1').prop('checked');
 
-    for(let i=0;i<float.e;i++){
-      float.exponent[i] = $('#e'+i).is(':checked');
-    }
+      for(let i=0;i<float.e;i++){
+        float.exponent[i] = $('#e'+i).prop('checked');
+      }
 
-    for(let i=0;i<float.m;i++){
-      float.mantissa[i] = $('#m'+i).is(':checked');
-    }
+      for(let i=0;i<float.m;i++){
+        float.mantissa[i] = $('#m'+i).prop('checked');
+      }
 
-    $('#entry-decimal').val(float.toStr());
-  });
+      $('#entry-decimal').val(float.toStr());
+    });
+  }, 1);
 
 
   //Actions des boutons bonus
