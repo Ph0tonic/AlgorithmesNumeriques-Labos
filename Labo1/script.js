@@ -221,7 +221,6 @@ class FloatingType{
     //Step 2 - Whole number to Binary
     if(value.indexOf('e')>=0 && value.indexOf('.')<0){
       value = value.replace('e','.e');
-      console.log(value);
     }
 
     let parts = value.split('.');
@@ -654,7 +653,6 @@ class FloatingType{
             }
             temp[j+k] = !(temp[j+k] === true);
           }
-          //console.log("temp : "+temp);
         }
 
         //Remove the first element in all cases
