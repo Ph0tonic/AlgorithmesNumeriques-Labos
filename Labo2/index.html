@@ -22,24 +22,32 @@
       </ul>
     </div>
     <form id="form">
-      <label for="eq">Enter an equation:</label>
+      <label for="eq">Entrer une équation:</label>
       <input type="text" id="eq" value="4 * sin(x) + 5 * cos(x/2)" />
       <input type="submit" value="Draw" />
     </form>
+    <div>
+      <input type="submit" value="Next Step" id="next" />
+      <input type="submit" value="Previous Step" id="previous" />
+    </div>
     <div>
       <div id="canvas"></div>
     </div>
     <hr>
     <div>
       <h2>Contextualisation</h2>
+      <p>TODO</p>
       <h2>Méthodologie de développement</h2>
+      <p>TODO</p>
       <h2>Conclusion et perspective</h2>
+      <p>TODO</p>
     </div>
 		<hr>
 		<footer>
 			<h2>Sources</h2>
 			<ul>
 				<li><a href="https://blog.sicara.com/compare-best-javascript-chart-libraries-2017-89fbe8cb112d"></a></li>
+        <li><a href="https://mauriciopoppe.github.io/function-plot/"></a></li>
 			</ul>
 		</footer>
 	<div/>
@@ -52,7 +60,7 @@
 
   <!-- load http://maurizzzio.github.io/function-plot/ -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="https://wzrd.in/standalone/function-plot@1.14.0"></script>
+  <script src="https://wzrd.in/standalone/function-plot@1.18.1"></script>
 
   <!-- Main script -->
   <script src="script.js"></script>
