@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<header>
+  <meta charset="utf-8">
+  <title>Labo 2 - Algo num</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <!-- Main css -->
+  <link rel="stylesheet" href="style.css" >
+</header>
+<body>
+  <div class="container">﻿
+    <div class="page-header">
+      <h1>Labo 2 - Algo num</h1>
+      <p>Groupe n° 1 , auteurs:</p>
+      <ul>
+        <li>Raphael Margueron</li>
+        <li>Damian Petroff</li>
+        <li>Bastien Wermeille</li>
+      </ul>
+    </div>
+    <form id="form">
+      <label for="eq">Enter an equation:</label>
+      <input type="text" id="eq" value="4 * sin(x) + 5 * cos(x/2)" />
+      <input type="submit" value="Draw" />
+    </form>
+    <div>
+      <div id="canvas"></div>
+    </div>
+    <hr>
+    <div>
+      <h2>Contextualisation</h2>
+      <h2>Méthodologie de développement</h2>
+      <h2>Conclusion et perspective</h2>
+    </div>
+		<hr>
+		<footer>
+			<h2>Sources</h2>
+			<ul>
+				<li><a href="https://blog.sicara.com/compare-best-javascript-chart-libraries-2017-89fbe8cb112d"></a></li>
+			</ul>
+		</footer>
+	<div/>
+	<!-- Latest compiled and minified JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- Math equation parsing -->
+  <!--<script src="https://unpkg.com/mathjs@4.0.0/dist/math.min.js"></script>-->
+  <script src="math.min.js"></script>
+
+  <!-- load http://maurizzzio.github.io/function-plot/ -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="https://wzrd.in/standalone/function-plot@1.14.0"></script>
+
+  <!-- Main script -->
+  <script src="script.js"></script>
+</body>
+</html>
