@@ -7,33 +7,36 @@ class Plot{
       target: '#'+this.divId,
       width: 800,
       height: 500,
-      data: [],
+      data: [{
+        fn: '',
+        sampler: 'builtIn',  // this will make function-plot use the evaluator of math.js
+        graphType: 'polyline'
+      }],
       plugins: [
         functionPlot.plugins.zoomBox()
       ]
     };
   }
 
-  addAlgorithme(algorithme){
+  setAlgorithme(algorithme){
     this.algorithme = algorithme;
+    this._reset();
   }
 
-  reset(){
-
+  _reset(){
+    //TODO
+    this.step = 0;
+    //Ne pas vider data pour éviter des problèmes d'affichage
   }
 
   draw(){
     if(this.function != document.getElementById('eq').value){
-      this.reset();
+      this._reset();
       this.algorithme.reset();
     }
 
     this.function = document.getElementById('eq').value;
-    this.options.data[0] = {
-      fn: this.function,
-      sampler: 'builtIn',  // this will make function-plot use the evaluator of math.js
-      graphType: 'polyline'
-    };
+    this.options.data[0].fn = this.function;
 
     let functions = this.algorithme.draw();
     for(let i=1;i<Math.max(this.options.data.length,functions.length+1);i++){
@@ -63,16 +66,12 @@ class Plot{
 
   getX1(){
     //TODO add parametrized starting point
-    return -1;
+    return 2;
   }
 
   getX2(){
     //TODO add parametrized second point -> for Dichotomie only
     return 3;
-  }
-
-  addLine(data){
-
   }
 
   //Methode to implement
@@ -88,11 +87,12 @@ class Plot{
 }
 
 class Algorithme{
-  constructor(plot){
+  constructor(plot, resultArea){
     if (this.constructor === Algorithme) {
       throw new Error("Can't instantiate abstract class!");
     }
     this.plot = plot;
+    this.resultArea = resultArea;
     this.data = [];
     this.step = 0;
   }
@@ -115,6 +115,10 @@ class Algorithme{
     throw new Error("Not implemented");
   }
 
+  _displayResult(content){
+    this.resultArea.html(content);
+  }
+
   previousStep(){
     if(this.step > 0){
       this.step--;
@@ -123,12 +127,13 @@ class Algorithme{
 }
 
 class Dichotomy extends Algorithme{
-  constructor(plot){
-    super(plot);
+  constructor(plot, resultArea){
+    super(plot, resultArea);
     this.x1 = this.plot.getX1();
     this.x2 = this.plot.getX2();
     this.zeroFounded = false;
     if(this._evaluateBorneSigneEqual()){
+      this._displayResult('<div class="alert alert-danger" role="alert">Erreur, valeurs de la fonction aux bornes du même signes!</div>')
       console.log("Erreur, bornes du même signes");
     }
   }
@@ -138,6 +143,7 @@ class Dichotomy extends Algorithme{
     if(this.step > this.data.length && !this.zeroFounded){
       //Calcul de la prochaine étape et ajout de celle-ci dans le tableau data
       if(this._evaluateBorneSigneEqual()){
+        this._displayResult('<div class="alert alert-danger" role="alert">Erreur, valeurs de la fonction aux bornes du même signes!</div>')
         console.log("Erreur, bornes du même signes");
       }else{
         let middle = (this.x1 + this.x2)/2;
@@ -183,14 +189,15 @@ class Dichotomy extends Algorithme{
 }
 
 class Tangent extends Algorithme{
-  constructor(plot){
-    super(plot);
+  constructor(plot, resultArea){
+    super(plot, resultArea);
     this.x = this.plot.getX1();
     this.zeroFounded = false;
     try {
       this._derivative(this.x);
     }catch(err){
       console.log("Erreur, dérivée de la fonction = 0");
+      this._displayResult('<div class="alert alert-danger" role="alert">Erreur, dérivé de la fonction = 0!</div>');
     }
   }
 
@@ -215,6 +222,7 @@ class Tangent extends Algorithme{
         }
       }catch(err){
         console.log("Erreur, dérivée de la fonction = 0");
+        this._displayResult('<div class="alert alert-danger" role="alert">Erreur, dérivé de la fonction = 0!</div>');
       }
     }
   }
@@ -254,8 +262,8 @@ class Tangent extends Algorithme{
 }
 
 class FixedPoint extends Algorithme{
-  constructor(plot){
-    super(plot);
+  constructor(plot, resultArea){
+    super(plot, resultArea);
     this.lambda = 1;
     this.gOfX = this.lambda+"*"+plot.getFunction()+"+ x";
     this.x = plot.getX1();
@@ -326,7 +334,7 @@ class FixedPoint extends Algorithme{
         color: 'red'
       });
     }
-    //retourner la fonction a*f(x)+x
+    console.log(functions);
     return functions;
   }
 }
@@ -366,16 +374,13 @@ function draw() {
 */
 
 let plot = new Plot('canvas');
-//let methode = new Dichotomy(plot);
-//let methode = new Tangent(plot);
-let methode = new FixedPoint(plot);
-plot.addAlgorithme(methode);
 
 $(document).ready(function(){
-  $("#nbIteration").slider();
+  //Sliders
+  /*$("#nbIteration").slider();
   $("#nbIteration").on("slide", function(slideEvt) {
   	$("#nbIterationSliderVal").text(slideEvt.value);
-  });
+  });*/
 
   $('#form').on('submit', function (event) {
     event.preventDefault();
@@ -390,5 +395,24 @@ $(document).ready(function(){
     plot.previousStep();
   });
 
-  plot.draw();
+  $('#method input').on('change', function() {
+    let resultArea = $('#result');
+    let method = null;
+     switch($('input[name=methodOption]:checked', '#method').val()){
+       case 'dichotomy':
+         method = new Dichotomy(plot, resultArea);
+         break;
+       case 'tangent':
+         method = new Tangent(plot, resultArea);
+         break;
+       case 'fixedPoint':
+         method = new FixedPoint(plot, resultArea);
+         break;
+     }
+     plot.setAlgorithme(method);
+     plot.draw();
+  });
+
+  //Provoque le déclenchement de l'affichage du graphe
+  $('#method input').trigger('change');
 })

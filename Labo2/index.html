@@ -23,22 +23,46 @@
         <li>Bastien Wermeille</li>
       </ul>
     </div>
-    <form id="form">
-      <label for="eq">f(x) = </label>
-      <input type="text" id="eq" value="x / (1 - x^2 )" />
-      <input class="btn btn-primary" type="submit" value="Draw" />
-    </form>
-    <form id="form">
-      <label for="eq">Itérations = </label>
-      <input id="nbIteration" type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="0"/>
-      <span id="nbIterationCurrentSliderValLabel">Current Slider Value: <span id="nbIterationSliderVal">0</span></span>
-    </form>
-    <div>
-      <input class="btn btn-default" type="submit" value="Previous Step" id="previous" />
-      <input class="btn btn-default" type="submit" value="Next Step" id="next" />
-    </div>
-    <div>
-      <div id="canvas"></div>
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <form id="form">
+          <label for="eq">f(x) = </label>
+          <input type="text" id="eq" value="x / (1 - x^2 )" />
+          <input class="btn btn-primary" type="submit" value="Draw" />
+        </form>
+        <form>
+          <label for="eq">Itérations = </label>
+          <!--<input id="nbIteration" type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="0"/>
+          <span id="nbIterationCurrentSliderValLabel">Current Slider Value: <span id="nbIterationSliderVal">0</span></span>-->
+        </form>
+        <div>
+          <input class="btn btn-default" type="submit" value="Previous Step" id="previous" />
+          <input class="btn btn-default" type="submit" value="Next Step" id="next" />
+        </div>
+        <hr>
+        <form id="method">
+          <div class="form-check form-check-inline checkbox-inline">
+            <input class="form-check-input" type="radio" name="methodOption" id="method1" value="dichotomy" checked>
+            <label class="form-check-label" for="method1">Dichotomie</label>
+          </div>
+          <div class="form-check form-check-inline checkbox-inline">
+            <input class="form-check-input" type="radio" name="methodOption" id="method2" value="tangent">
+            <label class="form-check-label" for="method2">Tangente</label>
+          </div>
+          <div class="form-check form-check-inline checkbox-inline">
+            <input class="form-check-input" type="radio" name="methodOption" id="method3" value="fixedPoint">
+            <label class="form-check-label" for="method3">Point fixe</label>
+          </div>
+        </form>
+        <hr>
+        <div>
+          <h3>Resultats</h3>
+          <div id="result"></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <div id="canvas"></div>
+      </div>
     </div>
     <hr>
     <div>
@@ -49,18 +73,18 @@
       <h2>Conclusion et perspective</h2>
       <p>TODO</p>
     </div>
-		<hr>
-		<footer>
-			<h2>Sources</h2>
-			<ul>
-				<li><a href="https://blog.sicara.com/compare-best-javascript-chart-libraries-2017-89fbe8cb112d"></a></li>
+  	<hr>
+  	<footer>
+  		<h2>Sources</h2>
+  		<ul>
+  			<li><a href="https://blog.sicara.com/compare-best-javascript-chart-libraries-2017-89fbe8cb112d"></a></li>
         <li><a href="https://mauriciopoppe.github.io/function-plot/"></a></li>
         <li><a href="https://github.com/mauriciopoppe/function-plot"></a></li>
         <li><a href="http://mathjs.org/examples/browser/plot.html"></a></li>
         <li><a href="http://seiyria.com/bootstrap-slider/"></a></li>
-			</ul>
-		</footer>
-	<div/>
+  	   </ul>
+     </footer>
+   </div>
 	<!-- Latest compiled and minified JavaScript -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
