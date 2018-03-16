@@ -7,7 +7,10 @@ class Plot{
       target: '#'+this.divId,
       width: 800,
       height: 500,
-      data: []
+      data: [],
+      plugins: [
+        functionPlot.plugins.zoomBox()
+      ]
     };
   }
 
@@ -60,7 +63,7 @@ class Plot{
 
   getX1(){
     //TODO add parametrized starting point
-    return -7;
+    return 2;
   }
 
   getX2(){
@@ -119,7 +122,7 @@ class Algorithme{
   }
 }
 
-class Dichotomie extends Algorithme{
+class Dichotomy extends Algorithme{
   constructor(plot){
     super(plot);
     this.x1 = this.plot.getX1();
@@ -159,7 +162,7 @@ class Dichotomie extends Algorithme{
     let data = this.getData();
     if(data.length==1){
       //Requirement of function-plot, mimimum 2 couple of values
-      data.push(data[0]);
+      //data.push(data[0]);
     }
     return [{
         points: data,
@@ -179,15 +182,15 @@ class Dichotomie extends Algorithme{
   }
 }
 
-class Tangente extends Algorithme{
+class Tangent extends Algorithme{
   constructor(plot){
     super(plot);
-    this.x1 = this.plot.getX1();
+    this.x = this.plot.getX1();
     this.zeroFounded = false;
     try {
-      this._derivative(this.x1);
+      this._derivative(this.x);
     }catch(err){
-      console.log("Erreur, dérivée de la fonction == 0");
+      console.log("Erreur, dérivée de la fonction = 0");
     }
   }
 
@@ -197,17 +200,17 @@ class Tangente extends Algorithme{
       //Calcul de la prochaine étape et ajout de celle-ci dans le tableau data
       try {
         //Calcul du nouveau x -> ax+b=0 avec a=derivative et b=y(x)
-        let a = this._derivative(this.x1);
-        let y = this.plot.getValue(this.x1);
-        let b = y - a*this.x1;
+        let a = this._derivative(this.x);
+        let y = this.plot.getValue(this.x);
+        let b = y - a*this.x;
         let x = -b/a;
         let func = a+' * x + '+ b;
 
-        this.data.push([func,this.x1,y]);
-        this.x1 = x;
+        this.data.push([func,this.x,y]);
+        this.x = x;
 
         //TODO update to test with Epsilon
-        if(this.plot.getValue(this.x1) == 0){
+        if(this.plot.getValue(this.x) == 0){
           this.zeroFounded = true;
         }
       }catch(err){
@@ -219,17 +222,23 @@ class Tangente extends Algorithme{
   draw(){
     let data = this.getData();
     let graph = [];
-    data.forEach(function(element) {
+    let color = 'grey';
+    data.forEach(function(element, index) {
+      if(data.length <= index+1){
+        color = 'red';
+      }
+      console.log(element);
       graph.push({
         fn: element[0],
         sampler: 'builtIn',  // this will make function-plot use the evaluator of math.js
         graphType: 'polyline',
-        color: 'red'
+        color: color
       },{
         vector: [0, element[2]],
         offset: [element[1], 0],
         graphType: 'polyline',
-        fnType: 'vector'
+        fnType: 'vector',
+        color: color
       });
     });
     return graph;
@@ -242,24 +251,88 @@ class Tangente extends Algorithme{
     }
     return value;
   }
-
 }
 
-class PointFixe extends Algorithme{
+class FixedPoint extends Algorithme{
   constructor(plot){
     super(plot);
+    this.lambda = 1;
+    this.gOfX = this.lambda+"*"+plot.getFunction()+"+ x";
+    this.x = plot.getX1();
+    this.step = 0;
+    this.verif = false;
   }
 
   nextStep(){
-    //TODO
+    let savedX = this.x;
+    this.step++;
+    for(let i=0;i<Math.max(this.step,4);i++){ //Calcul of the four first elements
+      if(this.step < 5 || this.step > this.data.length && !this.zeroFounded){
+        //Calcul de la prochaine étape et ajout de celle-ci dans le tableau data
+        let xi = this._evalG(this.x);
+        this.data.push([this.x,xi]);
+        this.x = xi;
+      }
+    }
+
+    if(this.verif === false && Math.abs(this.data[1][0]-this.data[1][1])<Math.abs(this.data[3][0]-this.data[3][1])){
+      this.step = 0;
+      this.lambda *= -1;
+      this.data = [];
+      this.gOfX = this.lambda+"*"+plot.getFunction()+" + x";
+      this.x = savedX;
+      this.verif = true;
+      this.nextStep();
+      this.verif = false;
+    }
+  }
+
+  _evalG(x){
+    return math.eval(this.gOfX, {'x':x});
   }
 
   draw(){
-    //TODO
+    let data = this.getData();
+
+    let functions = [{
+      fn: 'x',
+      sampler: 'builtIn',
+      graphType: 'polyline'
+    },{
+      fn: this.gOfX,
+      sampler: 'builtIn',
+      graphType: 'polyline'
+    }];
+
+    let vectors = [];
+    for(let i=0;i<data.length;i++){
+      let offset = 0;
+      if(i>0){
+        offset = data[i][0];
+        //Ajout 'une ligne supplémentaire'
+        functions.push({
+          vector: [data[i][0]-data[i-1][0], 0],
+          offset: [data[i-1][0], data[i][0]],
+          graphType: 'polyline',
+          fnType: 'vector',
+          color: 'red'
+        });
+      }
+      functions.push({
+        vector: [0, data[i][1]-offset],
+        offset: [data[i][0], offset],
+        graphType: 'polyline',
+        fnType: 'vector',
+        color: 'red'
+      });
+    }
+    //retourner la fonction a*f(x)+x
+    return functions;
   }
 }
 
-/*function draw() {
+/*
+function draw() {
   /*try {
     functionPlot({
       target: '#canvas',
@@ -289,11 +362,13 @@ class PointFixe extends Algorithme{
     console.log(err);
     alert(err);
   }
-}*/
+}
+*/
 
 let plot = new Plot('canvas');
-//let methode = new Dichotomie(plot);
-let methode = new Tangente(plot);
+//let methode = new Dichotomy(plot);
+//let methode = new Tangent(plot);
+let methode = new FixedPoint(plot);
 plot.addAlgorithme(methode);
 
 $(document).ready(function(){
