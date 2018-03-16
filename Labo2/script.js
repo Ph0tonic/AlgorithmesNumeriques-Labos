@@ -63,12 +63,12 @@ class Plot{
 
   getX1(){
     //TODO add parametrized starting point
-    return 2;
+    return -1;
   }
 
   getX2(){
     //TODO add parametrized second point -> for Dichotomie only
-    return -1;
+    return 3;
   }
 
   addLine(data){
@@ -142,7 +142,7 @@ class Dichotomy extends Algorithme{
       }else{
         let middle = (this.x1 + this.x2)/2;
         let value = this.plot.getValue(middle);
-        if(Dichotomie._sameSign(this.plot.getValue(this.x1), value)){
+        if(Dichotomy._sameSign(this.plot.getValue(this.x1), value)){
           this.x1 = middle;
         }else{
           this.x2 = middle;
@@ -174,7 +174,7 @@ class Dichotomy extends Algorithme{
   }
 
   _evaluateBorneSigneEqual(){
-    return Dichotomie._sameSign(this.plot.getValue(this.x1), this.plot.getValue(this.x2));
+    return Dichotomy._sameSign(this.plot.getValue(this.x1), this.plot.getValue(this.x2));
   }
 
   static _sameSign(x1, x2){
@@ -372,6 +372,11 @@ let methode = new FixedPoint(plot);
 plot.addAlgorithme(methode);
 
 $(document).ready(function(){
+  $("#nbIteration").slider();
+  $("#nbIteration").on("slide", function(slideEvt) {
+  	$("#nbIterationSliderVal").text(slideEvt.value);
+  });
+
   $('#form').on('submit', function (event) {
     event.preventDefault();
     plot.draw();
