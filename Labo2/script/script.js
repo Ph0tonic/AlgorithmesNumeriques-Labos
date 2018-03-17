@@ -414,6 +414,29 @@ function draw() {
   }
 }*/
 
+//I think it's a good idea to show him that we understand his derivate approximation -rma
+/*
+// /!\Pseudo code I'll test it another day -rma
+function pente(point, delta)
+{
+	let point2 = point - delta;
+	let numerator = f(point) - f(point2);
+	let denominator = delta; // = point - point2 = point - (point - delta) = delta
+	let pente = numerator / denominator;
+	return pente;
+}
+
+function approximateDerivative(point, delta)
+{
+	...
+	
+}
+
+function evaluateF(x)
+{
+	return f(x);
+}
+*/
 
 let plot = new Plot('canvas');
 
