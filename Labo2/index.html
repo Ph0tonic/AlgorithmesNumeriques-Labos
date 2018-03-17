@@ -15,8 +15,9 @@
 <body>
   <div class="container">﻿
     <div class="page-header">
-      <h1>Labo 2 - Algo num</h1>
-      <p>Groupe n° 1 , auteurs:</p>
+      <h1>2231.3 - Algorithme numérique : Laboratoire n°2</h1>
+	  <i>Groupe B1</i>
+      <p>Auteurs :</p>
       <ul>
         <li>Raphael Margueron</li>
         <li>Damian Petroff</li>
@@ -77,10 +78,11 @@
     </div>
     <hr>
     <div>
-		<span style='color:red'>TODO : grammar/meaning check</span>
+	  <h1>Rapport</h1>
+		<h2><span style='color:red'>TODO : grammar/meaning check</span></h2>
       <h2>Contextualisation</h2>
       <p>
-		Dans le cadre du deuxième laboratoire d'algorithme numérique, il nous a été demander de réaliser un algorithme javascript pour pouvoir trouvé les racines des fonctions suivante :
+		Dans le cadre du deuxième laboratoire d'algorithme numérique (Haute-École Arc : <a href='https://www.he-arc.ch/sites/www.he-arc.ch/files/Reglements/04%20Formation%20de%20base/43%20Ing%C3%A9nierie/430.100%20Descriptifs%20de%20modules%20Informatique/RS430.100.17.2231%20Sciences%20II%20dlm.pdf'>Module 2231.3</a>), il nous a été demander de réaliser un algorithme JavaScript pour pouvoir trouvé les racines des fonctions suivante :
 	  </p>
 	  <i>
 		  <ul>
@@ -96,28 +98,57 @@
 		<ul>
 			<li>Dichotomie : Calculer l'erreur de l'algorithme</li>
 			<li>Pente (Newton) : Si le X<sub>0</sub> choisi ne permet pas de converger vers une valeur, l'algorithme nous demandera d'augementer ou de baisser la valeur du X<sub>0</sub></li>
-			<li>Point fixe : Ajuster la valeur de lamba dynamiquement pour trouvé une solution</li>
+			<li>Point fixe : Ajuster la valeur de lamba dynamiquement pour trouver une solution</li>
 		</ul>
 	  </p>
       <h2>Méthodologie de développement</h2>
+	  <h3>Affichage des fonctions</h3>
 	  <p>
-		
+		Nous avons tout d'abords rechecher une bibliothèque pour "parser" et afficher des fonctions. Nous avons donc utilisé <a href='https://github.com/mauriciopoppe/function-plot'>function-plot de Mauriciopoppe</a> qui réponds à nos attentes. Une fois son fonctionnement compris nous avons en entamé le développement des algorithmes.
 	  </p>
-      <h3>Dichotomie</h3>
-	  <h3>Pente (Newton)</h3>
-	  <h3>Point fixe</h3>
-      <h2>Conclusion et perspective</h2>
-      <p>TODO</p>
+	  <h3>Les algorithmes</h3>
+	  <p>
+	    La référence pour les algorithmes utilisé actuellement est rien d'autre (sauf mentions contraire) que le cours de Monsieur Stéphane Gobron, notre professeur. Voici la référence de son cours pour notre école sur son site internet.
+		<a href='http://www.stephane-gobron.net/Core/Courses/3_HE-Arc/NumericalAlgorithms/BSc2_AlgorithmesNumeriques_Chap2_v1-6-0.pdf'>
+		Cours (lien du 17.03.2018)</a>
+	  </p>
+      <h3>Structure du code</h3>
+	  <p>
+		Afin de pouvoir intégrer n'importe quel algorithme à notre solution. Nous avons opté sur un développement orienté objet utilisant l'héritage. Nous avons donc deux class principal : Plot et Algorithm (classe abstraite). Puis pour chacun des algorithmes nous avons créé une classe dérivée de la classe Algorithm. Chacune des classes dérivés doit ensuite implémenter la fonction draw() et nextStep(). La class Plot, comme son nom l'indique, permet de gérer l'affichage du graphique mais aussi de gérer les 'pas' de l'algorithme.
+	  </p>
+	  <p>
+		Avec cette structure de code, il nous est très facile d'ajouter d'autre algorithme et également de modifier leurs comportements.
+	  </p>
+      <h3>Dichotomie (classe Dichotomy)</h3>
+	  <p>
+		Pour cette classe, nous avons besoin de deux inputs, la borne inférieur et supérieur.
+	  </p>
+	  <p>
+	    Puis nous avons codé l'algorithme qui était exprimé sous forme de pseudocode dans le cours (Page 12)
+	  </p>
+	  <h3>Methode de la tangante, aussi appelé méthode de la pente ou méthode de Newton (classe Tangent)</h3>
+	  <p>
+		Pour cette classe, nous n’avons eu que besoin "d'un point de départ" duquel l'algorithme va commencer à essayer de converger vers la racine.
+	  </p>
+	  <p>
+		Nous avions normalement à implémenter une fonction d'approximation de la dérivée d'une fonction en un point (droite tangente). Elle est basé sur la définition de la dérivé, où nous choisissons un "h" (aussi appelé delta ou k) très faible puis selon le principe des approximations linéaire trouvé la valeur de la dérivé.
+	  </p>
+	  <p>
+		Mais alliant très bien compris comment implémenté une tel fonction ajouté au fait que nous trouvé une bibliothèque qui permet de trouvé la dérivé analytique d'une fonction. Nous avons choisi simplement d'évaluer la dérivée analytique au lieu d'utiliser une telle approximation.
+	  </p>
+	  <h3>Point fixe (classe FixedPoint)</h3>
+	  <span style='color:red;'>TODO</span>
+      <h2>Conclusion et perspective <span style='color:red;'>TODO</span></h2>
     </div>
   	<hr>
   	<footer>
-  		<h2>Sources</h2>
+  		<h2>Références de développement</h2>
   		<ul>
-  			<li><a href="https://blog.sicara.com/compare-best-javascript-chart-libraries-2017-89fbe8cb112d"></a></li>
-        <li><a href="https://mauriciopoppe.github.io/function-plot/"></a></li>
-        <li><a href="https://github.com/mauriciopoppe/function-plot"></a></li>
-        <li><a href="http://mathjs.org/examples/browser/plot.html"></a></li>
-        <li><a href="http://seiyria.com/bootstrap-slider/"></a></li>
+			<li><a class='l' href="https://blog.sicara.com/compare-best-javascript-chart-libraries-2017-89fbe8cb112d"></a></li>
+			<li><a class='l' href="https://mauriciopoppe.github.io/function-plot/"></a></li>
+			<li><a class='l' href="https://github.com/mauriciopoppe/function-plot"></a></li>
+			<li><a class='l' href="http://mathjs.org/examples/browser/plot.html"></a></li>
+			<li><a class='l' href="http://seiyria.com/bootstrap-slider/"></a></li>
   	   </ul>
      </footer>
    </div>

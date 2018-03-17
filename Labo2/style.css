@@ -1,4 +1,4 @@
 
-a:after {
+.l:after {
     content: attr(href);
 }
