@@ -10,12 +10,14 @@ class Plot{
       data: [{
         fn: '',
         sampler: 'builtIn',  // this will make function-plot use the evaluator of math.js
-        graphType: 'polyline'
+        graphType: 'polyline',
+        title: 'f(x)'
       }],
       plugins: [
         functionPlot.plugins.zoomBox()
       ]
     };
+    this.instance = functionPlot(this.options);
   }
 
   setAlgorithme(algorithme){
@@ -30,6 +32,12 @@ class Plot{
     //Ne pas vider data pour éviter des problèmes d'affichage
   }
 
+  redraw(){
+    this._reset();
+    this.syncOptions();
+    this.draw();
+  }
+
   draw(){
     if(this.function != document.getElementById('eq').value){
       this._reset();
@@ -37,21 +45,13 @@ class Plot{
     }
 
     this.function = document.getElementById('eq').value;
+    this.options.data = this.options.data.slice(0,1);
     this.options.data[0].fn = this.function;
-
     let functions = this.algorithme.draw();
-    for(let i=1;i<Math.max(this.options.data.length,functions.length+1);i++){
-        if(functions.length>i-1){
-          this.options.data[i] = functions[i-1];
-        }else if(this.options.data[i].fnType === 'points'){   // Workaround because of some problem in librairie when number of functions has changed when updating
-          this.options.data[i].points = [];
-        }else if(this.options.data[i].fnType === 'vector'){
-          this.options.data[i].vector = [];
-        }else{
-          this.options.data[i].fn = "";
-        }
-    }
-    functionPlot(this.options);
+    this.options.data = this.options.data.concat(functions);
+
+    $('g .content').html('');
+    this.instance.draw();
   }
 
   getFunction(){
@@ -345,11 +345,13 @@ class FixedPoint extends Algorithme{
     let functions = [{
       fn: 'x',
       sampler: 'builtIn',
-      graphType: 'polyline'
+      graphType: 'polyline',
+      title: 'x'
     },{
       fn: this.gOfX,
       sampler: 'builtIn',
-      graphType: 'polyline'
+      graphType: 'polyline',
+      title: 'g(x)'
     }];
 
     let vectors = [];
@@ -381,7 +383,7 @@ class FixedPoint extends Algorithme{
 
 /*
 function draw() {
-  /*try {
+  try {
     functionPlot({
       target: '#canvas',
       data: [{
@@ -410,8 +412,8 @@ function draw() {
     console.log(err);
     alert(err);
   }
-}
-*/
+}*/
+
 
 let plot = new Plot('canvas');
 
@@ -434,6 +436,16 @@ $(document).ready(function(){
   $('#previous').on('click', function () {
     plot.previousStep();
   });
+
+  $('#x2Group').on('input', function(){
+    if($('input[name=methodOption]:checked', '#method').val() == 'dichotomy'){
+      plot.redraw();
+    }
+  })
+
+  $('#x1Group').on('input', function(){
+    plot.redraw();
+  })
 
   $('#method input').on('change', function() {
     let resultArea = $('#result');

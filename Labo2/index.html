@@ -24,14 +24,14 @@
       </ul>
     </div>
     <div class="row">
-      <div class="col-md-6 col-sm-12">
+      <div class="col-md-3 col-sm-12">
         <form id="form">
           <label for="eq">f(x) = </label>
           <input type="text" id="eq" value="x / (1 - x^2 )" />
           <input class="btn btn-primary" type="submit" value="Draw" />
         </form>
         <form>
-          <label for="eq">Itérations = </label>
+          <label for="eq">Itérations = <span id="nbIteration"></span></label>
           <!--<input id="nbIteration" type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="0"/>
           <span id="nbIterationCurrentSliderValLabel">Current Slider Value: <span id="nbIterationSliderVal">0</span></span>-->
         </form>
@@ -41,20 +41,20 @@
         </div>
         <hr>
         <form id="method">
-          <div class="form-check form-check-inline checkbox-inline">
+          <div class="form-check">
             <input class="form-check-input" type="radio" name="methodOption" id="method1" value="dichotomy" checked>
             <label class="form-check-label" for="method1">Dichotomie</label>
           </div>
-          <div class="form-check form-check-inline checkbox-inline">
+          <div class="form-check">
             <input class="form-check-input" type="radio" name="methodOption" id="method2" value="tangent">
             <label class="form-check-label" for="method2">Tangente</label>
           </div>
-          <div class="form-check form-check-inline checkbox-inline">
+          <div class="form-check">
             <input class="form-check-input" type="radio" name="methodOption" id="method3" value="fixedPoint">
             <label class="form-check-label" for="method3">Point fixe</label>
           </div>
         </form>
-        <form id="startPoint"  class="form-inline">
+        <form id="startPoint">
           <div class="form-group" id="x1Group">
             <label for="formGroupExampleInput2">X1</label>
             <input type="text" class="form-control" id="x1" placeholder="X1" value="2">
@@ -64,14 +64,15 @@
             <input type="text" class="form-control" id="x2" placeholder="X2" value="-1">
           </div>
         </form>
-        <hr>
+      </div>
+      <div class="col-md-9 col-sm-12">
+        <div id="canvas"></div>
+      </div>
+      <div class="col-md-12 col-sm-12">
         <div>
           <h3>Resultats</h3>
           <div id="result"></div>
         </div>
-      </div>
-      <div class="col-md-6 col-sm-12">
-        <div id="canvas"></div>
       </div>
     </div>
     <hr>
@@ -95,6 +96,7 @@
   	   </ul>
      </footer>
    </div>
+
 	<!-- Latest compiled and minified JavaScript -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -104,7 +106,7 @@
 
   <!-- load http://maurizzzio.github.io/function-plot/ -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="https://wzrd.in/standalone/function-plot@1.18.1"></script>
+  <script src="script/function-plot@1.18.1.js"></script>
 
   <!-- Load bootstrap slider -->
   <script src="script/bootstrap-slider.min.js"></script>
