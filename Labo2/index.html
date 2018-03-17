@@ -54,6 +54,16 @@
             <label class="form-check-label" for="method3">Point fixe</label>
           </div>
         </form>
+        <form id="startPoint"  class="form-inline">
+          <div class="form-group" id="x1Group">
+            <label for="formGroupExampleInput2">X1</label>
+            <input type="text" class="form-control" id="x1" placeholder="X1" value="2">
+          </div>
+          <div class="form-group" id="x2Group">
+            <label for="formGroupExampleInput2">X2</label>
+            <input type="text" class="form-control" id="x2" placeholder="X2" value="-1">
+          </div>
+        </form>
         <hr>
         <div>
           <h3>Resultats</h3>
@@ -90,17 +100,16 @@
 
   <!-- Math equation parsing -->
   <!--<script src="https://unpkg.com/mathjs@4.0.0/dist/math.min.js"></script>-->
-  <script src="math.min.js"></script>
+  <script src="script/math.min.js"></script>
 
   <!-- load http://maurizzzio.github.io/function-plot/ -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script src="https://wzrd.in/standalone/function-plot@1.18.1"></script>
 
   <!-- Load bootstrap slider -->
-  <script src="bootstrap-slider.min.js"></script>
-
+  <script src="script/bootstrap-slider.min.js"></script>
 
   <!-- Main script -->
-  <script src="script.js"></script>
+  <script src="script/script.js"></script>
 </body>
 </html>

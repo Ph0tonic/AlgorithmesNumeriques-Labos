@@ -26,6 +26,7 @@ class Plot{
   _reset(){
     //TODO
     this.step = 0;
+    $('#result').html('');
     //Ne pas vider data pour éviter des problèmes d'affichage
   }
 
@@ -65,13 +66,11 @@ class Plot{
   }
 
   getX1(){
-    //TODO add parametrized starting point
-    return 2;
+    return parseInt($('#x1').val());
   }
 
   getX2(){
-    //TODO add parametrized second point -> for Dichotomie only
-    return 3;
+    return parseInt($('#x2').val());
   }
 
   //Methode to implement
@@ -106,6 +105,45 @@ class Algorithme{
     return this.data.slice(0,this.step);
   }
 
+  _displayResult(content){
+    if(!Array.isArray(content)){
+      this.resultArea.html(content);
+    }else{
+      let tableResults = `<table class="table table-hover"><thead><tr><th>Itération</th><th>x</th><th>f(x)</th></tr></thead><tbody>`;
+      let i=0;
+      tableResults = tableResults.concat(content.map((d)=>{return '<tr><td><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>x</mi><mn>'+(i++)+'</mn></msub></math></td><td>'+d.join('</td><td>')+'</td></tr>'}).join(''));
+      tableResults = tableResults.concat(`</tbody></table>`);
+      this.resultArea.html(tableResults);
+      console.log(tableResults);
+    }
+  }
+
+  previousStep(){
+    if(this.step > 0){
+      this.step--;
+    }
+  }
+
+	/**
+	 * Epsilon = 1e-6
+	 */
+	static isEqualsDefaultE(a, b)
+	{
+    return Algorithme.isEquals(a, b, 1e-6);
+	}
+
+  static isEquals(a, b, epsilon)
+	{
+    if (a != 0 && b != 0)
+    {
+      return Math.abs((a - b) / a) <= epsilon;
+    }
+    else
+    {
+      return Math.abs(a - b) <= epsilon;
+    }
+	}
+
   //Methode to implement
   nextStep(){
     throw new Error("Not implemented");
@@ -113,16 +151,6 @@ class Algorithme{
 
   draw(){
     throw new Error("Not implemented");
-  }
-
-  _displayResult(content){
-    this.resultArea.html(content);
-  }
-
-  previousStep(){
-    if(this.step > 0){
-      this.step--;
-    }
   }
 }
 
@@ -157,7 +185,7 @@ class Dichotomy extends Algorithme{
         this.data.push([middle, value]);
 
         //TODO update to test with Epsilon
-        if(value == 0){
+        if(Algorithme.isEquals(value),0){
           this.zeroFounded = true;
         }
       }
@@ -166,6 +194,8 @@ class Dichotomy extends Algorithme{
 
   draw(){
     let data = this.getData();
+    this._displayResult(data);
+
     if(data.length==1){
       //Requirement of function-plot, mimimum 2 couple of values
       //data.push(data[0]);
@@ -217,7 +247,7 @@ class Tangent extends Algorithme{
         this.x = x;
 
         //TODO update to test with Epsilon
-        if(this.plot.getValue(this.x) == 0){
+        if(Algorithme.isEquals(this.plot.getValue(this.x),0)){
           this.zeroFounded = true;
         }
       }catch(err){
@@ -231,6 +261,9 @@ class Tangent extends Algorithme{
     let data = this.getData();
     let graph = [];
     let color = 'grey';
+
+    this._displayResult(data.map((d)=>{return [d[1],d[2]]})); // Map pour retourner que les indice 1=x et 2=f(x) du tableau
+
     data.forEach(function(element, index) {
       if(data.length <= index+1){
         color = 'red';
@@ -293,6 +326,10 @@ class FixedPoint extends Algorithme{
       this.nextStep();
       this.verif = false;
     }
+
+    if(Algorithme.isEquals(savedX, this.x)){
+      this.zeroFounded = true;
+    }
   }
 
   _evalG(x){
@@ -301,6 +338,9 @@ class FixedPoint extends Algorithme{
 
   draw(){
     let data = this.getData();
+
+    //TODO
+    this._displayResult(data.map((d)=>{return [d[0],d[1]-d[0]]}));
 
     let functions = [{
       fn: 'x',
@@ -401,12 +441,15 @@ $(document).ready(function(){
      switch($('input[name=methodOption]:checked', '#method').val()){
        case 'dichotomy':
          method = new Dichotomy(plot, resultArea);
+         $('#x2Group').show();
          break;
        case 'tangent':
          method = new Tangent(plot, resultArea);
+         $('#x2Group').hide();
          break;
        case 'fixedPoint':
          method = new FixedPoint(plot, resultArea);
+         $('#x2Group').hide();
          break;
      }
      plot.setAlgorithme(method);
