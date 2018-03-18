@@ -18,6 +18,9 @@ class Plot{
       ]
     };
     this.instance = functionPlot(this.options);
+
+    //Update design
+    $('#'+this.divId+' .top-right-legend').attr('y',15);
   }
 
   setAlgorithm(algorithm){
@@ -48,6 +51,8 @@ class Plot{
 
     $('#'+this.divId+' g .content').html('');
     this.instance.draw();
+
+    $('#'+this.divId+' g .tip').html('<line x1="5" y1="11" x2="15" y2="11" style="stroke:#4682b4;"></line><text x="20" y="15" font-family="sans-serif" font-size="14px" fill="#4682b4" x="f(x)">f(x)</text>'+this.algorithm.legend());
   }
 
   getFunction(){

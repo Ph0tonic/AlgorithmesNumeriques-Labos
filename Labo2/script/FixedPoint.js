@@ -10,6 +10,11 @@ class FixedPoint extends Algorithm{
     this.convergence = 0;
   }
 
+  legend(){
+    let legend = '<line x1="5" y1="25" x2="15" y2="25" style="stroke:red;"></line><text x="20" y="30" font-family="sans-serif" font-size="14px" fill="red">x</text>';
+    return legend + '<line x1="5" y1="40" x2="15" y2="40" style="stroke:#05b378;"></line><text x="20" y="45" font-family="sans-serif" font-size="14px" fill="#05b378">λ*f(x)+x</text>';
+  }
+
   static _gX(fn, lambda){
     return lambda+"*("+fn+")+x";
   }

@@ -38,7 +38,7 @@ class Dichotomy extends Algorithm{
     }
     return this.step;
   }
-
+  
   draw(){
     let data = this.getData();
     if(data.length > 0){

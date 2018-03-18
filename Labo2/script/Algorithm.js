@@ -63,6 +63,11 @@ class Algorithm{
     }
 	}
 
+  legend(){
+    return '';
+    //Should return an Array of functions to draw
+  }
+
   //Methode to implement
   solve(){
     throw new Error("Not implemented");
