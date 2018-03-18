@@ -16,6 +16,7 @@ class Algorithm{
     this.x = plot.getX1();
     this.x1 = plot.getX1();
     this.x2 = plot.getX2();
+    this.zeroFounded = false;
   }
 
   getData(){

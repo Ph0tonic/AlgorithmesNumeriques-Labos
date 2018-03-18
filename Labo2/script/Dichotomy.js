@@ -33,12 +33,12 @@ class Dichotomy extends Algorithm{
           console.log("Founded!!!");
         }
       }
-    }else{
+    }else if(this.zeroFounded){
       --this.step;
     }
     return this.step;
   }
-  
+
   draw(){
     let data = this.getData();
     if(data.length > 0){

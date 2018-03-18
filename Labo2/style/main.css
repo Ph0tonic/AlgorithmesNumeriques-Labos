@@ -1,4 +1,4 @@
 
-footer a:after {
+.a-autoFill a:after {
     content: attr(href);
 }

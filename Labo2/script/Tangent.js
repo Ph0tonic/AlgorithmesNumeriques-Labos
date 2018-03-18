@@ -26,7 +26,6 @@ class Tangent extends Algorithm{
         this.data.push([func,this.x,y]);
         this.x = x;
 
-        //TODO update to test with Epsilon
         if(Algorithm.isEqualsDefaultEpsilon(this.plot.getValue(this.x),0)){
           this.zeroFounded = true;
           console.log("Founded!!!");
@@ -35,6 +34,8 @@ class Tangent extends Algorithm{
         console.log("Erreur, dérivée de la fonction = 0");
         this._displayResult('<div class="alert alert-danger" role="alert">Erreur, dérivé de la fonction = 0!</div>');
       }
+    }else if(this.zeroFounded){
+      --this.step;
     }
     return this.step;
   }

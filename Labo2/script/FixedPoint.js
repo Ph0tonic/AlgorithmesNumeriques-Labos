@@ -8,6 +8,7 @@ class FixedPoint extends Algorithm{
     this.verif = false;
     this.dist = [];
     this.convergence = 0;
+    this.zeroFounded = false;
   }
 
   legend(){
@@ -25,49 +26,54 @@ class FixedPoint extends Algorithm{
   }
 
   nextStep(){
+    ++this.step;
     let savedX = 0;
-    this.step++;
-    let newConvergence = this.convergence;
-    for(let i=this.data.length;i<Math.max(this.step,3);i++){ //Calcul of the four first elements to detect convergence
-      this.convergence = newConvergence;
-      if(this.step < 3 || this.step > this.data.length && !this.zeroFounded){
-        savedX = this.x;
+    if(!this.zeroFounded){
+      let newConvergence = this.convergence;
+      console.log();
+      for(let i=this.data.length;i<Math.max(this.step,3);i++){ //Calcul of the four first elements to detect convergence
+        this.convergence = newConvergence;
+        if(this.step < 3 || this.step > this.data.length && !this.zeroFounded){
+          savedX = this.x;
 
-        //Calcul de la prochaine étape et ajout de celle-ci dans le tableau data
-        let xi = this._evalG(this.x);
+          //Calcul de la prochaine étape et ajout de celle-ci dans le tableau data
+          let xi = this._evalG(this.x);
 
-        if(Number.isNaN(xi) || Math.abs(xi) === Infinity){
-          this._displayResult("Aucune solution pour cette valeur de x");
-          return --this.step;
+          if(Number.isNaN(xi) || Math.abs(xi) === Infinity){
+            this._displayResult("Aucune solution pour cette valeur de x");
+            return --this.step;
+          }
+
+          this.data.push([this.x,xi]);
+          this.dist.push(Math.abs(this.x-xi));
+          this.x = xi;
         }
-
-        this.data.push([this.x,xi]);
-        this.dist.push(Math.abs(this.x-xi));
-        this.x = xi;
+        newConvergence = (this.convergence*(this.dist.length-1) + this.dist[this.dist.length-1])/this.dist.length;
       }
-      newConvergence = (this.convergence*(this.dist.length-1) + this.dist[this.dist.length-1])/this.dist.length;
-    }
 
-    //Diverge
-    if(this.verif === false && this.convergence < newConvergence){
-      this.step = 0;
-      this.lambda *= -1;
-      this.data = [];
-      this.dist = [];
-      this.convergence = 0;
-      this.gOfX = FixedPoint._gX(plot.getFunction(),this.lambda);
-      this.x = plot.getX1();
-      this.verif = true;
-      this.nextStep();
-      this.verif = false;
+      //Diverge
+      if(this.verif === false && this.convergence < newConvergence){
+        this.step = 0;
+        this.lambda *= -1;
+        this.data = [];
+        this.dist = [];
+        this.convergence = 0;
+        this.zeroFounded = false;
+        this.gOfX = FixedPoint._gX(plot.getFunction(),this.lambda);
+        this.x = plot.getX1();
+        this.verif = true;
+        this.nextStep();
+        this.verif = false;
+      }else{
+        this.convergence = newConvergence;
+
+        if(Algorithm.isEqualsDefaultEpsilon(savedX, this.x)){
+          this.zeroFounded = true;
+        }
+      }
     }else{
-      this.convergence = newConvergence;
-
-      if(Algorithm.isEqualsDefaultEpsilon(savedX, this.x)){
-        this.zeroFounded = true;
-      }
+      --this.step;
     }
-
     return this.step;
   }
 
