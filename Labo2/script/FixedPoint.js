@@ -2,7 +2,7 @@ class FixedPoint extends Algorithm{
   constructor(plot, resultArea){
     super(plot, resultArea);
     this.lambda = 1;
-    this.gOfX = this.lambda+"*("+plot.getFunction()+")+ x";
+    this.gOfX = FixedPoint._gX(plot.getFunction() ,this.lambda);
     this.x = plot.getX1();
     this.step = 0;
     this.verif = false;
@@ -10,15 +10,24 @@ class FixedPoint extends Algorithm{
     this.convergence = 0;
   }
 
+  static _gX(fn, lambda){
+    return lambda+"*("+fn+")+x";
+  }
+
+  reset(){
+    super.reset();
+    this.gOfX = FixedPoint._gX(plot.getFunction(), this.lambda);
+  }
+
   nextStep(){
-    let savedX = this.x;
+    let savedX = 0;
     this.step++;
     let newConvergence = this.convergence;
-    for(let i=this.data.length;i<Math.max(this.step,3);i++){ //Calcul of the four first elements
-      console.log(i);
-      savedX = this.x;
+    for(let i=this.data.length;i<Math.max(this.step,3);i++){ //Calcul of the four first elements to detect convergence
       this.convergence = newConvergence;
       if(this.step < 3 || this.step > this.data.length && !this.zeroFounded){
+        savedX = this.x;
+
         //Calcul de la prochaine étape et ajout de celle-ci dans le tableau data
         let xi = this._evalG(this.x);
 
@@ -32,33 +41,25 @@ class FixedPoint extends Algorithm{
         this.x = xi;
       }
       newConvergence = (this.convergence*(this.dist.length-1) + this.dist[this.dist.length-1])/this.dist.length;
-      console.log("dd"+newConvergence);
-      console.log(this.dist[this.dist.length-1])
     }
-
-    console.log(this.convergence +" divergence "+ newConvergence)
 
     //Diverge
     if(this.verif === false && this.convergence < newConvergence){
-      console.log("--Diverge avec premier fonction")
       this.step = 0;
       this.lambda *= -1;
       this.data = [];
       this.dist = [];
-      this.convergence = 0;console.log(this.gOfX);
-      this.gOfX = this.lambda+"*("+plot.getFunction()+") + x";
-      this.convergence = 0;console.log(this.gOfX);
-      this.x = savedX;
+      this.convergence = 0;
+      this.gOfX = FixedPoint._gX(plot.getFunction(),this.lambda);
+      this.x = plot.getX1();
       this.verif = true;
       this.nextStep();
       this.verif = false;
     }else{
       this.convergence = newConvergence;
 
-      console.log(savedX, this.x);
       if(Algorithm.isEqualsDefaultEpsilon(savedX, this.x)){
         this.zeroFounded = true;
-        console.log("Founded!!! "+this.step);
       }
     }
 
@@ -77,7 +78,7 @@ class FixedPoint extends Algorithm{
       let dist=[];
       let convergence = 0;
       let lambda = 1;
-      let gOfX = lambda+"*("+fn+") + x";
+      let gOfX = FixedPoint._gX(fn,lambda);
       let iterationLimit = nbIterationMax;
       let x = i;
       try{
@@ -95,23 +96,22 @@ class FixedPoint extends Algorithm{
           let newConvergence = (convergence*(dist.length-1) + dist[dist.length-1])/dist.length;
 
           //Divergence dans graph 1
-          if(iterationLimit+2<nbIterationMax && convergence<newConvergence && lambda != -1){
+          if(nbIterationMax-iterationLimit>=2 && convergence<newConvergence && lambda != -1){
             iterationLimit = nbIterationMax;
             lambda *= -1;
             dist = [];
             convergence = 0;
-            gOfX = lambda+"*("+fn+") + x";
+            gOfX = FixedPoint._gX(fn,lambda);
             x = i;
-          }else if(iterationLimit+2<nbIterationMax && lambda == -1 && convergence<newConvergence){
+          }else if(nbIterationMax-iterationLimit>=2 && lambda == -1 && convergence<newConvergence){
             //Diverge dans graphe n° 2
             throw new Error("Divergence avec le second");
           }else{
             convergence = newConvergence;
-
             if(Algorithm.isEqualsDefaultEpsilon(x, xi)){
               iterationLimit = 0;
-              if(!result.has(parseFloat(x.toFixed(4)))){
-                result.add(parseFloat(x.toFixed(4)));
+              if(!result.has(parseFloat(x.toFixed(6)))){
+                result.add(parseFloat(x.toFixed(6)));
               }
             }
 
@@ -121,7 +121,6 @@ class FixedPoint extends Algorithm{
         }
       }catch(e){
         //Do nothing
-        //console.log(e)
       }
     }
     return Array.from(result); //De set à array

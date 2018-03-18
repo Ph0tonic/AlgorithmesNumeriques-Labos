@@ -1,4 +1,4 @@
 
-.l:after {
+footer a:after {
     content: attr(href);
 }

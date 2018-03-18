@@ -11,7 +11,7 @@ class Dichotomy extends Algorithm{
   }
 
   nextStep(){
-    this.step++;
+    ++this.step;
     if(this.step > this.data.length && !this.zeroFounded){
       //Calcul de la prochaine étape et ajout de celle-ci dans le tableau data
       if(this._evaluateBorneSigneEqual()){
@@ -28,12 +28,13 @@ class Dichotomy extends Algorithm{
 
         this.data.push([middle, value]);
 
-        //TODO update to test with Epsilon
         if(Algorithm.isEqualsDefaultEpsilon(value),0){
           this.zeroFounded = true;
           console.log("Founded!!!");
         }
       }
+    }else{
+      --this.step;
     }
     return this.step;
   }

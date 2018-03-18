@@ -4,13 +4,11 @@
   <meta charset="utf-8">
   <title>Labo 2 - Algo num</title>
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <link rel="stylesheet" href="style/bootstrap.min.css">
 
   <link rel="stylesheet" href="bootstrap-slider.min.css">
   <!-- Main css -->
-  <link rel="stylesheet" href="style.css" >
+  <link rel="stylesheet" href="style/main.css" >
 </head>
 <body>
   <div class="container">﻿
@@ -64,7 +62,7 @@
         <hr>
         <div>
           <h3>Zéros de la fonction</h3>
-          <p>X∈<span id="zeros"></span></p>
+          <div id="zeros"></div>
         </div>
       </div>
       <div class="col-md-9 col-sm-12">
@@ -121,24 +119,24 @@
   	<footer>
   		<h2>Références de développement</h2>
   		<ul>
-			<li><a class='l' href="https://blog.sicara.com/compare-best-javascript-chart-libraries-2017-89fbe8cb112d"></a></li>
-			<li><a class='l' href="https://mauriciopoppe.github.io/function-plot/"></a></li>
-			<li><a class='l' href="https://github.com/mauriciopoppe/function-plot"></a></li>
-			<li><a class='l' href="http://mathjs.org/examples/browser/plot.html"></a></li>
-			<li><a class='l' href="http://seiyria.com/bootstrap-slider/"></a></li>
+  			<li><a href="https://blog.sicara.com/compare-best-javascript-chart-libraries-2017-89fbe8cb112d"></a></li>
+  			<li><a href="https://mauriciopoppe.github.io/function-plot/"></a></li>
+  			<li><a href="https://github.com/mauriciopoppe/function-plot"></a></li>
+  			<li><a href="http://mathjs.org/examples/browser/plot.html"></a></li>
+  			<li><a href="http://seiyria.com/bootstrap-slider/"></a></li>
   	   </ul>
-     </footer>
+    </footer>
    </div>
 
 	<!-- Latest compiled and minified JavaScript -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="script/external/jquery.min.js"></script>
 
   <!-- Math equation parsing -->
   <!--<script src="https://unpkg.com/mathjs@4.0.0/dist/math.min.js"></script>-->
   <script src="script/external/math.min.js"></script>
 
   <!-- load http://maurizzzio.github.io/function-plot/ -->
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="script/external/d3.min.js"></script>
   <script src="script/external/function-plot@1.18.1.js"></script>
 
   <!-- Load bootstrap slider -->

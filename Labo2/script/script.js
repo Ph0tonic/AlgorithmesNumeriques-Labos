@@ -4,7 +4,11 @@ let plot = new Plot('canvas',$('#eq').val(),[parseFloat($('#x1').val()),parseFlo
 function updateZeroes(){
     let bounderies = [-100,100];
     let solutions = FixedPoint.solve(bounderies,$('#eq').val());
-    $('#zeros').text('{'+solutions.join(';')+'}');
+    let text = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>&#x2208;</mo><mfenced open="{" close="}"><mtable><mtr><mtd><mi>';
+    text += solutions.join('</mi></mtd></mtr><mtr><mtd><mi>');
+    text += '</mi></mtd></mtr></mtable></mfenced></math>';
+    $('#zeros').html(text);
+    //$('#zeros').text('{'+solutions.join(';')+'}');
 }
 
 $(document).ready(function(){
