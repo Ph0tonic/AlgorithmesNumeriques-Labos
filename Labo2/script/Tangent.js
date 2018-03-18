@@ -50,7 +50,6 @@ class Tangent extends Algorithm{
       if(data.length <= index+1){
         color = 'red';
       }
-      console.log(element);
       graph.push({
         fn: element[0],
         sampler: 'builtIn',  // this will make function-plot use the evaluator of math.js

@@ -33,7 +33,7 @@ class FixedPoint extends Algorithm{
 
     if(Algorithm.isEqualsDefaultEpsilon(savedX, this.x)){
       this.zeroFounded = true;
-      console.log("Founded!!!");
+      console.log("Founded!!! "+this.step);
     }
     return this.step;
   }
@@ -46,45 +46,34 @@ class FixedPoint extends Algorithm{
 
     let lambda = 1;
     let gOfX = lambda+"*"+fn+" + x";
-    console.log(gOfX);
     const nbIterationMax = 20;
 
     for(let i=x1;i<=x2;i++){
       let founded = false;
       let dist=0;
       let iterationLimit = nbIterationMax;
-      try{
-        let x = i;
-        while(x>=-100 && x<=100 && iterationLimit > 0){
-          if(lambda = -1){
-            console.log("Test")
-          }
-          //console.log("inside : "+iterationLimit);
-          //Calcul de la prochaine étape et ajout de celle-ci dans le tableau data
-          let xi = math.eval(gOfX, {'x':x});
-          console.log("["+x+" "+xi+"]")
-          if(iterationLimit<nbIterationMax && dist<Math.abs(x-xi) && lambda != -1){
-            console.log("Exchange lambda")
-            iterationLimit = nbIterationMax;
-            lambda *= -1;
-            gOfX = lambda+"*"+fn+" - x";
-            x = i;
-          }
-          dist = Math.abs(x-xi);
+      let x = i;
+      while(x>=-100 && x<=100 && iterationLimit > 0){
 
-          if(Algorithm.isEqualsDefaultEpsilon(x, xi)){
-            iterationLimit = 0;
-            console.log(x);
-            if(!result.has(x.toFixed(4))){
-              result.add(x.toFixed(4));
-            }
-          }
-
-          x = xi;
-          --iterationLimit;
+        //Calcul de la prochaine étape et ajout de celle-ci dans le tableau data
+        let xi = math.eval(gOfX, {'x':x});
+        if(iterationLimit<nbIterationMax && dist<Math.abs(x-xi) && lambda != -1){
+          iterationLimit = nbIterationMax;
+          lambda *= -1;
+          gOfX = lambda+"*"+fn+" - x";
+          x = i;
         }
-      }catch(e){
-        //No solution foundable for this sector
+        dist = Math.abs(x-xi);
+
+        if(Algorithm.isEqualsDefaultEpsilon(x, xi)){
+          iterationLimit = 0;
+          if(!result.has(parseFloat(x.toFixed(4)))){
+            result.add(parseFloat(x.toFixed(4)));
+          }
+        }
+
+        x = xi;
+        --iterationLimit;
       }
     }
     return Array.from(result);

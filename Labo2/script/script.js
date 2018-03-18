@@ -1,10 +1,10 @@
 
-let plot = new Plot('canvas');
+let plot = new Plot('canvas',$('#eq').val(),[parseFloat($('#x1').val()),parseFloat($('#x2').val())]);
 
 $(document).ready(function(){
   $('#form').on('submit', function (event) {
     event.preventDefault();
-    plot.draw();
+    plot.setFunction($('#eq').val());
   });
 
   $('#next').on('click', function () {
@@ -16,12 +16,13 @@ $(document).ready(function(){
   });
 
   $('#x1Group').on('input', function(){
-    plot.redraw();
+    plot.setX(parseFloat($('#x1').val()),1);
+    $('#nbIteration').text('0');
   })
 
   $('#x2Group').on('input', function(){
     if($('input[name=methodOption]:checked', '#method').val() == 'dichotomy'){
-      plot.redraw();
+      plot.setX(parseFloat($('#x2').val()),2);
       $('#nbIteration').text('0');
     }
   })
@@ -45,6 +46,7 @@ $(document).ready(function(){
      }
      plot.setAlgorithm(method);
      plot.draw();
+     $('#nbIteration').text('0');
   });
 
   //Provoque le déclenchement de l'affichage du graphe

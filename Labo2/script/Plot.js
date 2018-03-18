@@ -1,7 +1,8 @@
 class Plot{
-  constructor(divId){
+  constructor(divId, fn, x){
     this.divId = divId;
-    this.function = document.getElementById('eq').value;
+    this.function = fn;
+    this.x = x;
     this.options = {
       target: '#'+this.divId,
       width: 800,
@@ -24,10 +25,14 @@ class Plot{
     this._reset();
   }
 
+  setFunction(fn){
+    this.function = fn;
+    this.redraw();
+  }
+
   _reset(){
     this.algorithm.reset();
     this.step = 0;
-    $('#result').html('');
   }
 
   redraw(){
@@ -36,18 +41,12 @@ class Plot{
   }
 
   draw(){
-    if(this.function != document.getElementById('eq').value){
-      this._reset();
-      this.algorithm.reset();
-    }
-
-    this.function = document.getElementById('eq').value;
     this.options.data = this.options.data.slice(0,1);
     this.options.data[0].fn = this.function;
     let functions = this.algorithm.draw();
     this.options.data = this.options.data.concat(functions);
 
-    $('g .content').html('');
+    $('#'+this.divId+' g .content').html('');
     this.instance.draw();
   }
 
@@ -62,12 +61,17 @@ class Plot{
     return math.eval(this.function, scope);
   }
 
+  setX(x,indice){
+    this.x[indice-1] = x;
+    this.redraw();
+  }
+
   getX1(){
-    return parseFloat($('#x1').val());
+    return this.x[0];
   }
 
   getX2(){
-    return parseFloat($('#x2').val());
+    return this.x[1];
   }
 
   nextStep(){

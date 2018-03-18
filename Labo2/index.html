@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<header>
+<head>
   <meta charset="utf-8">
   <title>Labo 2 - Algo num</title>
   <!-- Latest compiled and minified CSS -->
@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="bootstrap-slider.min.css">
   <!-- Main css -->
   <link rel="stylesheet" href="style.css" >
-</header>
+</head>
 <body>
   <div class="container">﻿
     <div class="page-header">
@@ -31,11 +31,7 @@
           <input type="text" id="eq" value="x / (1 - x^2 )" />
           <input class="btn btn-primary" type="submit" value="Draw" />
         </form>
-        <form>
-          <label for="eq">Itérations = <span id="nbIteration">0</span></label>
-          <!--<input id="nbIteration" type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="0"/>
-          <span id="nbIterationCurrentSliderValLabel">Current Slider Value: <span id="nbIterationSliderVal">0</span></span>-->
-        </form>
+        <p>Itérations = <span id="nbIteration">0</span></p>
         <div>
           <input class="btn btn-default" type="submit" value="Previous Step" id="previous" />
           <input class="btn btn-default" type="submit" value="Next Step" id="next" />
@@ -43,16 +39,16 @@
         <hr>
         <form id="method">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="methodOption" id="method1" value="dichotomy" checked>
-            <label class="form-check-label" for="method1">Dichotomie</label>
+            <input class="form-check-input" type="radio" name="methodOption" id="method3" value="fixedPoint" checked>
+            <label class="form-check-label" for="method3">Point fixe</label>
           </div>
           <div class="form-check">
             <input class="form-check-input" type="radio" name="methodOption" id="method2" value="tangent">
             <label class="form-check-label" for="method2">Tangente</label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="methodOption" id="method3" value="fixedPoint">
-            <label class="form-check-label" for="method3">Point fixe</label>
+            <input class="form-check-input" type="radio" name="methodOption" id="method1" value="dichotomy">
+            <label class="form-check-label" for="method1">Dichotomie</label>
           </div>
         </form>
         <form id="startPoint">
@@ -67,8 +63,8 @@
         </form>
         <hr>
         <div>
-          <h3>Zéros de la fonction sur [-100;100]</h3>
-          <p id="zeros"></p>
+          <h3>Zéros de la fonction</h3>
+          <p>X∈<span id="zeros"></span></p>
         </div>
       </div>
       <div class="col-md-9 col-sm-12">
@@ -83,66 +79,42 @@
     </div>
     <hr>
     <div>
-	  <h1>Rapport</h1>
-		<h2><span style='color:red'>TODO : grammar/meaning check</span></h2>
+  	  <h1>Rapport</h1>
+  		<h2><span style='color:red'>TODO : grammar/meaning check</span></h2>
       <h2>Contextualisation</h2>
-      <p>
-		Dans le cadre du deuxième laboratoire d'algorithme numérique (Haute-École Arc : <a href='https://www.he-arc.ch/sites/www.he-arc.ch/files/Reglements/04%20Formation%20de%20base/43%20Ing%C3%A9nierie/430.100%20Descriptifs%20de%20modules%20Informatique/RS430.100.17.2231%20Sciences%20II%20dlm.pdf'>Module 2231.3</a>), il nous a été demander de réaliser un algorithme JavaScript pour pouvoir trouvé les racines des fonctions suivante :
-	  </p>
-	  <i>
+      <p>Dans le cadre du deuxième laboratoire d'algorithme numérique (Haute-École Arc : <a href='https://www.he-arc.ch/sites/www.he-arc.ch/files/Reglements/04%20Formation%20de%20base/43%20Ing%C3%A9nierie/430.100%20Descriptifs%20de%20modules%20Informatique/RS430.100.17.2231%20Sciences%20II%20dlm.pdf'>Module 2231.3</a>), il nous a été demandé de réaliser un algorithme JavaScript pour pouvoir trouver les racines des fonctions suivantes :</p>
 		  <ul>
-			  <li>sin(x) - x / 13 = 0</li>
-			  <li>x / (1-X^2) = 0</li>
+			  <li><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>sin</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>-</mo><mfrac><mi>x</mi><mn>13</mn></mfrac><mo>=</mo><mn>0</mn></math></li>
+			  <li><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mi>x</mi><mrow><mn>1</mn><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mn>0</mn></math></li>
 		  </ul>
-	  </i>
-	  <p>
-		Nous devons pouvoir trouvé toutes les solutions dans l'intervale (ademis fermé,fermé) : [100,100].
-	  </p>
-	  <p>
-		Les algorithmes et les contrainte suivante nous ont été imposé :
-		<ul>
-			<li>Dichotomie : Calculer l'erreur de l'algorithme</li>
-			<li>Pente (Newton) : Si le X<sub>0</sub> choisi ne permet pas de converger vers une valeur, l'algorithme nous demandera d'augementer ou de baisser la valeur du X<sub>0</sub></li>
-			<li>Point fixe : Ajuster la valeur de lamba dynamiquement pour trouver une solution</li>
-		</ul>
-	  </p>
+  	  <p>Nous devons pouvoir trouver toutes les solutions dans l'intervalle (admis fermé,fermé) : [100,100].</p>
+  	  <p>Les algorithmes et les contraintes suivantes nous ont été imposées :</p>
+  		<ul>
+  			<li>Dichotomie : Calculer l'erreur de l'algorithme</li>
+  			<li>Pente (Newton) : Si le X<sub>0</sub> choisi ne permet pas de converger vers une valeur, l'algorithme nous demandera d'augmenter ou de baisser la valeur du X<sub>0</sub></li>
+  			<li>Point fixe : Ajuster la valeur de lamba dynamiquement pour trouver une solution</li>
+  		</ul>
+      <p>Nous avons choisi de réaliser la méthode du <em>Point Fixe</em>, mais avons également implémenté un rendu graphique pour les deux autres méthodes. Cependant, nous n'avons pas implémenté la fonction <i>solve<i> de ces deux dernières méthodes.</p>
       <h2>Méthodologie de développement</h2>
-	  <h3>Affichage des fonctions</h3>
-	  <p>
-		Nous avons tout d'abords rechecher une bibliothèque pour "parser" et afficher des fonctions. Nous avons donc utilisé <a href='https://github.com/mauriciopoppe/function-plot'>function-plot de Mauriciopoppe</a> qui réponds à nos attentes. Une fois son fonctionnement compris nous avons en entamé le développement des algorithmes.
-	  </p>
-	  <h3>Les algorithmes</h3>
-	  <p>
-	    La référence pour les algorithmes utilisé actuellement est rien d'autre (sauf mentions contraire) que le cours de Monsieur Stéphane Gobron, notre professeur. Voici la référence de son cours pour notre école sur son site internet.
-		<a href='http://www.stephane-gobron.net/Core/Courses/3_HE-Arc/NumericalAlgorithms/BSc2_AlgorithmesNumeriques_Chap2_v1-6-0.pdf'>
-		Cours (lien du 17.03.2018)</a>
-	  </p>
+  	  <h3>Affichage des fonctions</h3>
+  	  <p>Nous avons tout d'abords rechercher une bibliothèque pour "parser" et afficher des fonctions. Nous avons donc utilisé <a href='https://github.com/mauriciopoppe/function-plot'>function-plot de Mauriciopoppe</a> qui réponds à nos attentes. Une fois son fonctionnement compris nous avons en entamé le développement des algorithmes.</p>
+  	  <h3>Les algorithmes</h3>
+  	  <p>Nous avons uniquement utilisé le cours de Monsieur Stéphane Gobron, notre professeur, pour la réalisation de ce travail. Voici la référence de son cours sur son site internet.
+  		  <a href='http://www.stephane-gobron.net/Core/Courses/3_HE-Arc/NumericalAlgorithms/BSc2_AlgorithmesNumeriques_Chap2_v1-6-0.pdf'>Cours (lien du 17.03.2018)</a>
+  	  </p>
       <h3>Structure du code</h3>
-	  <p>
-		Afin de pouvoir intégrer n'importe quel algorithme à notre solution. Nous avons opté sur un développement orienté objet utilisant l'héritage. Nous avons donc deux class principal : Plot et Algorithm (classe abstraite). Puis pour chacun des algorithmes nous avons créé une classe dérivée de la classe Algorithm. Chacune des classes dérivés doit ensuite implémenter la fonction draw() et nextStep(). La class Plot, comme son nom l'indique, permet de gérer l'affichage du graphique mais aussi de gérer les 'pas' de l'algorithme.
-	  </p>
-	  <p>
-		Avec cette structure de code, il nous est très facile d'ajouter d'autre algorithme et également de modifier leurs comportements.
-	  </p>
+  	  <p>Afin de pouvoir intégrer n'importe quel algorithme à notre solution. Nous avons opté sur un développement orienté objet utilisant l'héritage. Nous avons donc deux classes principales : Plot et Algorithm (classe abstraite). Puis pour chacun des algorithmes nous avons créé une classe dérivée de la classe Algorithm. Chacune des classes dérivées doit ensuite implémenter la fonction draw(), nextStep() et solve(). La class Plot, comme son nom l'indique, permet de gérer l'affichage du graphique mais aussi de gérer le mode 'pas à pas' pour l'affichage de l'algorithme.</p>
+  	  <p>Avec cette structure de code, il nous est très facile d'ajouter d'autres algorithmes et également de modifier leurs comportements.</p>
+      <p>Afin de tester nos structure, nous avons réalisé la partie affichage de la méthode Dichotomie et Tangente. A noter que la méthode d'affichage pour ces deux méthodes ne détecte pour l'instant pas la divergence ou la boucle infinie.</p>
       <h3>Dichotomie (classe Dichotomy)</h3>
-	  <p>
-		Pour cette classe, nous avons besoin de deux inputs, la borne inférieur et supérieur.
-	  </p>
-	  <p>
-	    Puis nous avons codé l'algorithme qui était exprimé sous forme de pseudocode dans le cours (Page 12)
-	  </p>
-	  <h3>Methode de la tangante, aussi appelé méthode de la pente ou méthode de Newton (classe Tangent)</h3>
-	  <p>
-		Pour cette classe, nous n’avons eu que besoin "d'un point de départ" duquel l'algorithme va commencer à essayer de converger vers la racine.
-	  </p>
-	  <p>
-		Nous avions normalement à implémenter une fonction d'approximation de la dérivée d'une fonction en un point (droite tangente). Elle est basé sur la définition de la dérivé, où nous choisissons un "h" (aussi appelé delta ou k) très faible puis selon le principe des approximations linéaire trouvé la valeur de la dérivé.
-	  </p>
-	  <p>
-		Mais alliant très bien compris comment implémenté une tel fonction ajouté au fait que nous trouvé une bibliothèque qui permet de trouvé la dérivé analytique d'une fonction. Nous avons choisi simplement d'évaluer la dérivée analytique au lieu d'utiliser une telle approximation.
-	  </p>
-	  <h3>Point fixe (classe FixedPoint)</h3>
-	  <span style='color:red;'>TODO</span>
+  	  <p>Pour cette classe, nous avons besoin de deux inputs, la borne inférieure et supérieure.</p>
+  	  <p>Puis nous avons codé l'algorithme qui était exprimé sous forme de pseudocode dans le cours (Page 12)</p>
+  	  <h3>Méthode de la tangente, aussi appelée méthode de la pente ou méthode de Newton (classe Tangent)</h3>
+  	  <p>Pour cette classe, nous n’avons eu que besoin "d'un point de départ" duquel l'algorithme va commencer à essayer de converger vers la racine.</p>
+  	  <p>Nous avions normalement à implémenter une fonction d'approximation de la dérivée d'une fonction en un point (droite tangente). Elle est basée sur la définition de la dérivée, où nous choisissons un "h" (aussi appelé delta ou k) très faible puis selon le principe des approximations linéaire trouvé la valeur de la dérivé.</p>
+  	  <p>Mais ayant très bien compris comment implémenter une telle fonction, ajouté au fait que nous trouvé une bibliothèque permettant de trouver la dérivée analytique d'une fonction. Nous avons choisi de simplement évaluer la dérivée analytique au lieu d'utiliser une telle approximation.</p>
+  	  <h3>Point fixe (classe FixedPoint)</h3>
+  	  <span style='color:red;'>TODO</span>
       <h2>Conclusion et perspective <span style='color:red;'>TODO</span></h2>
     </div>
   	<hr>

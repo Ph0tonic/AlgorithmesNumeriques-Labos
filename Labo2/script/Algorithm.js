@@ -10,6 +10,7 @@ class Algorithm{
   }
 
   reset(){
+    this.resultArea.html('');
     this.data = [];
     this.step = 0;
     this.x = plot.getX1();
