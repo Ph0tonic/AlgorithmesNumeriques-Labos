@@ -25,6 +25,8 @@ class Algorithm{
   _displayResult(content){
     if(!Array.isArray(content)){
       this.resultArea.html(content);
+    }else if(content.length === 0){
+      this.resultArea.html('<p>Faites défiler les étapes pour afficher les valeurs de x.</p>');
     }else{
       let tableResults = `<table class="table table-hover"><thead><tr><th>Itération</th><th>x</th><th>f(x)</th></tr></thead><tbody>`;
       let i=0;
@@ -46,7 +48,7 @@ class Algorithm{
 	 */
 	static isEqualsDefaultEpsilon(a, b)
 	{
-    return Algorithm.isEquals(a, b, 1e-6);
+    return Algorithm.isEquals(a, b, 1e-10);
 	}
 
   static isEquals(a, b, epsilon)

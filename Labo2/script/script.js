@@ -1,10 +1,18 @@
 
 let plot = new Plot('canvas',$('#eq').val(),[parseFloat($('#x1').val()),parseFloat($('#x2').val())]);
 
+function updateZeroes(){
+    let bounderies = [-100,100];
+    let solutions = FixedPoint.solve(bounderies,$('#eq').val());
+    $('#zeros').text('{'+solutions.join(';')+'}');
+}
+
 $(document).ready(function(){
   $('#form').on('submit', function (event) {
     event.preventDefault();
     plot.setFunction($('#eq').val());
+
+    updateZeroes();
   });
 
   $('#next').on('click', function () {
@@ -51,8 +59,5 @@ $(document).ready(function(){
 
   //Provoque le déclenchement de l'affichage du graphe
   $('#method input').trigger('change');
-
-  let bounderies = [-100,100];
-  let solutions = FixedPoint.solve(bounderies,$('#eq').val());
-  $('#zeros').text('{'+solutions.join(';')+'}');
+  updateZeroes();
 })
