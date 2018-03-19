@@ -118,7 +118,7 @@ class FixedPoint extends Algorithm{
           //Calcul de la convergence
           let newConvergence = (convergence*(dist.length-1) + dist[dist.length-1])/dist.length;
 
-          //Détection de la Divergence dans le preier graph, valeur 2 permettant de ne tester la convergence qu'au bout du 3ème passage.
+          //Détection de la Divergence dans le premier graph, valeur 2 permettant de ne tester la convergence qu'au bout du 3ème passage.
           if(nbIterationMax-iterationLimit>=2 && convergence<newConvergence && lambda != -1){
             iterationLimit = nbIterationMax;
             lambda *= -1;

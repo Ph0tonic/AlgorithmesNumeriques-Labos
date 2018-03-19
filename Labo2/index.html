@@ -68,7 +68,7 @@
         </form>
         <hr>
         <div>
-          <h3>Zéros de la fonction</h3>
+          <h3>Zéros de la fonction (dans [-100;100])</h3>
           <div id="zeros"></div>
         </div>
       </div>
@@ -86,7 +86,6 @@
     <div class="row">
       <div class="col-md-12">
     	  <h1>Rapport</h1>
-    		<h2><span style='color:red'>TODO : grammar/meaning check</span></h2>
         <h2>Contextualisation</h2>
         <p>Dans le cadre du deuxième laboratoire d'algorithme numérique (Haute-École Arc : <a href='https://www.he-arc.ch/sites/www.he-arc.ch/files/Reglements/04%20Formation%20de%20base/43%20Ing%C3%A9nierie/430.100%20Descriptifs%20de%20modules%20Informatique/RS430.100.17.2231%20Sciences%20II%20dlm.pdf'>Module 2231.3</a>), il nous a été demandé de réaliser un algorithme JavaScript pour pouvoir trouver les racines des fonctions suivantes :</p>
   		  <ul>
@@ -103,33 +102,64 @@
         <p>Nous avons choisi de réaliser la méthode du <em>Point Fixe</em>, mais avons également implémenté un rendu graphique pour les deux autres méthodes. Cependant, nous n'avons pas implémenté la fonction <i>solve</i> de ces deux dernières méthodes.</p>
         <h2>Méthodologie de développement</h2>
     	  <h3>Affichage des fonctions</h3>
-        <p>La première tâche que nous avons réalisé a été la recherche d'une bibliothèque permettant d'afficher des fonctions mathématiques quelconques, notemment celles qui tendent vers l'infinie. Notre choix s'est tournée vers la bibliothèque</p>
-    	  <p>Nous avons donc utilisé <a href='https://github.com/mauriciopoppe/function-plot'>function-plot de Mauriciopoppe</a> qui répond à notre critère principal. L'étape suivante a été de vérifier qu'elle ne nous limitait pas dans l'affichage de traits supplémentaires.</p>
+        <p>La première tâche que nous avons réalisé a été la recherche d'une bibliothèque permettant d'afficher des fonctions mathématiques quelconques, notemment celles qui tendent vers l'infinie. Notre choix s'est tournée vers la bibliothèque <a href='https://github.com/mauriciopoppe/function-plot'>function-plot de Mauriciopoppe</a> qui répond à notre critère principal. L'étape suivante a été de vérifier qu'elle ne nous limitait pas dans l'affichage de traits supplémentaires. Pour symboliser les passages des algorithmes (que nous avons appelé : pas <=> step)</p>
         <p>Une fois ces tests effectués, nous avons réalisé l'implémentation des différentes méthodes.</p>
         <h3>Les algorithmes</h3>
     	  <p>Nous avons uniquement utilisé le cours de Monsieur Stéphane Gobron, notre professeur, pour la réalisation de ce travail. Voici la référence de son cours sur son site internet.
     		  <a href='http://www.stephane-gobron.net/Core/Courses/3_HE-Arc/NumericalAlgorithms/BSc2_AlgorithmesNumeriques_Chap2_v1-6-0.pdf'>Cours (lien du 17.03.2018)</a>
     	  </p>
         <h3>Structure du code</h3>
-    	  <p>Afin de pouvoir intégrer n'importe quel algorithme à notre solution. Nous avons opté sur un développement orienté objet utilisant l'héritage. Nous avons donc deux classes principales : Plot et Algorithm (classe abstraite). Puis pour chacun des algorithmes nous avons créé une classe dérivée de la classe Algorithm. Chacune des classes dérivées doit ensuite implémenter la fonction draw(), nextStep() et solve(). La class Plot, comme son nom l'indique, permet de gérer l'affichage du graphique mais aussi de gérer le mode 'pas à pas' pour l'affichage de l'algorithme.</p>
+    	  <p>Afin de pouvoir intégrer n'importe quel algorithme à notre solution. Nous avons opté sur un développement orienté objet utilisant l'héritage. Nous avons donc deux classes principales : Plot et Algorithm (classe abstraite). Puis pour chacun des algorithmes nous avons créé une classe dérivée de la classe Algorithm. Chacune des classes dérivées doit ensuite implémenter la fonction draw(), nextStep() et solve(). La class Plot, comme son nom l'indique, permet de gérer l'affichage du graphique mais aussi de gérer le mode 'pas à pas' <=> 'step by step' pour l'affichage de l'algorithme.</p>
     	  <p>Avec cette structure de code, il nous est très facile d'ajouter d'autres algorithmes et également de modifier leurs comportements.</p>
-        <p>Afin de tester notre structure, nous avons réalisé la partie affichage de la méthode Dichotomie et Tangente pour le défi. A noter que la méthode d'affichage pour ces deux méthodes ne détecte pour l'instant pas la divergence ou la boucle infinie.</p>
+        <p>Afin de tester notre structure, nous avons réalisé la partie affichage de la méthode Dichotomie et Tangente pour le défi. A noter que la méthode d'affichage pour ces deux méthodes ne détectent pour l'instant pas la divergence ou la boucle infinie.</p>
+		<h3>Algorithm (classe Algorithm)</h3>
+		<p>
+			Cette classe comme expliqué ci-dessus est une classe abstraite d'où chaque algorithme devera être spécifié. Les quelques fonctions implémentées dans cette classe sont décrite ci-dessous.
+		</p>
+		<h4>Previous Step</h4>
+		<p>
+			Cette fonction va uniquement retirer 1 au pointeur de progression du dessin. Cela aura pour effect d'afficher un pas en moins. Lors des prochaines 'NextStep' il n'y aura pas besoin de recalculer le 'pas' mais juste de l'afficher.
+		</p>
+		<h4>isEquals</h4>
+		<p>
+			Retourne vrai la différence relative entre les deux valeurs est plus petite que l'epsilon.
+		</p>
         <h3>Dichotomie (classe Dichotomy)</h3>
     	  <p>Pour cette classe, nous avons besoin de deux inputs, la borne inférieure et supérieure.</p>
     	  <p>Puis nous avons codé l'algorithme qui était exprimé sous forme de pseudocode dans le cours (Page 12)</p>
-    	  <h3>Méthode de la tangente, aussi appelée méthode de la pente ou méthode de Newton (classe Tangent)</h3>
+	  <h3>Méthode de la tangente, aussi appelée méthode de la pente ou méthode de Newton (classe Tangent)</h3>
     	  <p>Pour cette classe, nous n’avons eu que besoin "d'un point de départ" duquel l'algorithme va commencer à essayer de converger vers la racine.</p>
     	  <p>Nous avions normalement à implémenter une fonction d'approximation de la dérivée d'une fonction en un point (droite tangente). Elle est basée sur la définition de la dérivée, où nous choisissons un "h" (aussi appelé delta ou k) très faible puis selon le principe des approximations linéaire trouvé la valeur de la dérivé.</p>
     	  <p>Mais ayant très bien compris comment implémenter une telle fonction, ajouté au fait que nous trouvé une bibliothèque permettant de trouver la dérivée analytique d'une fonction. Nous avons choisi de simplement évaluer la dérivée analytique au lieu d'utiliser une telle approximation.</p>
-    	  <h3>Point fixe (classe FixedPoint)</h3>
-    	  <span style='color:red;'>TODO</span>
-        <h2>Tests</h2>
-        <p>Nous avons testé notre code avec différentes fonctions tel que <i>sin(x)</i> afin de valider que notre algorithme trouvait tous les zéros.</p>
-        <h2>Conclusion<span style='color:red;'>TODO</span></h2>
-        <p>Nous avons rempli le cahier des charges. L'utilisteur a la possibilité de visualiser les différentes étapes de l'algorithme, le graphe permet de visualiser les fonctions:{f(x); g(x); x}. Nous avons implémenté une version non parfaite permettantde détecter si notre fonction tend vers un résultat ou non.</p>
+	  <h3>Point fixe (classe FixedPoint)</h3>
+	  <p>Pour le moment uniquement cette classe permet de trouver toutes les racines d'une fonction dans l'intervale. (c-à-d : qui implemente la fonction solve)</p>
+	  <p>Voici des explications assez simple pour chacune des fonctions principales de la classe</p>
+		<h4>Contructeur</h4>
+		<p>
+			Le constructeur va initalise le objet avec comme lambda 1, récupérer le point fixe (point de départ) et initialiser les variables qui sont utile à la gestion de la classe.
+		</p>
+		<h4>Next Step</h4>
+		<p>
+			Cette fonction permet de calculer le prochain 'pas' de la recherche de racine. Elle va être impossible à appeler une fois qu'une racine à été trouvée. Ce n'est donc pas avec cette fonction que les racines sont trouvées. Elle a uniquement pour but didactique de comprendre l'algorithme.
+		</p>
+		<h4>Draw</h4>
+		<p>
+			Cette fonction va dessiner la fonction mathématique entrée et afficher à chaque 'pas' les fléches pour indiqué le parcours.
+		</p>
+		<h4>Solve</h4>
+		<p>
+			Cette fonction, reprends en partie le code du next step mais adapte mieux le lambda et trouve toutes les solutions dans l'intervale des objectifs. Nous avons fixé le nombre d'intération maximal à 100, après ce cap nous concidérons que la fonction diverge nous adaptons ensuite le lambda.
+		</p>
+		<p>
+			Dès qu'une solution est trouvée, elle est ajoutée à un dictionnaire. Pour ensuite pouvoir les affichées dans l'interface sous la forme d'un vecteur (Compatibilité firefox [mathml]).
+		</p>
+	<h2>Tests</h2>
+        <p>En plus des fonctions mathématiques proposées, nous avons également testé notre code avec différentes fonctions tel que <i>sin(x)</i> afin de valider que notre algorithme trouvait tous les zéros dans l'intervale.</p>
+        <h2>Conclusion</h2>
+        <p>Nous pensons avons rempli le cahier des charges. L'utilisteur a la possibilité de visualiser les différentes étapes de l'algorithme, le graphe permet de visualiser les fonctions:{f(x); g(x); x}. Nous avons implémenté une version non parfaite permettant de détecter si notre fonction tend vers un résultat ou non.</p>
         <p>Nous avons également réalisé une fonctionnalité supplémentaire intéressante qui est la possibilité de pouvoir directement saisir une fonction dans un champ.</p>
         <h2>Perspectives</h2>
-        <p>Nous avons basé notre développement sur la possibilité de facilement ajouter des fonctionnalitées. Il serait intéressant de pouvoir comparer les différentes méthodes avec entre elles afin de voir à quelle vitesse elles convergent vers une solution.</p>
+        <p>Nous avons basé notre développement sur la possibilité de facilement ajouter des fonctionnalitées. Il serait intéressant de pouvoir comparer de manière pratiques les différentes méthodes. Afin de voir à quelle vitesse elles convergent vers une solution.</p>
       </div>
     </div>
   	<hr>
