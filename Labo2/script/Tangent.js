@@ -1,9 +1,11 @@
 class Tangent extends Algorithm{
+  //Constructeur
   constructor(plot, resultArea){
     super(plot, resultArea);
     this.x = this.plot.getX1();
     this.zeroFounded = false;
     try {
+      //Calcul de la dérivée
       this._derivative(this.x);
     }catch(err){
       console.log("Erreur, dérivée de la fonction = 0");
@@ -11,6 +13,7 @@ class Tangent extends Algorithm{
     }
   }
 
+  //Calcul de l'étape suivante
   nextStep(){
     this.step++;
     if(this.step > this.data.length && !this.zeroFounded){
@@ -40,6 +43,7 @@ class Tangent extends Algorithm{
     return this.step;
   }
 
+  //Affichage des différentes étapes
   draw(){
     let data = this.getData();
     let graph = [];
@@ -53,7 +57,7 @@ class Tangent extends Algorithm{
       }
       graph.push({
         fn: element[0],
-        sampler: 'builtIn',  // this will make function-plot use the evaluator of math.js
+        sampler: 'builtIn',
         graphType: 'polyline',
         color: color
       },{
@@ -67,10 +71,7 @@ class Tangent extends Algorithm{
     return graph;
   }
 
-  solve(){
-    //TODO
-  }
-
+  //Evaluation de la dérivée de la fnction en un point x donné
   _derivative(x){
     let value = math.derivative(this.plot.getFunction(), 'x').eval({x: x});
     if(value===0){

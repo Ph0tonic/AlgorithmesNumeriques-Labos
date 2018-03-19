@@ -1,6 +1,8 @@
 
+//Création de l'objet plot
 let plot = new Plot('canvas',$('#eq').val(),[parseFloat($('#x1').val()),parseFloat($('#x2').val())]);
 
+//Calcul des zéros selon la fonction saisie
 function updateZeroes(){
     let bounderies = [-100,100];
     let solutions = FixedPoint.solve(bounderies,$('#eq').val());
@@ -8,10 +10,10 @@ function updateZeroes(){
     text += solutions.join('</mi></mtd></mtr><mtr><mtd><mi>');
     text += '</mi></mtd></mtr></mtable></mfenced></math>';
     $('#zeros').html(text);
-    //$('#zeros').text('{'+solutions.join(';')+'}');
 }
 
 $(document).ready(function(){
+  //Connexions des différents boutons
   $('#form').on('submit', function (event) {
     event.preventDefault();
     plot.setFunction($('#eq').val());
@@ -19,19 +21,23 @@ $(document).ready(function(){
     updateZeroes();
   });
 
+  //Bouton suivant
   $('#next').on('click', function () {
     $('#nbIteration').text(plot.nextStep());
   });
 
+  //Bouton précédent
   $('#previous').on('click', function () {
     $('#nbIteration').text(plot.previousStep());
   });
 
+  //Borne 1
   $('#x1Group').on('input', function(){
     plot.setX(parseFloat($('#x1').val()),1);
     $('#nbIteration').text('0');
   })
 
+  //Borne 2
   $('#x2Group').on('input', function(){
     if($('input[name=methodOption]:checked', '#method').val() == 'dichotomy'){
       plot.setX(parseFloat($('#x2').val()),2);
@@ -39,6 +45,7 @@ $(document).ready(function(){
     }
   })
 
+  //Choix de la Méthode
   $('#method input').on('change', function() {
     let resultArea = $('#result');
     let method = null;
