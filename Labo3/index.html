@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <title>Labo 3 - Algo num</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css" >
-
 </head>
 <body>
 <body>
@@ -20,23 +21,58 @@
       </ul>
     </div>
     <div class="row">
-      <div class="col-md-12 col-sm-12">
+      <div class="col-md-8 col-sm-12">
         <h2>Utilisation</h2>
+        <p>2 possibilités de chargement du fichier. Première, utilisation du drag and drop du fichier à lire dans la zone prévue à cette effet.
+          Second option, copier directement le contenu du fichier dans la zone prévue à cet effet.
+          Nous avons implémenter une 3ème solution mais celle-ci ne fonctionne pas avec tous les navigateurs à cause de restrictions de ceux-ci.
+          Cette méthode permet de sélectionner directement le fichier JSON à charger à gauche de zone de drag and drop, cliquer sur le nom du fcihier à charger.
+          Chrome et Safari ne permettent pas d'utiliser cette solution.
+        </p>
       </div>
     </div>
     <hr>
     <div class="row">
-      <div id="holder">Drag your file HERE!</div>
-      <input type="submit" onclick="s.solve(matrix);" value="Calculer"/>
-      <div id="chronotime"></div>
+      <div class="col-md-8 col-sm-12">
+        <textarea id="holder">Drag your file HERE!</textarea>
+        <button id="solve" class="btn btn-primary">Calculer</button>
+        <div id="chronotime"></div>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <h2>Charger un fichier</h2>
+        <p>Cliquez sur le fichier voulu, attention fonctionnalité disponible uniquement avec Firefox et Edge.</p>
+        <ul id="files">
+          <li>matrice_0x0.json</li>
+          <li>matrice_2x2.json</li>
+          <li>matrice_3x3.json</li>
+          <li>matrice_50x50.json</li>
+          <li>matrice_250x250.json</li>
+          <li>matrice_300x300.json</li>
+          <li>matrice_avecPB_0x0.json</li>
+          <li>matrice_avecPB_3x3_avec_A_a_0.json</li>
+          <li>matrice_avecPB_3x3_avec_SwapObligatoire.json</li>
+        </ul>
+      </div>
+      <div class="col-md-12 col-sm-12">
+        <h2>Résultats</h2>
+        <div id="result"></div>
+      </div>
     </div>
     <hr>
     <div class="row">
       <div class="col-md-12">
     	   <h1>Rapport</h1>
          <h2>Contextualisation</h2>
+         <p>Le but de ce labo est la résolution d'un système d'équations linéaires avec la méthode de Gauss. L'utilisateur à la possibilité de choisir un fichier ou de directement entrer une matrice dans la zone prévu à cet effet au format JSON.</p>
+         <p>La matrice devra cependant est carré et valide. Notre algorithme ne permet pas de trouver des solutions non constantes ou une infinité de solution. Si un tel cas se présente, un message d'erreur est affiché.</p>
+         <p>Notre programme permet de visualiser les résultats trouvés s'ils sont de nature constant.</p>
+         <h2>Méthodologie de développement</h2>
+         <p>TODO ...</p>
 	       <h2>Tests</h2>
-         <h2>Perspectives</h2>
+         <p>Nous avons testé notre code avec toutes les matrices mises à notre disposition par notre responsable. Tous les tests effectués ont étés concluant!</p>
+         <h2>Conclusion et perspective</h2>
+         <p>Nous sommes satisfait de notre résultat, notre code permet de résoudre une matrice de 300x300 en 16ms avec Firefox Quantum 59.0.2 (64 bits).</p>
+         <p>Finalement, en ce qui concerne le perspectives, il serait intéressant de pouvoir </p>
        </div>
     </div>
   	<hr>
@@ -45,6 +81,7 @@
   		 <ul class="a-autoFill">
         <li><a href="https://stackoverflow.com/questions/11313414/html5-drag-and-drop-load-text-file-in-a-textbox-with-javascript"></a></li>
         <li><a href="https://en.wikipedia.org/wiki/Gaussian_elimination#Pseudocode"></a></li>
+        <li><a href="http://html5demos.com/file-api"></a></li>
       </ul>
     </footer>
   </div>
