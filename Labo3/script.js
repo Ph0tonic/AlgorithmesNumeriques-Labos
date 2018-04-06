@@ -149,7 +149,7 @@ class Solver {
     let data = matrix.data;
     for (let i=n-1; i >= 0; --i) {
         this.x[i] = data[i][n]/data[i][i];
-        for (let k=i-1; k > -1; k--) {
+        for (let k=i-1; k >= 0; --k) {
             data[k][n] -= data[k][i] * this.x[i];
         }
     }
