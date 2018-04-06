@@ -77,13 +77,13 @@
             </p>
             <p>
                 Les équations linéaires nous sont données sous de la forme de fichiers JSON.
-                Les trois attribus suivants sont chargé et doivent être présent dans le fichier JSON.
+                Les trois attributs suivant sont chargé et doivent être présent dans le fichier JSON.
                 <ul>
                     <li>n : Correspond à la longeur du vecteur X et B ainsi que la largeur de la matrice A</li>
                     <li>A : Correspond à la matrice A</li>
                     <li>B : Correspond au vecteur B</li>
                 </ul>
-                Les valeurs des trois attribus doivent être sous la forme d'un tableau 1D dans le fichier JSON.
+                Les valeurs des trois attributs doivent être sous la forme d'un tableau 1D dans le fichier JSON.
                 Quand nous chargeons le système d'équation linéaire importons la matrice A dans un tableau 2D et nous ajoutons le vecteur B en dernière colonne de ce tableau (à la fin de chaque ligne du tableau 2D, on ajoute la valeur de la matrice B du même numéro de ligne). Cela nous permet de n'avoir que un 'grand' tableau 2D. Qui est de taille N+1xN.
             </p>
             <p>
@@ -91,11 +91,11 @@
                 <ul>
                     <li>swapRows(i, j) :</li>
                     <p>
-                        Echange les deux ligne des indices passé en paramètre
+                        Echange les deux lignes des indices passés en paramètre
                     </p>
                     <li>indiceMaxColumn(iColumn, iRowStart=0) :</li>
                     <p>
-                         Retourne l'indice ou la valeur est maximale de cette colonne spécifié (il est possible de passé un indice pour la chercher à partir d'une ligne spécifique)
+                         Retourne l'indice de ligne où la valeur est maximale pour la colonne d'indice spécifiée (il est possible de passé un indice pour la chercher à partir d'une ligne spécifique)
                     </p>
                     <li>substractLineFactor(iRowRef, iRowSub, factor, iColumnStart=0) :</li>
                     <p>
@@ -105,10 +105,40 @@
                 </ul>
             </p>
             </div>
-            <h3>Solver</h3>
+            <h3>Solutionneur (Solver)</h3>
+            <div>
+                <p>
+                    Cette classe possède uniquement un attibut qui stockera le vecteur de solutions une fois la fonction de résolutions appelées.
+                </p>
+                Voici la liste des fonctions de la classe :
+                <p>
+                    <ul>
+                        <li>gaussTransform(matrix) :</li>
+                        <p>
+                            Réalise un transformation gaussienne de la matrice.
+                            <span style='color :red'>TODO : Il faut encore que je comprenne ce code shamanesque, je fais ça d'ici lundi. RMA.</span>
+                        </p>
+                        <li>resolveX(matrix)</li>
+                        <p>
+                            Va parcourir la matrice triangulaire (droite à gauche puis de bas en haut) pour résoudre le système d'équation (générer le vecteur X de la classe).
+                        </p>
+                        <li>displayX()</li>
+                        <p>
+                            Affiche le vecteur de solution(l'attribut x de classe) dans la balise HTML prévu à cette effet.
+                            Affiche également des messages d'erreur en cas d'impossibilité de trouvé des solutions.
+                        </p>
+                        <li>solve(matrix) :</li>
+                        <p>
+                             Reçois une référence sur l'object Matrix, chronomètre le temps pour : Faire la transformation gaussienne(gaussTransform) et à résoudre le système(resolveX) puis affiche le résultat(displayX). C'est le caller général de la classe.
+                        </p>
+                    </ul>
+                <p>
+            </div>
+            <h3>Interface</h3>
+            <span style='color :red'>On va un peu parler de l'interface cette fois vu qu'on a un truc assez insane. Mais je pense qu'on peut améliorer le truc je repasserai plus tard. RMA.</span>
             <p>
-                
-            <p>
+
+            </p>
             <h2>Tests</h2>
          <p>Nous avons testé notre code avec toutes les matrices mises à notre disposition par notre responsable. Tous les tests effectués ont étés concluant!</p>
          <h2>Conclusion et perspective</h2>
