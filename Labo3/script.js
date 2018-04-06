@@ -31,7 +31,7 @@ class Matrix {
     this.data[j] = [this.data[i], this.data[i] = this.data[j]][0]; // Swap 2 rows
   }
 
-  indiceMaxColumn(iColumn,iRowStart=0){
+  indiceMaxColumn(iColumn,iRowStart=0){ //Find the greatest element in the column starting at iRowStart abd return the indice of this line
     let n=this.size;
     let iMax=iRowStart;
     let max = Math.abs(this.data[iRowStart][iColumn]);
