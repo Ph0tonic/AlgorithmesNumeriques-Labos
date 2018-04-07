@@ -179,10 +179,10 @@ let matrix = new Matrix();
 function loadClickedFile(e) {
     e = e || window.event;
     let file = e.target || e.srcElement;
-    file = './data/'+file.innerHTML;
+    let path = './data/'+file.innerHTML;
     let xmlhttp = new XMLHttpRequest();
 
-    xmlhttp.overrideMimeType('text/json');
+    xmlhttp.overrideMimeType('application/json');
     xmlhttp.onreadystatechange = function(){
       if(this.readyState == 4 && this.status == 200)
       {
@@ -190,7 +190,7 @@ function loadClickedFile(e) {
         matrix = new Matrix(this.responseText);
       }
     };
-    xmlhttp.open("GET", file, true);
+    xmlhttp.open("GET", path, true);
     xmlhttp.send(undefined);
 }
 
