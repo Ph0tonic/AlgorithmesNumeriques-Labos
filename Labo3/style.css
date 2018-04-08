@@ -26,3 +26,11 @@ a:after {
   color: #23527c;
   text-decoration: underline;
 }
+
+dl {
+  margin-left: 45px;
+}
+dt:before{
+  margin-left: -10px;
+  content:"• ";
+}

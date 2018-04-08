@@ -113,11 +113,10 @@ class Solver {
     let iMax = 0;
     let f = 0;
     while(h < m) { //  && k < n){
-      /* Find the k-th pivot: */
+      // Find the k-th pivot:
       iMax = matrix.indiceMaxColumn(k,h); // k -> column && h -> line start searching
       if(data[iMax][k] == 0) {
-        /* No pivot in this column, pass to next column */
-        ++k;
+        // No pivot in this column, pass to next column
         console.log("No constant solutions");
         throw new Error("Résultat non-constant");
       } else {
@@ -125,25 +124,26 @@ class Solver {
           matrix.swapRows(h, iMax); // h -> current row && iMax -> ligne max
         }
 
-        /* Do for all rows below pivot: */
+        // Do for all rows below pivot:
         for(let i=h+1; i<m; ++i){
           //Calcul the factor
           f = data[i][k] / data[h][k];
 
-          /* Fill with zeros the lower part of pivot column: */
+          // Fill with zeros the lower part of pivot column:
           data[i][k] = 0;
 
-          /* Do for all remaining elements in current row: */
+          // Do for all remaining elements in current row:
           matrix.substractLineFactor(h, i, f, k+1);
         }
 
-        /* Increase pivot row and column */
+        // Increase pivot row and column
         ++h,
         ++k;
       }
     }
   }
 
+  //Find the vector X, result of Ax=B
   resolveX(matrix){
     let n = matrix.size;
     let data = matrix.data;
@@ -155,6 +155,7 @@ class Solver {
     }
   }
 
+  //Display the result
   displayX(){
     let result = document.getElementById('result');
     let htmlResult = "";
@@ -176,6 +177,7 @@ class Solver {
 
 let matrix = new Matrix();
 
+//Load in ajax the json file containing the matrix
 function loadClickedFile(e) {
     e = e || window.event;
     let file = e.target || e.srcElement;
@@ -194,6 +196,7 @@ function loadClickedFile(e) {
     xmlhttp.send(undefined);
 }
 
+//Method of initialisation
 document.onreadystatechange = () => {
   if (document.readyState === 'interactive') {
     // document ready
@@ -207,15 +210,16 @@ document.onreadystatechange = () => {
       };
     }
 
-    // modified from http://html5demos.com/file-api
     let holder = document.getElementById('holder');
     let s = new Solver();
 
+    //Add action listener on solve button
     document.getElementById('solve').onclick = function(){
         matrix = new Matrix(holder.value);
         s.solve(matrix);
     };
 
+    // Setup the drag and drop option, modified from http://html5demos.com/file-api
     holder.ondragover = function() {
         this.className = 'hover';
         return false;
