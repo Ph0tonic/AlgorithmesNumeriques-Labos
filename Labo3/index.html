@@ -71,7 +71,7 @@
             <p>
                 Notre avons séparé le chargement du système d'équations linéaires et la résolution de l'équation en deux classes : Matrix et Solver.
             </p>
-            <h3>Matrix (Système d'équations linéaires)</h3>
+            <h3>Système d'équations linéaires (Matrix)</h3>
             <p>
                 Les systèmes d'équations linéaires sont représentés de la manière suivante : AX = B
             </p>
@@ -86,7 +86,7 @@
             </ul>
             <p>
                 Les valeurs des trois attributs doivent être sous la forme d'un tableau 1D dans le fichier JSON.
-                Quand nous chargeons le système d'équations linéaires, nous importons la matrice A dans un tableau 2D et nous ajoutons à cette matrice A une nouvelle colonne contenant le vecteur B (à la fin de chaque ligne du tableau 2D, on ajoute la valeur de la matrice B du même numéro de ligne). Cela nous permet de n'avoir qu'un "grand" tableau 2D. Qui est de taille N x (N+1).
+                Quand nous chargeons le système d'équations linéaires, nous importons la matrice A dans un tableau 2D et nous ajoutons à cette matrice A une nouvelle colonne contenant le vecteur B (à la fin de chaque ligne du tableau 2D, on ajoute la valeur de la matrice B du même numéro de ligne). Cela nous permet de n'avoir qu'un "grand" tableau 2D. Qui est de taille N x (N+1). => Principe de la matrice augementé (Augmented matrix).
             </p>
             <p>
                 Une fois la matrice chargée, il est possible d'effectuer les opérations de matrice suivante :
