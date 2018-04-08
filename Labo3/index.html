@@ -111,10 +111,32 @@
                 </p>
                 <dl>
                   <dt>gaussTransform(matrix)</dt>
-                    <dd>Réalise une transformation gaussienne de la matrice.
-                    <span style='color :red'>TODO : Il faut encore que je comprenne ce code shamanesque, je fais ça d'ici lundi. RMA.</span></dd>
+                    <dd>
+						Réalise une élimination de Gauss-Jordan de la matrice (Méthode de Gauss).
+						Il en est l'implémentation du pseudocode de l'algorithme qui se trouve sur la page wikipédia anglaise de élimination Gauss-Jordan. (Voir les références de développement).
+						Son fonctionnement est le suivant :
+						<ul>
+							<li>
+								On initialise des variables qui représentent le pivot à 0.
+								Celui pour les lignes est appelées h. Et celui des colonnes est appelées k.
+							</li>
+							<li>
+								On recherche l'indice de la plus grande valeur(en absolue), avec notre fonction indiceMaxColumn à la colonne du pivot (k) et à partir de la ligne du pivot (h). <i>Si notre pivot vaut 0, il ne vaut plus la peine de chercher continuer. Le système d'équation n'a pas de solution. Évidement cela impliquerai une division par zéro dans l'étape suivante.</i>
+							</li>
+							<li>
+								Si l'indice de ligne du pivot n'est pas égale à l'indice de la valeur max, on inverse les lignes pour avoir la ligne d'indice max sur la ligne sur laquel on 'travail' (ligne du pivot).
+							</li>
+							<li>
+								Pour toutes les lignes en dessous de notre pivot : On soustrait de la ligne courante la ligne du pivot la ligne de telle sorte à annuler la valeur du pivot (En multipliant la ligne un facteur).
+								<i>A noter que nous avons optimiser la soustraction en ne soustrayant qu'a partir de la position du pivot(colonne)+1 car le pivot va de toute façon être annulé (On le met donc 'manuellement' à 0, par une affectation.)</i>
+							</li>
+							<li>
+								Puis on déplace de le pivot de 1 en horrizontal et de 1 en vertical puis on recommence jusque à être à la fin de la matrice.
+							</li>
+						</ul>
+                    </dd>
                   <dt>resolveX(matrix)</dt>
-                    <dd>Va parcourir la matrice triangulaire (droite à gauche puis de bas en haut) pour résoudre le système d'équations (générer le vecteur X de la classe).</dd>
+                    <dd>Va parcourir la matrice triangulaire (droite à gauche puis de bas en haut) pour résoudre le système d'équations (générer le vecteur X de la classe). Elle fonctionne selon la méthode vu en cours. C'est-à-dire qu'on trouve la solution dans la ligne qui n'a qu'une inconnue puis on remplace cette inconnue dans la ligne qui en a deux, etc, etc...</dd>
                   <dt>displayX()</dt>
                     <dd>Affiche le vecteur de solution (l'attribut x de classe) dans la balise HTML prévu à cet effet.
                     Affiche également des messages d'erreur en cas d'impossibilité de trouver des solutions.</dd>
@@ -125,7 +147,6 @@
                 </dl>
             </div>
             <h3>Interface</h3>
-            <span style='color :red'>On va un peu parler de l'interface cette fois vu qu'on a un truc assez insane. Mais je pense qu'on peut améliorer le truc je repasserai plus tard. RMA.</span>
             <p>
 
             </p>
