@@ -62,13 +62,13 @@
       <div class="col-md-12">
     	   <h1>Rapport</h1>
          <h2>Contextualisation</h2>
-         <p>Le but de ce labo est la résolution d'un système d'équations linéaires avec la méthode de Gauss. L'utilisateur à la possibilité de choisir un fichier ou de directement entrer une matrice dans la zone prévu à cet effet au format JSON.</p>
+         <p>Le but de ce labo est la résolution d'un système d'équations linéaires avec la méthode de Gauss. L'utilisateur a la possibilité de choisir un fichier ou de directement entrer une matrice dans la zone prévue à cet effet au format JSON.</p>
          <p>La matrice devra cependant être carrée et valide. Notre algorithme ne permet pas de trouver des solutions non constantes ou une infinité de solutions. Si un tel cas se présente, un message d'erreur est affiché.</p>
          <p>Notre programme permet de visualiser les résultats trouvés s'ils sont de nature constante.</p>
          <h2>Méthodologie de développement</h2>
          <div>
             <p>
-                Notre avons séparé le chargement du système d'équations linéaires et la résolution de l'équation en deux classes : Matrix et Solver.
+                Nous avons séparé le chargement du système d'équations linéaires et la résolution de l'équation en deux classes : Matrix et Solver.
             </p>
             <h3>Système d'équations linéaires (Matrix)</h3>
             <p>
@@ -93,7 +93,7 @@
 
             <dl>
               <dt>swapRows(i, j)</dt>
-                <dd>Echange les deux lignes des indices passés en paramètre</dd>
+                <dd>Échange les deux lignes des indices passés en paramètre</dd>
               <dt>indiceMaxColumn(iColumn, iRowStart=0)</dt>
                 <dd>Retourne l'indice de ligne où la valeur est maximale pour l'indice de la colonne spécifiée (il est possible de passer un indice pour la chercher à partir d'une ligne spécifique)</dd>
               <dt>substractLineFactor(iRowRef, iRowSub, factor, iColumnStart=0)</dt>
@@ -149,7 +149,7 @@
             <h2>Tests</h2>
          <p>Nous avons testé notre code avec toutes les matrices mises à notre disposition par notre responsable. Tous les tests effectués ont été concluants!</p>
          <h2>Conclusion et perspective</h2>
-         <p>Nous sommes satisfaits de notre résultat, notre code permet de résoudre une matrice de 300x300 en 14ms avec Firefox Quantum 59.0.2 (64 bits) + Lenovo Thinkpad P50.</p>
+         <p>Nous sommes satisfaits de notre résultat, notre code permet de résoudre une matrice de 300x300 en ~13ms avec Firefox Quantum 59.0.2 (64 bits) + Lenovo Thinkpad P50.</p>
          <p>Finalement, en ce qui concerne les perspectives, il serait intéressant de pouvoir comparer notre algorithmes avec d'autres tels que ceux utilisés par Mathematica par exemple.</p>
        </div>
     </div>
