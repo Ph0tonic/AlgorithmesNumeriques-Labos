@@ -64,7 +64,7 @@
          <h2>Contextualisation</h2>
          <p>Le but de ce labo est la résolution d'un système d'équations linéaires avec la méthode de Gauss. L'utilisateur à la possibilité de choisir un fichier ou de directement entrer une matrice dans la zone prévu à cet effet au format JSON.</p>
          <p>La matrice devra cependant être carrée et valide. Notre algorithme ne permet pas de trouver des solutions non constantes ou une infinité de solutions. Si un tel cas se présente, un message d'erreur est affiché.</p>
-         <p>Notre programme permet de visualiser les résultats trouvés s'ils sont de nature constant.</p>
+         <p>Notre programme permet de visualiser les résultats trouvés s'ils sont de nature constante.</p>
          <h2>Méthodologie de développement</h2>
          <div>
             <p>
@@ -85,7 +85,7 @@
             </ul>
             <p>
                 Les valeurs des trois attributs doivent être sous la forme d'un tableau 1D dans le fichier JSON.
-                Quand nous chargeons le système d'équations linéaires, nous importons la matrice A dans un tableau 2D et nous ajoutons à cette matrice A une nouvelle colonne contenant le vecteur B (à la fin de chaque ligne du tableau 2D, on ajoute la valeur de la matrice B du même numéro de ligne). Cela nous permet de n'avoir qu'un "grand" tableau 2D. Qui est de taille N x (N+1). => Principe de la matrice augementé (Augmented matrix).
+                Quand nous chargeons le système d'équations linéaires, nous importons la matrice A dans un tableau 2D et nous ajoutons à cette matrice A une nouvelle colonne contenant le vecteur B (à la fin de chaque ligne du tableau 2D, on ajoute la valeur de la matrice B du même numéro de ligne). Cela nous permet de n'avoir qu'un "grand" tableau 2D. Qui est de taille N x (N+1). => Principe de la matrice augmentée (Augmented matrix).
             </p>
             <p>
                 Une fois la matrice chargée, il est possible d'effectuer les opérations de matrice suivante :
@@ -97,14 +97,14 @@
               <dt>indiceMaxColumn(iColumn, iRowStart=0)</dt>
                 <dd>Retourne l'indice de ligne où la valeur est maximale pour l'indice de la colonne spécifiée (il est possible de passer un indice pour la chercher à partir d'une ligne spécifique)</dd>
               <dt>substractLineFactor(iRowRef, iRowSub, factor, iColumnStart=0)</dt>
-                <dd>Soustrait la ligne de référence (ligne d'indice iRowRef) par la ligne de soustraction (ligne d'indice iRowSub) multipliée par un facteur (factor).
+                <dd>Soustrais la ligne de référence (ligne d'indice iRowRef) par la ligne de soustraction (ligne d'indice iRowSub) multipliée par un facteur (factor).
                 Il est également possible de passer un numéro de colonne à partir duquel on commence l'opération (optimisation).</dd>
             </dl>
           </div>
             <h3>Solutionneur (Solver)</h3>
             <div>
                 <p>
-                    Cette classe possède uniquement un attribut qui stockera le vecteur de solutions une fois la fonction de résolutions appelées.
+                    Cette classe possède uniquement un attribut qui stockera le vecteur de solutions, une fois la fonction de résolutions appelées.
                 </p>
                 <p>
                 Voici la liste des fonctions de la classe :
@@ -113,36 +113,36 @@
                   <dt>gaussTransform(matrix)</dt>
                     <dd>
 						Réalise une élimination de Gauss-Jordan de la matrice (Méthode de Gauss).
-						Il en est l'implémentation du pseudocode de l'algorithme qui se trouve sur la page wikipédia anglaise de élimination Gauss-Jordan. (Voir les références de développement).
+						Il en est l'implémentation du pseudocode de l'algorithme qui se trouve sur la page Wikipédia anglaise d'élimination Gauss-Jordan. (Voir les références de développement).
 						Son fonctionnement est le suivant :
 						<ul>
 							<li>
 								On initialise des variables qui représentent le pivot à 0.
-								Celui pour les lignes est appelées h. Et celui des colonnes est appelées k.
+								Celui pour les lignes est appelé h. Et celui des colonnes est appelé k.
 							</li>
 							<li>
-								On recherche l'indice de la plus grande valeur(en absolue), avec notre fonction indiceMaxColumn à la colonne du pivot (k) et à partir de la ligne du pivot (h). <i>Si notre pivot vaut 0, il ne vaut plus la peine de chercher continuer. Le système d'équation n'a pas de solution. Évidement cela impliquerai une division par zéro dans l'étape suivante.</i>
+								On recherche l'indice de la plus grande valeur(en absolue), avec notre fonction indiceMaxColumn à la colonne du pivot (k) et à partir de la ligne du pivot (h). <i>Si notre pivot vaut 0, il ne vaut plus la peine de chercher continuer. Le système d'équations n'a pas de solution. Évidemment cela impliquerait une division par zéro dans l'étape suivante.</i>
 							</li>
 							<li>
-								Si l'indice de ligne du pivot n'est pas égale à l'indice de la valeur max, on inverse les lignes pour avoir la ligne d'indice max sur la ligne sur laquel on 'travail' (ligne du pivot).
+								Si l'indice de ligne du pivot n'est pas égal à l'indice de la valeur max, on inverse les lignes pour avoir la ligne d'indice max sur la ligne sur laquelle on "travaille" (ligne du pivot).
 							</li>
 							<li>
-								Pour toutes les lignes en dessous de notre pivot : On soustrait de la ligne courante la ligne du pivot la ligne de telle sorte à annuler la valeur du pivot (En multipliant la ligne un facteur).
-								<i>A noter que nous avons optimiser la soustraction en ne soustrayant qu'a partir de la position du pivot(colonne)+1 car le pivot va de toute façon être annulé (On le met donc 'manuellement' à 0, par une affectation.)</i>
+								Pour toutes les lignes en dessous de notre pivot : On soustrait à la ligne courante la ligne du pivot de telle sorte à annuler la valeur du pivot (En multipliant la ligne un facteur).
+								<i>A noter que nous avons optimisé la soustraction en ne soustrayant qu'à partir de la position du pivot(colonne)+1 car le pivot va de toute façon être annulé (On le met donc 'manuellement' à 0, par une affectation.)</i>
 							</li>
 							<li>
-								Puis on déplace de le pivot de 1 en horrizontal et de 1 en vertical puis on recommence jusque à être à la fin de la matrice.
+								Puis on déplace le pivot de 1 en horizontale et de 1 en vertical puis on recommence jusqu'à être à la fin de la matrice.
 							</li>
 						</ul>
                     </dd>
                   <dt>resolveX(matrix)</dt>
-                    <dd>Va parcourir la matrice triangulaire (droite à gauche puis de bas en haut) pour résoudre le système d'équations (générer le vecteur X de la classe). Elle fonctionne selon la méthode vu en cours. C'est-à-dire qu'on trouve la solution dans la ligne qui n'a qu'une inconnue puis on remplace cette inconnue dans la ligne qui en a deux, etc, etc...</dd>
+                    <dd>Va parcourir la matrice triangulaire (droite à gauche puis de bas en haut) pour résoudre le système d'équations (générer le vecteur X de la classe). Elle fonctionne selon la méthode vue en cours. C'est-à-dire qu'on trouve la solution dans la ligne qui n'a qu'une inconnue puis on remplace cette inconnue dans la ligne qui en a deux, etc, etc...</dd>
                   <dt>displayX()</dt>
                     <dd>Affiche le vecteur de solution (l'attribut x de classe) dans la balise HTML prévu à cet effet.
                     Affiche également des messages d'erreur en cas d'impossibilité de trouver des solutions.</dd>
                   <dt>solve(matrix)</dt>
-                    <dd>Reçois une référence sur l'object Matrix, chronomètre le temps pour : effectuer la transformation de gausss (gaussTransform) et résoudre le système (resolveX).
-                    Finalement une fois l'équation résolu, affiche le résultat (displayX, cette opération n'est pas chronométrée).
+                    <dd>Reçois une référence sur l'objet Matrix, chronomètre le temps pour : effectuer la transformation de gausss (gaussTransform) et résoudre le système (resolveX).
+                    L'affichage du résultat (DisplayX) n'est pas appelé dans cette classe et n'est ainsi pas chronométré.
                     Cette fonction est la fonction principale de la classe.</dd>
                 </dl>
             </div>
@@ -154,7 +154,7 @@
          <p>Nous avons testé notre code avec toutes les matrices mises à notre disposition par notre responsable. Tous les tests effectués ont été concluants!</p>
          <h2>Conclusion et perspective</h2>
          <p>Nous sommes satisfaits de notre résultat, notre code permet de résoudre une matrice de 300x300 en 14ms avec Firefox Quantum 59.0.2 (64 bits) + Lenovo Thinkpad P50.</p>
-         <p>Finalement, en ce qui concerne les perspectives, il serait intéressant de pouvoir ...</p>
+         <p>Finalement, en ce qui concerne les perspectives, il serait intéressant de pouvoir comparer notre algorithmes avec d'autres tels que ceux utilisés par Mathematica par exemple.</p>
        </div>
     </div>
   	<hr>

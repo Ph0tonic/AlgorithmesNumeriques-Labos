@@ -85,9 +85,6 @@ class Solver {
     }catch(error){
       this.x = undefined;
     }
-
-    //Display x
-    this.displayX();
   }
 
   gaussTransform(matrix){
@@ -217,6 +214,9 @@ document.onreadystatechange = () => {
     document.getElementById('solve').onclick = function(){
         matrix = new Matrix(holder.value);
         s.solve(matrix);
+
+        //Display x
+        s.displayX();
     };
 
     // Setup the drag and drop option, modified from http://html5demos.com/file-api
