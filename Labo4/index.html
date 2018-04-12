@@ -32,12 +32,22 @@
       </div>
       <div class="col-md-12 col-sm-12">
         <h2>Résultats</h2>
+
+        <label for='nbTermsTaylor'>Nombre de terms pour Taylor : <span id='nbTermsTaylor-value'></span></label>
+        <input type='range' min='1' max='15' value='7' id='nbTermsTaylor' oninput="settingsChanged();" onchange="settingsChanged();"/>
+
+        <label for='nbSample'>Nombre d'échantillions : <span id='nbSample-value'></span></label>
+        <input type='range' min='5' max='25' value='15' id='nbSample' oninput="settingsChanged();" onchange="settingsChanged();"/>
+
+        <label for='nbPeriods'>Nombre de periodes : <span id='nbPeriods-value'></span></label>
+        <input type='range' min='1' max='20' value='3' id='nbPeriods' oninput="settingsChanged();" onchange="settingsChanged();"/>
+
         <div id="result">
             <h3>y = Cos(x)</h3>
             <span id='cos'></span>
-            <h3>y = Cos'(x)</h3>
+            <h3>y = Cos'(x) = -Sin(x) = Cos(x - pi/2)</h3>
             <span id='cosprime'></span>
-            <h3>y = Cos''(x)</h3>
+            <h3>y = Cos''(x) = -Sin'(x) = -Cos(x) = Cos(x - pi)</h3>
             <span id='cossecond'></span>
         </div>
       </div>
