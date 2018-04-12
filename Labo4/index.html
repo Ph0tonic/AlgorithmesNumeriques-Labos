@@ -32,7 +32,14 @@
       </div>
       <div class="col-md-12 col-sm-12">
         <h2>Résultats</h2>
-        <div id="result"></div>
+        <div id="result">
+            <h3>y = Cos(x)</h3>
+            <span id='cos'></span>
+            <h3>y = Cos'(x)</h3>
+            <span id='cosprime'></span>
+            <h3>y = Cos''(x)</h3>
+            <span id='cossecond'></span>
+        </div>
       </div>
     </div>
     <hr>
@@ -50,9 +57,12 @@
   	   <h2>Références de développement</h2>
   		 <ul class="a-autoFill">
         <li><a href="https://stackoverflow.com/questions/11313414/html5-drag-and-drop-load-text-file-in-a-textbox-with-javascript"></a></li>
+        <li><a href='https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions'></a>
       </ul>
     </footer>
   </div>
+    <script src="https://unpkg.com/d3@3/d3.min.js"></script>
+    <script src="https://unpkg.com/function-plot@1/dist/function-plot.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
