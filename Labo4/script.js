@@ -118,10 +118,9 @@ function createPeriods(points, nbPeriods, period)
 //     return newpoints;
 // }
 
-function use(nbTermsTaylor, nbSample, nbPeriods)
+function use(nbTermsTaylor, nbSample, h, nbPeriods)
 {
     let period = 2*Math.PI;
-    let h = 0.1;
 
     let pointsCos = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor);
     let pointsMSin = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor, derivativePrime, h);
@@ -131,7 +130,7 @@ function use(nbTermsTaylor, nbSample, nbPeriods)
     pointsMSin = createPeriods(pointsMSin, nbPeriods, period);
     pointsMCos = createPeriods(pointsMCos, nbPeriods, period);
 
-    showGraph('cos', pointsCos, pointsMSin, pointsMCos);
+    showGraph('graph', pointsCos, pointsMSin, pointsMCos);
 }
 
 function clone2DArray(from)
@@ -148,16 +147,18 @@ function settingsChanged()
 {
     let nbTermsTaylor = document.getElementById("nbTermsTaylor").value;
     let nbSample = document.getElementById("nbSample").value;
+    let h = document.getElementById("h").value;
     let nbPeriods = document.getElementById("nbPeriods").value;
 
-    updateDisplay(nbTermsTaylor, nbSample, nbPeriods);
-    use(nbTermsTaylor, nbSample, nbPeriods);
+    updateDisplay(nbTermsTaylor, nbSample, h, nbPeriods);
+    use(nbTermsTaylor, nbSample, 10**h, nbPeriods);
 }
 
-function updateDisplay(nbTermsTaylor, nbSample, nbPeriods)
+function updateDisplay(nbTermsTaylor, nbSample, h, nbPeriods)
 {
     document.getElementById("nbTermsTaylor-value").innerHTML = nbTermsTaylor;
     document.getElementById("nbSample-value").innerHTML = nbSample;
+    document.getElementById("h-value").innerHTML = "10^"+h;
     document.getElementById("nbPeriods-value").innerHTML = nbPeriods;
 }
 
