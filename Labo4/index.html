@@ -23,7 +23,13 @@
     <div class="row">
       <div class="col-md-12 col-sm-12">
         <h2>Utilisation</h2>
-        <p></p>
+        <p>
+            Le programme s'utilise en faisant varier les 4 paramètres ci-dessous.
+            Le graphique se met automatiquement à jours et zoom sur la porté des points à afficher.
+        </p>
+        <p>
+            A noter que si des asymptotes sont présente (du par exemple à un nombre de terme de taylor trop faible) le graphique ne va pas être zoom de manière précise.
+        </p>
       </div>
     </div>
     <hr>
@@ -34,7 +40,7 @@
         <h2>Résultats</h2>
 
         <label for='nbTermsTaylor'>Nombre de terms pour Taylor : <span id='nbTermsTaylor-value'></span></label>
-        <input type='range' min='1' max='100' value='10' id='nbTermsTaylor' oninput="settingsChanged();" onchange="settingsChanged();"/>
+        <input type='range' min='1' max='1000' value='10' id='nbTermsTaylor' oninput="settingsChanged();" onchange="settingsChanged();"/>
 
         <label for='nbSamplePerPeriod'>Nombre d'échantillions par periodes : <span id='nbSamplePerPeriod-value'></span></label>
         <input type='range' min='5' max='100' value='15' id='nbSamplePerPeriod' oninput="settingsChanged();" onchange="settingsChanged();"/>
@@ -42,7 +48,7 @@
         <label for='nbPeriods'>Nombre de periodes : <span id='nbPeriods-value'></span></label>
         <input type='range' min='1' max='20' value='3' id='nbPeriods' oninput="settingsChanged();" onchange="settingsChanged();"/>
 
-        <label for='h'>H (deltaX) de la derivé : <span id='h-value'></span></label>
+        <label for='h'>h (deltaX) des derivées : <span id='h-value'></span></label>
         <input type='range' min='-20' max='0' value='-3' id='h' oninput="settingsChanged();" onchange="settingsChanged();"/>
 
         <div id="result">
@@ -56,7 +62,7 @@
     <hr>
     <div class="row">
       <div class="col-md-12">
-    	   <h1>Rapport</h1>
+        <h1>Rapport</h1>
          <h2>Contextualisation</h2>
          <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>cos</mi><mo>(</mo><mi>&#x3B8;</mi><mo>)</mo><mo>=</mo><munderover><mo>&#x2211;</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mo>&#x221E;</mo></munderover><mfrac><mrow><mo>(</mo><mo>-</mo><mn>1</mn><msup><mo>)</mo><mi>n</mi></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mo>!</mo></mrow></mfrac><msup><mi>&#x3B8;</mi><mrow><mn>2</mn><mi>n</mi></mrow></msup></math>
          <h2>Tests</h2>
