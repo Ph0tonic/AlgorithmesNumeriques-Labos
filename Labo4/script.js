@@ -58,30 +58,25 @@ function getPoints(f, start, stop, nbSample, nbTermsTaylor, derivative = null, h
     return points;
 }
 
-function showGraph(graph, points, points2, points3)
+function showGraph(graph, tabPoints)
 {
+    dataPoints = [];
+    for(let i = 0; i < tabPoints.length;i++)
+    {
+        d = {
+            points: tabPoints[i],
+            fnType: 'points',
+            graphType: 'polyline'
+        };
+        dataPoints.push(d);
+    }
+
     functionPlot({
         target: '#' + graph,
         xAxis :{label:'x'},
         yAxis :{label:'y'},
         grid :true,
-        data: [
-            {
-                points: points,
-                fnType: 'points',
-                graphType: 'polyline'
-            },
-            {
-                points: points2,
-                fnType: 'points',
-                graphType: 'polyline'
-            },
-            {
-                points: points3,
-                fnType: 'points',
-                graphType: 'polyline'
-            }
-        ]
+        data:dataPoints
     })
 }
 
@@ -106,31 +101,17 @@ function createPeriods(points, nbPeriods, period)
     return newpoints;
 }
 
-// function shiftBy(points, value)
-// {
-//     let newpoints = clone2DArray(points);
-//
-//     for(let i = 0; i < newpoints.length; i++)
-//     {
-//         newpoints[i][0] += value;
-//     }
-//
-//     return newpoints;
-// }
-
-function use(nbTermsTaylor, nbSample, h, nbPeriods)
+function use(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods)
 {
-    let period = 2*Math.PI;
+    let period = nbPeriods*2*Math.PI;
+    let nbSample = nbPeriods*nbSamplePerPeriod;
+
 
     let pointsCos = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor);
     let pointsMSin = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor, derivativePrime, h);
     let pointsMCos = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor, derivativeSecond, h);
 
-    pointsCos = createPeriods(pointsCos, nbPeriods, period);
-    pointsMSin = createPeriods(pointsMSin, nbPeriods, period);
-    pointsMCos = createPeriods(pointsMCos, nbPeriods, period);
-
-    showGraph('graph', pointsCos, pointsMSin, pointsMCos);
+    showGraph('graph', [pointsCos, pointsMSin, pointsMCos]);
 }
 
 function clone2DArray(from)
@@ -146,18 +127,18 @@ function clone2DArray(from)
 function settingsChanged()
 {
     let nbTermsTaylor = document.getElementById("nbTermsTaylor").value;
-    let nbSample = document.getElementById("nbSample").value;
+    let nbSamplePerPeriod = document.getElementById("nbSamplePerPeriod").value;
     let h = document.getElementById("h").value;
     let nbPeriods = document.getElementById("nbPeriods").value;
 
-    updateDisplay(nbTermsTaylor, nbSample, h, nbPeriods);
-    use(nbTermsTaylor, nbSample, 10**h, nbPeriods);
+    updateDisplay(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods);
+    use(nbTermsTaylor, nbSamplePerPeriod, 10**h, nbPeriods);
 }
 
-function updateDisplay(nbTermsTaylor, nbSample, h, nbPeriods)
+function updateDisplay(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods)
 {
     document.getElementById("nbTermsTaylor-value").innerHTML = nbTermsTaylor;
-    document.getElementById("nbSample-value").innerHTML = nbSample;
+    document.getElementById("nbSamplePerPeriod-value").innerHTML = nbSamplePerPeriod;
     document.getElementById("h-value").innerHTML = "10^"+h;
     document.getElementById("nbPeriods-value").innerHTML = nbPeriods;
 }
