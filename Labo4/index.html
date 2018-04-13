@@ -34,10 +34,10 @@
         <h2>Résultats</h2>
 
         <label for='nbTermsTaylor'>Nombre de terms pour Taylor : <span id='nbTermsTaylor-value'></span></label>
-        <input type='range' min='1' max='100' value='7' id='nbTermsTaylor' oninput="settingsChanged();" onchange="settingsChanged();"/>
+        <input type='range' min='1' max='100' value='10' id='nbTermsTaylor' oninput="settingsChanged();" onchange="settingsChanged();"/>
 
         <label for='nbSamplePerPeriod'>Nombre d'échantillions par periodes : <span id='nbSamplePerPeriod-value'></span></label>
-        <input type='range' min='5' max='50' value='15' id='nbSamplePerPeriod' oninput="settingsChanged();" onchange="settingsChanged();"/>
+        <input type='range' min='5' max='100' value='15' id='nbSamplePerPeriod' oninput="settingsChanged();" onchange="settingsChanged();"/>
 
         <label for='nbPeriods'>Nombre de periodes : <span id='nbPeriods-value'></span></label>
         <input type='range' min='1' max='20' value='3' id='nbPeriods' oninput="settingsChanged();" onchange="settingsChanged();"/>
@@ -46,10 +46,10 @@
         <input type='range' min='-20' max='0' value='-3' id='h' oninput="settingsChanged();" onchange="settingsChanged();"/>
 
         <div id="result">
-            <h3>y = Cos(x)</h3>
-            <h3>y = Cos'(x)</h3>
-            <h3>y = Cos''(x)</h3>
-            <span id='graph'></span>
+            <div id='graph' style="width:100%;height:400px"></div>
+            <span class='legend' style='color:blue'>y = Cos(x)</span>
+            <span class='legend' style='color:red'>y = Cos'(x)</span>
+            <span class='legend' style='color:green'>y = Cos''(x)</span>
         </div>
       </div>
     </div>

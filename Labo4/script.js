@@ -58,60 +58,33 @@ function getPoints(f, start, stop, nbSample, nbTermsTaylor, derivative = null, h
     return points;
 }
 
-function showGraph(graph, tabPoints)
+function showGraph(graph, tabPoints, zoom)
 {
     dataPoints = [];
-    for(let i = 0; i < tabPoints.length;i++)
+
+    for(let i = 0; i < tabPoints.length; i++)
     {
         d = {
             points: tabPoints[i],
             fnType: 'points',
             graphType: 'polyline'
-        };
+            };
         dataPoints.push(d);
     }
 
-    functionPlot({
+    let e = document.getElementById(graph);
+
+    let p = functionPlot({
         target: '#' + graph,
+        width: e.offsetWidth,
+        height: e.offsetHeight,
         xAxis :{label:'x'},
         yAxis :{label:'y'},
-        grid :true,
-        data:dataPoints
-    })
-}
+        grid : true,
+        data: dataPoints
+    });
 
-function createPeriods(points, nbPeriods, period)
-{
-    let newpoints = clone2DArray(points);
-
-    for(let i = 1; i < nbPeriods; i++)
-    {
-        for(let j = 0; j < points.length; j++)
-        {
-            point = points[j];
-            x = point[0];
-            y = point[1];
-
-            newpoint = [x + i*period, y];
-
-            newpoints.push(newpoint);
-        }
-    }
-
-    return newpoints;
-}
-
-function use(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods)
-{
-    let period = nbPeriods*2*Math.PI;
-    let nbSample = nbPeriods*nbSamplePerPeriod;
-
-
-    let pointsCos = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor);
-    let pointsMSin = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor, derivativePrime, h);
-    let pointsMCos = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor, derivativeSecond, h);
-
-    showGraph('graph', [pointsCos, pointsMSin, pointsMCos]);
+    p.programmaticZoom(zoom[0], zoom[1]);
 }
 
 function clone2DArray(from)
@@ -122,6 +95,26 @@ function clone2DArray(from)
         to.push(from[i].slice(0));
     }
     return to;
+}
+
+function use(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods)
+{
+    let period = nbPeriods*2*Math.PI;
+    let nbSample = nbPeriods*nbSamplePerPeriod;
+
+    let pointsCos = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor);
+    let pointsMSin = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor, derivativePrime, h);
+    let pointsMCos = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor, derivativeSecond, h);
+
+    let zoom = [];
+    let minx = pointsCos[0][0];
+    let maxx = pointsCos[pointsCos.length-1][0];
+    let miny = -maxx;
+    let maxy = maxx;
+    zoom.push([minx, maxx]);
+    zoom.push([miny, maxy]);
+
+    showGraph('graph', [pointsCos, pointsMSin, pointsMCos], zoom);
 }
 
 function settingsChanged()
@@ -143,4 +136,6 @@ function updateDisplay(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods)
     document.getElementById("nbPeriods-value").innerHTML = nbPeriods;
 }
 
+//It's becoming to be less understandable with all these parameters for functions
+//We should maybe create a class in the case that we add new features...
 settingsChanged();

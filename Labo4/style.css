@@ -1,3 +1,12 @@
 a:after {
     content: attr(href);
 }
+
+#result {
+    text-align: center;
+}
+
+.legend {
+    font-size: 20px;
+    padding: 0px 20px;
+}
