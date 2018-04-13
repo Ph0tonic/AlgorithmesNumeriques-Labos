@@ -1,5 +1,5 @@
 
-function taylorCos(theta, n)
+function cosTaylor(theta, n)
 {
     let thetaCarre = theta*theta/1;
     let res = 1;
@@ -20,7 +20,21 @@ function taylorCos(theta, n)
     return res;
 }
 
-function getPointsTaylorCos(start, stop, nbSample, nbTermsTaylor)
+function derivativePrime(f, theta, n, h)
+{
+    let numerator = f(theta + h, n) - f(theta - h, n);
+    let denominator = 2*h;
+    return numerator / denominator;
+}
+
+function derivativeSecond(f, theta, n, h)
+{
+    let numerator = f(theta + h, n) + f(theta - h, n) - 2*f(theta, n);
+    let denominator = h*h;
+    return numerator / denominator;
+}
+
+function getPoints(f, start, stop, nbSample, nbTermsTaylor, derivative = null, h = -1)
 {
     if(stop <= start || nbSample < 1)
         return false;
@@ -32,7 +46,11 @@ function getPointsTaylorCos(start, stop, nbSample, nbTermsTaylor)
 
     for(let x = start; x < stop; x+=step)
     {
-        y = taylorCos(x, nbTermsTaylor);
+        if(derivative == null)
+            y = f(x, nbTermsTaylor);
+        else
+            y = derivative(f, x, nbTermsTaylor, h);
+
         point = [x, y];
         points.push(point);
     }
@@ -88,25 +106,26 @@ function createPeriods(points, nbPeriods, period)
     return newpoints;
 }
 
-function shiftBy(points, value)
-{
-    let newpoints = clone2DArray(points);
-
-    for(let i = 0; i < newpoints.length; i++)
-    {
-        newpoints[i][0] += value;
-    }
-
-    return newpoints;
-}
+// function shiftBy(points, value)
+// {
+//     let newpoints = clone2DArray(points);
+//
+//     for(let i = 0; i < newpoints.length; i++)
+//     {
+//         newpoints[i][0] += value;
+//     }
+//
+//     return newpoints;
+// }
 
 function use(nbTermsTaylor, nbSample, nbPeriods)
 {
     let period = 2*Math.PI;
+    let h = 0.1;
 
-    let pointsCos = getPointsTaylorCos(-period/2, period/2, nbSample, nbTermsTaylor);
-    let pointsMSin = shiftBy(pointsCos, -period/4);
-    let pointsMCos = shiftBy(pointsMSin, -period/4);
+    let pointsCos = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor);
+    let pointsMSin = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor, derivativePrime, h);
+    let pointsMCos = getPoints(cosTaylor, -period/2, period/2, nbSample, nbTermsTaylor, derivativeSecond, h);
 
     pointsCos = createPeriods(pointsCos, nbPeriods, period);
     pointsMSin = createPeriods(pointsMSin, nbPeriods, period);
