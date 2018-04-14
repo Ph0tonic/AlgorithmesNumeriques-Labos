@@ -35,8 +35,6 @@
     <hr>
     <div class="row">
       <div class="col-md-12 col-sm-12">
-      </div>
-      <div class="col-md-12 col-sm-12">
         <h2>Résultats</h2>
 
         <label for='nbTermsTaylor'>Nombre de terms pour Taylor : <span id='nbTermsTaylor-value'></span></label>
@@ -61,6 +59,24 @@
     </div>
     <hr>
     <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <h2>Problème Bonus</h2>
+        <label for='nbTermsTaylor'>Angle de départ : <span id='AngleStart'></span>°</label>
+        <input type='range' min='0' max='90' value='45' title="45" id='angle-boat'  data-toggle="popover" data-placement="top" data-content="45" />
+        <hr>
+        <h2>Résultats</h2>
+        <p>Temps effectif : <span></span></p>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 410">
+          <path id="arc1" fill="#ff0000" stroke="#ff0000" stroke-width="1" />
+          <ellipse ry="200" rx="200" id="svg_1" cy="205" cx="205" stroke-width="1.5" fill="#9ACEE6"/>
+          <line stroke-linecap="null" stroke-linejoin="null" id="line-boat" y2="4" x2="205" y1="205" x1="4" stroke-width="1.5" stroke="#ff0000" fill="none"/>
+        </svg>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
       <div class="col-md-12">
         <h1>Rapport</h1>
          <h2>Contextualisation</h2>
@@ -78,8 +94,12 @@
       </ul>
     </footer>
   </div>
-    <script src="d3.min.js"></script>
-    <script src="function-plot.js"></script>
+
+    <script src="script.external/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="script.external/d3.min.js"></script>
+    <script src="script.external/function-plot.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

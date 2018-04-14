@@ -1,23 +1,37 @@
 
-function cosTaylor(theta, n)
+function cosTaylor(theta, iterNum=500)
 {
-    let thetaCarre = theta*theta/1;
-    let res = 1;
+    let thetaCarre = theta*theta;
+    let cos = 1;
     let signe = -1;
     let powByFactorial = 1;
 
     //cos(theta)=(-1)^n/(2n)! * theta^(2n)
-    for(let i=1;i<n;++i)
+    for(let i=1;i<iterNum;++i)
     {
         powByFactorial *= thetaCarre/((2*i)*(2*i-1));
 
+        cos += signe*powByFactorial;
+        signe *= -1
         if(powByFactorial == 0)
             break;
-
-        res += signe*powByFactorial;
-        signe *= -1
     }
-    return res;
+    return cos;
+}
+
+function sinTaylor(theta, iterNum=500) {
+    var thetaCarre = -theta*theta;
+    var sin = 1;
+    var n = 0;
+    var term = 1;
+    for (let i = 1; i <= 2*iterNum; i++) {
+        n = n + 2;
+        term = term * thetaCarre / ( n*(n+1) );
+        sin = sin + term
+    }
+    sin = theta*sin;
+
+    return sin;
 }
 
 function derivativePrime(f, theta, n, h)
@@ -134,8 +148,58 @@ function updateDisplay(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods)
     document.getElementById("nbSamplePerPeriod-value").innerHTML = nbSamplePerPeriod;
     document.getElementById("h-value").innerHTML = "10^"+h;
     document.getElementById("nbPeriods-value").innerHTML = nbPeriods;
+
+
+}
+
+class BoatManager{
+
+  constructor(){
+    this.offsetX = 5;
+    this.offsetY = 5;
+    this.centerX = 205;
+    this.centerY = 205;
+    this.radius = 200;
+
+
+    let self = this;
+    $('#angle-boat').on('change input',function(){
+      $('#AngleStart').text($(this).val());
+      self.angleUpdate(parseInt($(this).val()));
+    }).trigger('change');
+  }
+
+  // Adapted from https://stackoverflow.com/questions/5736398/how-to-calculate-the-svg-path-for-an-arc-of-a-circle
+  angleUpdate(angle){
+    if(angle<=90 && angle>=0){
+
+      let start = this.polarToCartesian(this.centerX, this.centerY, this.radius+1, 90);
+      let end = this.polarToCartesian(this.centerX, this.centerY, this.radius+1, 90-2*angle);
+
+      let d = [
+          "M", start.x, start.y,
+          "A", this.radius+1, this.radius+1, 0, 0, 0, end.x, end.y
+      ].join(" ");
+
+      $("#arc1").attr("d", d);
+      $('#line-boat').attr('x2',end.x);
+      $('#line-boat').attr('y2',end.y);
+    }
+  }
+
+  polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+    let angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
+
+    return {
+      x: centerX + (radius * cosTaylor(angleInRadians)),
+      y: centerY + (radius * sinTaylor(angleInRadians))
+    };
+  }
 }
 
 //It's becoming to be less understandable with all these parameters for functions
 //We should maybe create a class in the case that we add new features...
-settingsChanged();
+$(document).ready(function(){
+  new BoatManager();
+  settingsChanged();
+})
