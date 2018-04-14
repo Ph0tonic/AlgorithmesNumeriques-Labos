@@ -148,8 +148,28 @@ function updateDisplay(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods)
     document.getElementById("nbSamplePerPeriod-value").innerHTML = nbSamplePerPeriod;
     document.getElementById("h-value").innerHTML = "10^"+h;
     document.getElementById("nbPeriods-value").innerHTML = nbPeriods;
+}
 
+function calc(angle){
+  let radius = parseInt($('#diameterLac').val())/2;
+  let navigationSpeed = parseInt($('#navigationSpeed').val());
+  let towingSpeed = parseInt($('#towingSpeed').val());
 
+  let dockingPoint = polarToCartesian(radius, radius, radius, 90-2*angle);
+  let navigationLength = Math.sqrt(Math.pow(dockingPoint.x,2)+Math.pow(radius-dockingPoint.y,2));
+  let towingLength = Math.PI*radius*angle/90;
+
+  let time = navigationLength/navigationSpeed + towingLength/towingSpeed;
+  return Math.round(time*100)/100;
+}
+
+function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+  let angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
+
+  return {
+    x: centerX + (radius * cosTaylor(angleInRadians)),
+    y: centerY + (radius * sinTaylor(angleInRadians))
+  };
 }
 
 class BoatManager{
@@ -161,20 +181,54 @@ class BoatManager{
     this.centerY = 205;
     this.radius = 200;
 
-
     let self = this;
     $('#angle-boat').on('change input',function(){
       $('#AngleStart').text($(this).val());
-      self.angleUpdate(parseInt($(this).val()));
+      self.angleUpdate();
+      self.dataUpdate();
     }).trigger('change');
+
+    $('#diameterLac').on('change',function(){
+      self.dataUpdate();
+    });
+
+    $('#navigationSpeed').on('change',function(){
+      self.dataUpdate();
+    });
+
+    $('#towingSpeed').on('change',function(){
+      self.dataUpdate();
+    });
+  }
+
+  dataUpdate(){
+    let period = 90;
+    let nbSample = 100;
+
+    let data = getPoints(calc, 0, period, nbSample, NaN);
+
+    let zoom = [];
+    let minx = data[0][0];
+    let maxx = data[data.length-1][0];
+    let miny = -maxx;
+    let maxy = maxx;
+    zoom.push([minx, maxx]);
+    zoom.push([miny, maxy]);
+
+    showGraph('graph-boat', [data], zoom);
+
+    let angle = parseInt($('#angle-boat').val());
+    let time = calc(angle);
+    $('#time-std').text(time);
   }
 
   // Adapted from https://stackoverflow.com/questions/5736398/how-to-calculate-the-svg-path-for-an-arc-of-a-circle
-  angleUpdate(angle){
+  angleUpdate(){
+    let angle = parseInt($('#angle-boat').val());
     if(angle<=90 && angle>=0){
 
-      let start = this.polarToCartesian(this.centerX, this.centerY, this.radius+1, 90);
-      let end = this.polarToCartesian(this.centerX, this.centerY, this.radius+1, 90-2*angle);
+      let start = polarToCartesian(this.centerX, this.centerY, this.radius+1, 90);
+      let end = polarToCartesian(this.centerX, this.centerY, this.radius+1, 90-2*angle);
 
       let d = [
           "M", start.x, start.y,
@@ -187,14 +241,6 @@ class BoatManager{
     }
   }
 
-  polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-    let angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
-
-    return {
-      x: centerX + (radius * cosTaylor(angleInRadians)),
-      y: centerY + (radius * sinTaylor(angleInRadians))
-    };
-  }
 }
 
 //It's becoming to be less understandable with all these parameters for functions

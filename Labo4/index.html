@@ -64,8 +64,28 @@
         <label for='nbTermsTaylor'>Angle de départ : <span id='AngleStart'></span>°</label>
         <input type='range' min='0' max='90' value='45' title="45" id='angle-boat'  data-toggle="popover" data-placement="top" data-content="45" />
         <hr>
+        <form>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-4 col-form-label">Diametre du lac [m]</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control" id="diameterLac" min="1" value="400">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-4 col-form-label">Vitesse navigation [m/s]</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control" id="navigationSpeed" value="2">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-4 col-form-label">Vitesse remorquage [m/s]</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control" id="towingSpeed" value="4">
+            </div>
+          </div>
+        </form>
         <h2>Résultats</h2>
-        <p>Temps effectif : <span></span></p>
+        <p>Temps effectif : <span id="time-std"></span> secondes</p>
       </div>
       <div class="col-md-6 col-sm-12">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 410">
@@ -73,6 +93,9 @@
           <ellipse ry="200" rx="200" id="svg_1" cy="205" cx="205" stroke-width="1.5" fill="#9ACEE6"/>
           <line stroke-linecap="null" stroke-linejoin="null" id="line-boat" y2="4" x2="205" y1="205" x1="4" stroke-width="1.5" stroke="#ff0000" fill="none"/>
         </svg>
+      </div>
+      <div class="col-md-12 col-sm-12">
+        <div id="graph-boat"></div>
       </div>
     </div>
     <hr>
@@ -90,13 +113,13 @@
   	   <h2>Références de développement</h2>
   		 <ul class="a-autoFill">
         <li><a href="https://stackoverflow.com/questions/11313414/html5-drag-and-drop-load-text-file-in-a-textbox-with-javascript"></a></li>
-        <li><a href='https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions'></a>
+        <li><a href='https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions'></a></li>
+        <li><a href="https://stackoverflow.com/questions/5736398/how-to-calculate-the-svg-path-for-an-arc-of-a-circle"></a></li>
       </ul>
     </footer>
   </div>
 
     <script src="script.external/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="script.external/d3.min.js"></script>
     <script src="script.external/function-plot.js"></script>
