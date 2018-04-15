@@ -72,7 +72,7 @@ function getPoints(f, start, stop, nbSample, nbTermsTaylor, derivative = null, h
     return points;
 }
 
-function showGraph(graph, tabPoints, zoom)
+function showGraph(graph, tabPoints, zoom, disableZoom=false)
 {
     dataPoints = [];
 
@@ -95,10 +95,15 @@ function showGraph(graph, tabPoints, zoom)
         xAxis :{label:'x'},
         yAxis :{label:'y'},
         grid : true,
-        data: dataPoints
+        data: dataPoints,
+        plugins: [
+          functionPlot.plugins.zoomBox() // Ajout de la fonctionnalité de zoom par shift + sélection
+        ],
+        disableZoom : disableZoom
     });
 
     p.programmaticZoom(zoom[0], zoom[1]);
+    return p;
 }
 
 function clone2DArray(from)
@@ -185,12 +190,11 @@ class BoatManager{
     $('#angle-boat').on('change input',function(){
       $('#AngleStart').text($(this).val());
       self.angleUpdate();
-      self.dataUpdate();
     }).trigger('change');
 
     $('#diameterLac').on('change',function(){
       self.dataUpdate();
-    });
+    }).trigger('change');
 
     $('#navigationSpeed').on('change',function(){
       self.dataUpdate();
@@ -207,25 +211,30 @@ class BoatManager{
 
     let data = getPoints(calc, 0, period, nbSample, NaN);
 
-    let zoom = [];
     let minx = data[0][0];
     let maxx = data[data.length-1][0];
-    let miny = -maxx;
-    let maxy = maxx;
-    zoom.push([minx, maxx]);
-    zoom.push([miny, maxy]);
+    let miny = data[0][1];
+    let maxy = data[data.length-1][1];
+    let range = Math.abs(maxy-miny);
+    let zoom = [[minx-5,maxx+5],[Math.min(maxy,miny)-range,Math.max(maxy,miny)+range]];
 
-    showGraph('graph-boat', [data], zoom);
 
-    let angle = parseInt($('#angle-boat').val());
-    let time = calc(angle);
-    $('#time-std').text(time);
+    $('#best-angle').text(miny<maxy?"0":"90");
+    $('#best-time').text(Math.min(miny,maxy));
+
+    this.z = showGraph('graph-boat', [data], zoom);
+    $(document).ready(function(){
+      this.z.programmaticZoom(zoom[0], zoom[1]);
+    }.bind(this));
   }
 
   // Adapted from https://stackoverflow.com/questions/5736398/how-to-calculate-the-svg-path-for-an-arc-of-a-circle
   angleUpdate(){
     let angle = parseInt($('#angle-boat').val());
     if(angle<=90 && angle>=0){
+
+      let time = calc(angle);
+      $('#time-std').text(time);
 
       let start = polarToCartesian(this.centerX, this.centerY, this.radius+1, 90);
       let end = polarToCartesian(this.centerX, this.centerY, this.radius+1, 90-2*angle);
@@ -240,12 +249,11 @@ class BoatManager{
       $('#line-boat').attr('y2',end.y);
     }
   }
-
 }
 
 //It's becoming to be less understandable with all these parameters for functions
 //We should maybe create a class in the case that we add new features...
 $(document).ready(function(){
-  new BoatManager();
+  z = new BoatManager();
   settingsChanged();
 })
