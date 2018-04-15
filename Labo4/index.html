@@ -25,10 +25,10 @@
         <h2>Utilisation</h2>
         <p>
             Le programme s'utilise en faisant varier les 4 paramètres ci-dessous.
-            Le graphique se met automatiquement à jours et zoom sur la porté des points à afficher.
+            Le graphique se met automatiquement à jours et zoom sur la portée des points à afficher.
         </p>
         <p>
-            A noter que si des asymptotes sont présente (du par exemple à un nombre de terme de taylor trop faible) le graphique ne va pas être zoom de manière précise.
+            A noter que si des asymptotes sont présentes (due par exemple à un nombre de termes de Taylor trop faible) le graphique ne va pas être zoom de manière précise.
         </p>
       </div>
     </div>
@@ -37,10 +37,10 @@
       <div class="col-md-12 col-sm-12">
         <h2>Résultats</h2>
 
-        <label for='nbTermsTaylor'>Nombre de terms pour Taylor : <span id='nbTermsTaylor-value'></span></label>
+        <label for='nbTermsTaylor'>Nombre de termes pour Taylor : <span id='nbTermsTaylor-value'></span></label>
         <input type='range' min='1' max='1000' value='10' id='nbTermsTaylor' oninput="settingsChanged();" onchange="settingsChanged();"/>
 
-        <label for='nbSamplePerPeriod'>Nombre d'échantillions par periodes : <span id='nbSamplePerPeriod-value'></span></label>
+        <label for='nbSamplePerPeriod'>Nombre d'échantillons par periode : <span id='nbSamplePerPeriod-value'></span></label>
         <input type='range' min='5' max='100' value='15' id='nbSamplePerPeriod' oninput="settingsChanged();" onchange="settingsChanged();"/>
 
         <label for='nbPeriods'>Nombre de periodes : <span id='nbPeriods-value'></span></label>
@@ -66,21 +66,21 @@
         <hr>
         <form>
           <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-4 col-form-label">Diametre du lac [m]</label>
+            <label for="diameterLac" class="col-sm-4 col-form-label">Diamètre du lac [m]</label>
             <div class="col-sm-8">
               <input type="number" class="form-control" id="diameterLac" min="1" value="400">
             </div>
           </div>
           <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-4 col-form-label">Vitesse navigation [m/s]</label>
+            <label for="navigationSpeed" class="col-sm-4 col-form-label">Vitesse de navigation [m/s]</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control" id="navigationSpeed" value="2">
+              <input type="number" min="1" class="form-control" id="navigationSpeed" value="2">
             </div>
           </div>
           <div class="form-group row">
-            <label for="inputPassword3" class="col-sm-4 col-form-label">Vitesse remorquage [m/s]</label>
+            <label for="towingSpeed" class="col-sm-4 col-form-label">Vitesse de remorquage [m/s]</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control" id="towingSpeed" value="4">
+              <input type="number" min="1" class="form-control" id="towingSpeed" value="4">
             </div>
           </div>
         </form>
@@ -121,11 +121,10 @@
       </ul>
     </footer>
   </div>
-
-    <script src="script.external/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="script.external/d3.min.js"></script>
-    <script src="script.external/function-plot.js"></script>
-    <script src="script.js"></script>
+  <script src="script.external/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="script.external/d3.min.js"></script>
+  <script src="script.external/function-plot.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
