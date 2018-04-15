@@ -58,7 +58,7 @@ function getPoints(f, start, stop, nbSample, nbTermsTaylor, derivative = null, h
 
     let points = []
 
-    for(let x = start; x < stop; x+=step)
+    for(let x = start; x < stop+step; x+=step)
     {
         if(derivative == null)
             y = f(x, nbTermsTaylor);
@@ -68,7 +68,6 @@ function getPoints(f, start, stop, nbSample, nbTermsTaylor, derivative = null, h
         point = [x, y];
         points.push(point);
     }
-
     return points;
 }
 
@@ -210,7 +209,7 @@ class BoatManager{
     let nbSample = 100;
 
     let data = getPoints(calc, 0, period, nbSample, NaN);
-
+    console.log(data)
     let minx = data[0][0];
     let maxx = data[data.length-1][0];
     let miny = data[0][1];
