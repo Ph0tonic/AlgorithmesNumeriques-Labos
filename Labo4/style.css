@@ -10,3 +10,7 @@ a:after {
     font-size: 20px;
     padding: 0px 20px;
 }
+
+#graph-boat svg, #graph svg{
+  overflow: visible;
+}
