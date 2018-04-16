@@ -1,4 +1,5 @@
-
+/** Approximates cosinus
+*/
 function cosTaylor(theta, iterNum=500)
 {
     let periode = Math.pi*2;
@@ -27,6 +28,8 @@ function cosTaylor(theta, iterNum=500)
     return cos;
 }
 
+/** Approximates sinus
+*/
 function sinTaylor(theta, iterNum=500) {
     var thetaCarre = -theta*theta;
     var sin = 1;
@@ -125,6 +128,7 @@ function clone2DArray(from)
     return to;
 }
 
+
 function use(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods)
 {
     let period = nbPeriods*2*Math.PI;
@@ -145,6 +149,8 @@ function use(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods)
     showGraph('graph', [pointsCos, pointsMSin, pointsMCos], zoom);
 }
 
+/** Called when any setting changed, i.e. slider moved
+*/
 function settingsChanged()
 {
     let nbTermsTaylor = document.getElementById("nbTermsTaylor").value;
@@ -156,6 +162,8 @@ function settingsChanged()
     use(nbTermsTaylor, nbSamplePerPeriod, 10**h, nbPeriods);
 }
 
+/** Updates the numbers after labels corresponding to the slider value
+*/
 function updateDisplay(nbTermsTaylor, nbSamplePerPeriod, h, nbPeriods)
 {
     document.getElementById("nbTermsTaylor-value").innerHTML = nbTermsTaylor;
