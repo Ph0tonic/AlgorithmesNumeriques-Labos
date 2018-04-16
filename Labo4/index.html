@@ -52,9 +52,9 @@
 
         <div id="result">
             <div id='graph' style="width:100%;height:400px"></div>
-            <span class='legend' style='color:blue'>y = Cos(x)</span>
-            <span class='legend' style='color:red'>y = Cos'(x)</span>
-            <span class='legend' style='color:green'>y = Cos''(x)</span>
+            <span class='legend' style='color:blue'>\(y = cos(x)\)</span>
+            <span class='legend' style='color:red'>\(y = cos'(x)\)</span>
+            <span class='legend' style='color:green'>\(y = cos''(x)\)</span>
         </div>
       </div>
     </div>
@@ -109,28 +109,28 @@
         <center>
           <p>___________________________________________________</p>
           <h1>Rapport</h1>
-
         </center>
          <h3>Contextualisation</h3>
          <p>Ce laboratoire a pour but la représentation du cosinus avec les séries de Taylor ainsi que la dérivation numérique première et seconde de cette même function.</p>
          <h3>Méthodologie et développement</h3>
-         <p>Nous avons commencé par poser le développement de Taylor de la fonction cos en 0 et avons facilement pu en déduire la formule suivante:</p>
-         <p>\(cos(&#x3B8;)=\sum\limits_{n=0}^&#x221E; \frac{(-1)^n}{(2n)!}&#x3B8;^{2n}\)
-         <p><b>Un problème s'est présenté lors de l'implémentation de cette formule :</b> Le numérateur et le dénominateur représente des nombres très grands relativement rapidement, ce qui pose un problème d'overflow si on souhaite les stocker séparément.
+         <p>Nous avons commencé par poser le développement de Taylor des fonctions \(cos\) et \(sin\) en 0 et avons facilement pu en déduire les formule suivantes:</p> 
+         <p>\[cos(&#x3B8;)=\sum\limits_{n=0}^&#x221E; \frac{(-1)^n}{(2n)!}&#x3B8;^{2n} \quad\mathrm{et}\quad\ sin(&#x3B8;)=\sum\limits_{n=0}^&#x221E; \frac{(-1)^n}{(2n+1)!}&#x3B8;^{2n+1}\]
+         La fonction \(sin\) n'est utile que pour le bonus.</p>
+         <p><b>Un problème s'est présenté lors de l'implémentation de cette formule :</b> Le numérateur et le dénominateur représentent des nombres très grands relativement rapidement, ce qui pose un problème d'overflow si on souhaite les stocker séparément.
           Nous avons donc du réfléchir afin d'éviter ces overflows. Pour ce faire, nous stockons directement le quotient de la division dans une variable, ce qui évite un overflow en stockant séparément le diviseur et le dividande, vu que ce dernier tend rapidement vers l'infini.</p>
          <p>Une fois cette étape effectuée, nous sommes passé à la réalisation de la fonction de dérivée et dérivée seconde. Nous avons utilisé les formules suivantes :</p>
          <ul>
-          <li>Pour la dérivée : \(f'(x) = \frac{8(f(x+\frac{h}{2})-f(x-\frac{h}{2}))-f(x+h)+f(x-h)}{6h}+O(h^4)\)</li>
-          <li>Pour la dérivée seconde : \(f"(x) = \frac{f(x+h)+f(x-h)-2f(x)}{h^2}+O(h)\)
+          <li>Pour la dérivée : \[f'(x) = \frac{8(f(x+\frac{h}{2})-f(x-\frac{h}{2}))-f(x+h)+f(x-h)}{6h}+O(h^4)\]</li>
+          <li>Pour la dérivée seconde : \[f"(x) = \frac{f(x+h)+f(x-h)-2f(x)}{h^2}+O(h)\]</li>
          </ul>
          <p>Nous somme conscients que la formule de la dérivée seconde est relativement médiocre à cause de son ordre d'erreur en \(O(h)\) mais au lieu d'en utiliser "bêtement" une autre, nous avons préféré l'utiliser quand même afin de nous rendre compte du rendu de cette formule et en observer la fragilité.</p>
-         <p>Grâce aux formules des dérivées, nous avons pu approximer la fonction \(cosinus\) et \(sinus\)(utilisé dans le bonus).
+         <p>Grâce aux formules des dérivées, nous avons pu approximer la fonction \(cosinus\) et \(sinus\)(utilisé dans le bonus).</p>
          <h3>Tests</h3>
          <p>Nous avons testé notre code avec différents paramètres notemment pour la partie bonus afin de vérifier que les données étaient cohérentes.</p>
          <h3>Conclusion et perspective</h3>
          <p>Il serait intéressant de pouvoir permettre la saisie d'une fonction quelconque, et ainsi pouvoir l'évaluer.</p>
-         <p>Notre code est pleinement fonctionnel et permet de calculer le cos en utilisant le développement de Taylor. Notre programme permet également de résoudre le programme Bonus avec un schéma dynamique offrant la possibilité de voir l'évolution du temps selon les différents paramètres.</p>
-         <p>En sachant que notre fonction est périodique sur 2π, nous avons améliorer notre function cos de Taylor et transformer l'angle Theta passé en paramètre afin qu'il se trouve dans la première période.</p>
+         <p>Notre code est pleinement fonctionnel et permet de calculer le \(cos\) en utilisant le développement de Taylor. Notre programme permet également de résoudre le programme Bonus avec un schéma dynamique offrant la possibilité de voir l'évolution du temps selon les différents paramètres.</p>
+         <p>En sachant que notre fonction est périodique sur \(2π\), nous avons améliorer notre function cos de Taylor et transformer l'angle Theta passé en paramètre afin qu'il se trouve dans la première période.</p>
        </div>
     </div>
   	<hr>
