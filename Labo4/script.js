@@ -1,6 +1,5 @@
 
-function cosTaylor(theta, iterNum=500)
-{
+function cosTaylor(theta, iterNum=500) {
     let periode = Math.PI*2;
 
     while(theta>periode/2){ //Remet l'angle donnée dans la première période
@@ -28,6 +27,14 @@ function cosTaylor(theta, iterNum=500)
 }
 
 function sinTaylor(theta, iterNum=500) {
+    let periode = Math.PI*2;
+
+    while(theta>periode/2){ //Remet l'angle donnée dans la première période
+      theta -= periode;
+    }while(theta<-periode/2){
+      theta += periode;
+    }
+
     var thetaCarre = -theta*theta;
     var sin = 1;
     var n = 0;
