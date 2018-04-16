@@ -2,11 +2,13 @@
 function cosTaylor(theta, iterNum=500)
 {
     let periode = Math.pi*2;
-    while(theta>periode){
+
+    while(theta>periode){ //Remet l'angle donnée dans la première période
       theta -= periode;
     }while(theta<-periode){
       theta += période;
     }
+
     let thetaCarre = theta*theta;
     let cos = 1;
     let signe = -1;
