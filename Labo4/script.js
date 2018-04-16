@@ -1,6 +1,12 @@
 
 function cosTaylor(theta, iterNum=500)
 {
+    let periode = Math.pi*2;
+    while(theta>periode){
+      theta -= periode;
+    }while(theta<-periode){
+      theta += période;
+    }
     let thetaCarre = theta*theta;
     let cos = 1;
     let signe = -1;
@@ -24,6 +30,8 @@ function sinTaylor(theta, iterNum=500) {
     var sin = 1;
     var n = 0;
     var term = 1;
+
+    //sin(theta)=(-1)^n/(2n+1)! * theta^(2n+1)
     for (let i = 1; i <= 2*iterNum; i++) {
         n = n + 2;
         term = term * thetaCarre / ( n*(n+1) );
@@ -36,8 +44,8 @@ function sinTaylor(theta, iterNum=500) {
 
 function derivativePrime(f, theta, n, h)
 {
-    let numerator = f(theta + h, n) - f(theta - h, n);
-    let denominator = 2*h;
+    let numerator = 8*(f(theta+h/2, n)-f(theta-h/2,n)) - f(theta + h, n) + f(theta - h, n);
+    let denominator = 6*h;
     return numerator / denominator;
 }
 
@@ -71,7 +79,7 @@ function getPoints(f, start, stop, nbSample, nbTermsTaylor, derivative = null, h
     return points;
 }
 
-function showGraph(graph, tabPoints, zoom, disableZoom=false)
+function showGraph(graph, tabPoints, zoom, disableZoom=false,xLabel="",yLabel="")
 {
     dataPoints = [];
 
@@ -91,8 +99,8 @@ function showGraph(graph, tabPoints, zoom, disableZoom=false)
         target: '#' + graph,
         width: e.offsetWidth,
         height: e.offsetHeight,
-        xAxis :{label:'x'},
-        yAxis :{label:'y'},
+        xAxis :{label:'x'+xLabel},
+        yAxis :{label:'y'+yLabel},
         grid : true,
         data: dataPoints,
         plugins: [
@@ -209,7 +217,7 @@ class BoatManager{
     let nbSample = 100;
 
     let data = getPoints(calc, 0, period, nbSample, NaN);
-    console.log(data)
+
     let minx = data[0][0];
     let maxx = data[data.length-1][0];
     let miny = data[0][1];
@@ -220,8 +228,9 @@ class BoatManager{
 
     $('#best-angle').text(miny<maxy?"0":"90");
     $('#best-time').text(Math.min(miny,maxy));
+    $('#conclusion-bonus').text(miny<maxy?"Navigation":"Remorquage")
 
-    this.z = showGraph('graph-boat', [data], zoom);
+    this.z = showGraph('graph-boat', [data], zoom,true, " angle[°]", " Temps[s]");
     $(document).ready(function(){
       this.z.programmaticZoom(zoom[0], zoom[1]);
     }.bind(this));

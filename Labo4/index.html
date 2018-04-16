@@ -89,6 +89,7 @@
         <h2>Optimisation</h2>
         <p>Meilleur angle : <span id="best-angle"></span>°</p>
         <p>Temps correspondant : <span id="best-time"></span> secondes</p>
+        <p>Conclusion: <span id="conclusion-bonus"></span>  du début à la fin</p>
       </div>
       <div class="col-md-6 col-sm-12">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 410">
@@ -106,9 +107,18 @@
       <div class="col-md-12">
         <h1>Rapport</h1>
          <h2>Contextualisation</h2>
+         <p>Ce laboratoire a pour but la représentation du cosinus avec les séries de Taylor ainsi que la dérivation numérique première et seconde de cette même function.</p>
+         <h2>Méthodologie et développement</h2>
+         <p>Nous avons commencé par poser le développement de Taylor de la fonction cos en 0 et avons facilement pu en déduire la formule suivante:</p>
          <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>cos</mi><mo>(</mo><mi>&#x3B8;</mi><mo>)</mo><mo>=</mo><munderover><mo>&#x2211;</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mo>&#x221E;</mo></munderover><mfrac><mrow><mo>(</mo><mo>-</mo><mn>1</mn><msup><mo>)</mo><mi>n</mi></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mo>!</mo></mrow></mfrac><msup><mi>&#x3B8;</mi><mrow><mn>2</mn><mi>n</mi></mrow></msup></math>
+         <p>Sa réalisation nous a permis de rendre compte la limitation de la taille des nonmbres entiers, nous avons due réfléchir afin d'éviter des overflow. Pour ce faire, nous stockons directement le terme multiplication et son diviseur dans la même variable. Etant donné que c'était le dividand qui tendait rapidement vers l'infini.</p>
+         <p>Une fois cette étape effectuée, nous sommes passé à la réalisation de la fonction de dérivée et dérivée seconde.</p>
          <h2>Tests</h2>
+         <p>Nous avons testé notre code avec diférents paramètres notemment pour la partie bonus afin de vérifier que les données étaient cohérentes.</p>
          <h2>Conclusion et perspective</h2>
+         <p>Il serait intéressant de pouvoir permettre la saisie d'une équation quelconque, et ainsi pouvoir évaluer n'importe quelle équation.</p>
+         <p>Notre code est pleinement fonctionnel et permet de calculer le cos en utilisant le développement de Taylor. Notre programme permet également de résoudre le programme Bonus avec un schéma dynamique offrant la possibilité de voir l'évolution du temps selon les différents paramètres.</p>
+         <p>Sachant que notre fonction est périodique sur 2π, nous pourrions améliorer notre function de cos de Taylor et transformer l'angle Theta passé en paramèetre afin qu'il se trouve dans la première période.</p>
        </div>
     </div>
   	<hr>
@@ -116,7 +126,6 @@
   	   <h2>Références de développement</h2>
   		 <ul class="a-autoFill">
         <li><a href="https://stackoverflow.com/questions/11313414/html5-drag-and-drop-load-text-file-in-a-textbox-with-javascript"></a></li>
-        <li><a href='https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions'></a></li>
         <li><a href="https://stackoverflow.com/questions/5736398/how-to-calculate-the-svg-path-for-an-arc-of-a-circle"></a></li>
       </ul>
     </footer>
