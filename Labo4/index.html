@@ -115,7 +115,6 @@
          <p>Ce laboratoire a pour but la représentation du cosinus avec les séries de Taylor ainsi que la dérivation numérique première et seconde de cette même function.</p>
          <h3>Méthodologie et développement</h3>
          <p>Nous avons commencé par poser le développement de Taylor de la fonction cos en 0 et avons facilement pu en déduire la formule suivante:</p>
-         <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>cos</mi><mo>(</mo><mi>&#x3B8;</mi><mo>)</mo><mo>=</mo><munderover><mo>&#x2211;</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mo>&#x221E;</mo></munderover><mfrac><mrow><mo>(</mo><mo>-</mo><mn>1</mn><msup><mo>)</mo><mi>n</mi></msup></mrow><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>)</mo><mo>!</mo></mrow></mfrac><msup><mi>&#x3B8;</mi><mrow><mn>2</mn><mi>n</mi></mrow></msup></math></p>
          <p>\(cos(&#x3B8;)=\sum\limits_{n=0}^&#x221E; \frac{(-1)^n}{(2n)!}&#x3B8;^{2n}\)
          <p><b>Un problème s'est présenté lors de l'implémentation de cette formule :</b> Le numérateur et le dénominateur représente des nombres très grands relativement rapidement, ce qui pose un problème d'overflow si on souhaite les stocker séparément.
           Nous avons donc du réfléchir afin d'éviter ces overflows. Pour ce faire, nous stockons directement le quotient de la division dans une variable, ce qui évite un overflow en stockant séparément le diviseur et le dividande, vu que ce dernier tend rapidement vers l'infini.</p>
