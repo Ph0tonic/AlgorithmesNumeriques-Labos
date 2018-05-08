@@ -24,13 +24,39 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12 col-sm-12">
-				<h2>Utilisation</h2>
+				<h2>Utilisation</h2> Quand un nombre de chiffre est affichés, il ne compte pas le 3 du début de pi.
 			</div>
 		</div>
 		<hr>
 		<div class="row">
 			<div class="col-md-12 col-sm-12">
 				<h2>Résultats</h2>
+				<table width="100%">
+					<th colspan="2">Approximations</th>
+					<th class='center'>Nb chiffres calculés [u]</th>
+					<th class='center'>Nb chiffres juste limite [u]</th>
+					<th class='center'>Nb chiffres juste total [u]</th>
+					<th class='center'>Temps de calcul [ms]</th>
+					<tr>
+						<td>Notre approximation :</td>
+						<td>π ≈ <span id='ourPiApprox'></span></td>
+						<td class='center'><span id='nbDigits'></span></td>
+						<td class='center'><span id='nbCorrectDigits'></span></td>
+						<td class='center'><span id='nbCorrectDigitsTotal'></span></td>
+						<td class='center'><span id='calcTime'></span></td>
+					</tr>
+					<tr>
+						<td>Veritable approximation :</td>
+						<td>π ≈ <span id='realPiApprox'></span></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input type='button' name='calc' value='Calculate π' width="100%" onclick="calcOurPiApprox()">
+						</td>
+					</tr>
+					<tr>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<hr>
@@ -46,7 +72,7 @@
 		<footer>
 			<h2>Références de développement</h2>
 			<ul class="a-autoFill">
-				<li></li>
+				<li><a href='http://www-groups.dcs.st-and.ac.uk/history/HistTopics/1000_places.html'></a></li>
 			</ul>
 		</footer>
 	</div>
