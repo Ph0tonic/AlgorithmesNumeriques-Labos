@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="utf-8">
+	<title>Labo 5 - Algo num</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div class="container">
+		<div class="page-header">
+			<h1>2231.3 - Algorithme numérique : Laboratoire n°5</h1>
+			<i>Groupe B1</i>
+			<p>Auteurs :</p>
+			<ul>
+				<li>Raphael Margueron</li>
+				<li>Damian Petroff</li>
+				<li>Bastien Wermeille</li>
+			</ul>
+			<p>Dernière mise à jour : 8 mai 2018</p>
+		</div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<h2>Utilisation</h2> Quand un nombre de chiffre est affichés, il ne compte pas le 3 du début de pi.
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<h2>Résultats</h2>
+				<table width="100%">
+					<th colspan="2">Approximations</th>
+					<th class='center'>Nb chiffres calculés [u]</th>
+					<th class='center'>Nb chiffres juste limite [u]</th>
+					<th class='center'>Nb chiffres juste total [u]</th>
+					<th class='center'>Temps de calcul [ms]</th>
+					<tr>
+						<td>Notre approximation :</td>
+						<td>π ≈ <span id='ourPiApprox'></span></td>
+						<td class='center'><span id='nbDigits'></span></td>
+						<td class='center'><span id='nbCorrectDigits'></span></td>
+						<td class='center'><span id='nbCorrectDigitsTotal'></span></td>
+						<td class='center'><span id='calcTime'></span></td>
+					</tr>
+					<tr>
+						<td>Veritable approximation :</td>
+						<td>π ≈ <span id='realPiApprox'></span></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							<select id='method'>
+								<option value=0>Méthode des rectangles (Riemann)</option>
+								<option value=1>Méthode point du milieu</option>
+								<!--<option value=2>Méthode des rectangles intervalles aléatoires</option>-->
+								<option value=2>Méthode des trapèzes</option>
+								<option value=3>Méthode du point médian</option>
+							</select>
+							<label for='dx'>h :<span id='dx-value'><span></label>
+							<input id='dx' name='dx' type='range' min='1' max='10' value='7' onchange='changeDx();' oninput='changeDx();'>
+							<input type='button' name='calc' value='Calculer π' width="100%" onclick="calcOurPiApprox()">
+						</td>
+					</tr>
+					<tr>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Rapport</h2>
+				<h3>Contextualisation</h3>
+				<h3>Méthodologie de développement</h3>
+				<h3>Conclusion et perspective</h3>
+			</div>
+		</div>
+		<hr>
+		<footer>
+			<h2>Références de développement</h2>
+			<ul class="a-autoFill">
+				<li><a href='http://www-groups.dcs.st-and.ac.uk/history/HistTopics/1000_places.html'></a></li>
+			</ul>
+		</footer>
+	</div>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+	<script src="script.js"></script>
+</body>
+
+</html>
