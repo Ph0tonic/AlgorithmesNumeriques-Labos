@@ -50,8 +50,17 @@
 						<td>π ≈ <span id='realPiApprox'></span></td>
 					</tr>
 					<tr>
-						<td colspan="2">
-							<input type='button' name='calc' value='Calculate π' width="100%" onclick="calcOurPiApprox()">
+						<td colspan="6">
+							<select id='method'>
+								<option value=0>Méthode des rectangles (Riemann)</option>
+								<option value=1>Méthode point du milieu</option>
+								<!--<option value=2>Méthode des rectangles intervalles aléatoires</option>-->
+								<option value=2>Méthode des trapèzes</option>
+								<option value=3>Méthode du point médian</option>
+							</select>
+							<label for='dx'>h :<span id='dx-value'><span></label>
+							<input id='dx' name='dx' type='range' min='1' max='10' value='7' onchange='changeDx();' oninput='changeDx();'>
+							<input type='button' name='calc' value='Calculer π' width="100%" onclick="calcOurPiApprox()">
 						</td>
 					</tr>
 					<tr>

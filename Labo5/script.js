@@ -1,32 +1,61 @@
 //pi/4 = _0^1∫ 1/(1+x^2) dx
-let ourPiApprox = 0;
+let ourPiApprox = "";
 let realPiApprox = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679"; //3. + 100 digits
 //source : http://www-groups.dcs.st-and.ac.uk/history/HistTopics/1000_places.html
+let methods = [methodeDesRectangles, methodePointDuMilieu, /*methodeDesRectanglesIntervalesAleatoires,*/ methodeDesTrapezes, methodeDuPointMedian];
+let h = 1;
 
-function thefunction(x) {
+function f(x) {
 	return (1 / (1 + Math.pow(x, 2)));
 }
 
-function riemannSum(f, a, b, dx) {
+function methodeDesRectangles(f, a, b, dx) {
 	let sum = 0;
-	while (a < b) {
-		let y = f(a);
-		sum += y * dx;
+	while (a <= b) {
+		sum += f(a);
 		a += dx;
 	}
+	sum *= dx;
 	return sum;
 }
 
-function calcOurPiApprox() {
-	let technique = riemannSum;
-	timerStart();
-	let pivalue = 4 * technique(thefunction, 0, 1, 0.0000001);
-	let calcTime = timerStop();
+function methodePointDuMilieu(f, a, b, dx) {
+	let sum = 0;
+	let halfdx = dx / 2;
+	while (a <= b) {
+		sum += f(a - halfdx);
+		a += dx;
+	}
+	sum *= dx;
+	return sum;
+}
 
+function methodeDesTrapezes(f, a, b, dx) {
+	return 0;
+}
+
+function methodeDuPointMedian(f, a, b, dx) {
+	return 0;
+}
+
+function calcOurPiApprox() {
+	updateDisplay(["", "", "", "", "", ""]);
+	let method = methods[parseInt(document.getElementById("method").value)];
+	let param = parseInt(document.getElementById("method").value);
+
+	timerStart();
+	let pivalue = 4 * method(f, 0, 1, h);
+	let calcTime = timerStop();
 
 	ourPiApprox = "" + pivalue;
 	let compared = compareString(ourPiApprox, realPiApprox);
 	updateDisplay([compared[0], compared[1], (ourPiApprox.length - 2), compared[2] - 2, compared[3] - 2, calcTime]);
+}
+
+function changeDx() {
+	let val = document.getElementById("dx").value;
+	document.getElementById("dx-value").innerHTML = "10^-"+val;
+	h = Math.pow(10, -val);
 }
 
 function updateDisplay(tab) {
@@ -75,5 +104,5 @@ function timerStop() {
 	return Date.now() - ts;
 }
 
-
+changeDx();
 calcOurPiApprox();
