@@ -30,11 +30,26 @@ function methodePointDuMilieu(f, a, b, dx) {
 }
 
 function methodeDesTrapezes(f, a, b, dx) {
-	return 0;
+	let sum = 0;
+	while (a <= b) {
+		sum += f(a) + f(a + dx);
+		a += dx;
+	}
+	sum *= dx;
+	sum /= 2;
+	return sum;
 }
 
 function methodeDuPointMedian(f, a, b, dx) {
-	return 0;
+	let sum = 0;
+	let halfdx = dx / 2;
+	while (a <= b) {
+		sum += f(a - halfdx) + f(a + halfdx);
+		a += dx;
+	}
+	sum *= dx;
+	sum /= 2;
+	return sum;
 }
 
 function methodeDeSimpson(f, a, b, n) {
@@ -75,7 +90,7 @@ function calcOurPiApprox() {
 
 	ourPiApprox = "" + pivalue;
 	let compared = compareString(ourPiApprox, realPiApprox);
-	updateDisplay([compared[0], compared[1], (ourPiApprox.length - 1), compared[2] - 1, compared[3] - 1, calcTime]);
+	updateDisplay([compared[0], compared[1], (ourPiApprox.length - 1), compared[2], compared[3], calcTime]);
 }
 
 function getMethodId() {
@@ -132,6 +147,9 @@ function compareString(a, b) {
 		newAB[0] += decoratorBegin + a[i] + decoratorEnd;
 		newAB[1] += decoratorBegin + b[i] + decoratorEnd;
 	}
+	//Removing the count of the dot;
+	newAB[2]--;
+	newAB[3]--;
 	return newAB;
 }
 
