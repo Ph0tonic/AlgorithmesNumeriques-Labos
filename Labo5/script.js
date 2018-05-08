@@ -1,7 +1,7 @@
 let ourPiApprox = "";
 let realPiApprox = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679"; //3. + 100 digits
 //source : http://www-groups.dcs.st-and.ac.uk/history/HistTopics/1000_places.html
-let methods = [methodeDesRectangles, methodePointDuMilieu, /*methodeDesRectanglesIntervalesAleatoires,*/ methodeDesTrapezes, methodeDuPointMedian, methodeDeSimpson, methodeQuadratureDeGauss];
+let methods = [methodeDesRectangles, methodePointDuMilieu, /*methodeDesRectanglesIntervalesAleatoires,*/ methodeDesTrapezes, methodeDuPointMedian, methodeDeSimpson];
 let param;
 
 function f(x) {
@@ -73,10 +73,6 @@ function methodeDeSimpson(f, a, b, n) {
 	}
 	let result = h / 3 * (f(a) + 4 * oddSum + 2 * evenSum + f(b));
 	return result;
-}
-
-function methodeQuadratureDeGauss(f, a, b, dx) {
-	return 0;
 }
 
 function calcOurPiApprox() {
