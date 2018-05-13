@@ -1,56 +1,5 @@
 let ourPiApprox = "";
 let realPiApprox = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679"; //3. + 100 digits
-//source : http://www-groups.dcs.st-and.ac.uk/history/HistTopics/1000_places.html
-let methods = [methodeDesRectangles, methodePointDuMilieu, /*methodeDesRectanglesIntervalesAleatoires,*/ methodeDesTrapezes, methodeDuPointMedian, methodeDeSimpson];
-let param;
-
-function f(x) {
-	return (1 / (1 + Math.pow(x, 2)));
-}
-
-function methodeDesRectangles(f, a, b, dx) {
-	let sum = 0;
-	while (a <= b) {
-		sum += f(a);
-		a += dx;
-	}
-	sum *= dx;
-	return sum;
-}
-
-function methodePointDuMilieu(f, a, b, dx) {
-	let sum = 0;
-	let halfdx = dx / 2;
-	while (a <= b) {
-		sum += f(a - halfdx);
-		a += dx;
-	}
-	sum *= dx;
-	return sum;
-}
-
-function methodeDesTrapezes(f, a, b, dx) {
-	let sum = 0;
-	while (a <= b) {
-		sum += f(a) + f(a + dx);
-		a += dx;
-	}
-	sum *= dx;
-	sum /= 2;
-	return sum;
-}
-
-function methodeDuPointMedian(f, a, b, dx) {
-	let sum = 0;
-	let halfdx = dx / 2;
-	while (a <= b) {
-		sum += f(a - halfdx) + f(a + halfdx);
-		a += dx;
-	}
-	sum *= dx;
-	sum /= 2;
-	return sum;
-}
 
 function methodeDeSimpson(f, a, b, n) {
 	//Méthode de Simpson:
@@ -76,58 +25,36 @@ function methodeDeSimpson(f, a, b, n) {
 }
 
 function calcOurPiApprox() {
-	updateDisplay(["", "", "", "", "", ""]);
-	let method = methods[getMethodId()];
+	updateDisplay(["", "", "", "", "", "", ""]);
+	let method = methodeDeSimpson;
 
 	//Timed part
-	timerStart();
-	let pivalue = 4 * method(f, 0, 1, param);
-	let calcTime = timerStop();
+	let start = performance.now();
+	let f = (x) => { //Function lambda permettant de calculer pi
+		return (1 / (1 + x*x));
+	};
 
-	ourPiApprox = "" + pivalue;
+	let pivalue = 4 * method(f, 0, 1, 500); // n fixé à 500 après essaies
+	let end = performance.now();
+	let calcTime = end-start;
+	ourPiApprox = "" + pivalue.toFixed(17);
 	let compared = compareString(ourPiApprox, realPiApprox);
-	updateDisplay([compared[0], compared[1], (ourPiApprox.length - 1), compared[2], compared[3], calcTime]);
-}
-
-function getMethodId() {
-	return parseInt(document.getElementById("method").value);
-}
-
-function changeSelect() {
-	let slider = document.getElementById("param");
-	let method = getMethodId();
-	if (method <= 3) {
-		slider.max = 8;
-	} else {
-		slider.max = 20;
-	}
-	slider.value = 4;
-	changeParam();
-}
-
-function changeParam() {
-	let val = document.getElementById("param").value;
-	let method = getMethodId();
-	if (method <= 3) {
-		document.getElementById("param-value").innerHTML = "h = 10^-" + val;
-		param = Math.pow(10, -val);
-	} else {
-		param = val * 25;
-		document.getElementById("param-value").innerHTML = "n = " + param;
-	}
+	let compared2 = compareString(""+Math.PI.toFixed(17), realPiApprox);
+	updateDisplay([compared[0], compared[1], compared2[0], (ourPiApprox.length - 1), compared[2], compared[3], calcTime]);
 }
 
 function updateDisplay(tab) {
 	document.getElementById("ourPiApprox").innerHTML = tab[0];
 	document.getElementById("realPiApprox").innerHTML = tab[1];
-	document.getElementById("nbDigits").innerHTML = tab[2];
-	document.getElementById("nbCorrectDigits").innerHTML = tab[3];
-	document.getElementById("nbCorrectDigitsTotal").innerHTML = tab[4];
-	document.getElementById("calcTime").innerHTML = tab[5];
+	document.getElementById("mathPiApprox").innerHTML = tab[2];
+	document.getElementById("nbDigits").innerHTML = tab[3];
+	document.getElementById("nbCorrectDigits").innerHTML = tab[4];
+	document.getElementById("nbCorrectDigitsTotal").innerHTML = tab[5];
+	document.getElementById("calcTime").innerHTML = tab[6];
 }
 
 function compareString(a, b) {
-	let minLength = min(a.length, b.length);
+	let minLength = Math.min(a.length, b.length);
 	let newAB = ["", "", -1, 0]; //A decorated, B decorated, limite, sum
 	for (let i = 0; i < minLength; i++) {
 		let decoratorBegin;
@@ -149,22 +76,28 @@ function compareString(a, b) {
 	return newAB;
 }
 
-function min(a, b) {
-	if (a < b)
-		return a;
-	else
-		return b;
-}
-
-let timeStart = 0;
-
-function timerStart() {
-	ts = Date.now();
-}
-
-function timerStop() {
-	return Date.now() - ts;
-}
-
-changeParam();
 calcOurPiApprox();
+
+
+
+
+
+
+//Following code come from https://developer.vimeo.com/apis/oembed
+//URL of the video
+let videoUrl = 'https://vimeo.com/channels/pmg/183741782';
+let endpoint = 'http://www.vimeo.com/api/oembed.json';
+let callback = 'embedVideo';
+let url = endpoint + '?url=' + encodeURIComponent(videoUrl) + '&callback=' + callback + '&width=640';
+
+function embedVideo(video) {
+    document.getElementById('embed').innerHTML = unescape(video.html);
+}
+//Loads data from Vimeo
+function init() {
+    var js = document.createElement('script');
+    js.setAttribute('type', 'text/javascript');
+    js.setAttribute('src', url);
+    document.getElementsByTagName('head').item(0).appendChild(js);
+}
+window.onload = init;
