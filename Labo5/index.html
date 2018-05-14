@@ -2,92 +2,96 @@
 <html lang="fr">
 
 <head>
- <meta charset="utf-8">
- <title>Labo 5 - Algo num</title>
- <!-- Latest compiled and minified CSS -->
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
- <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <title>Labo 5 - Algo num</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
- <div class="container">
-  <div class="page-header">
-   <h1>2231.3 - Algorithme numérique : Laboratoire n°5</h1>
-   <i>Groupe B1</i>
-   <p>Auteurs :</p>
-   <ul>
-    <li>Raphael Margueron</li>
-    <li>Damian Petroff</li>
-    <li>Bastien Wermeille</li>
-   </ul>
-   <p>Dernière mise à jour : 13 mai 2018</p>
-  </div>
-  <div class="row">
-   <div class="col-md-12 col-sm-12">
-    <h2>Utilisation</h2>
-   </div>
-  </div>
-  <hr>
-  <div class="row">
-   <div class="col-md-12 col-sm-12">
-    <h2>Résultats</h2>
-    <table width="100%">
-     <th colspan="2">Approximations</th>
-     <th class='center'>Temps de calcul [ms]</th>
-     <th class='center'>Nb chiffres calculés [u]</th>
-     <th class='center'>Nb chiffres juste limite [u]</th>
-     <th class='center'>Nb chiffres juste total [u]</th>
-     <tr>
-      <td>Notre approximation :</td>
-      <td>π ≈ <span id='ourPiApprox'></span></td>
-      <td class='center'><span id='calcTime'></span></td>
-      <td class='center'><span id='nbDigits'></span></td>
-      <td class='center'><span id='nbCorrectDigits'></span></td>
-      <td class='center'><span id='nbCorrectDigitsTotal'></span></td>
-     </tr>
-     <tr>
-      <td>Véritable approximation :</td>
-      <td>π ≈ <span id='realPiApprox'></span></td>
-     </tr>
-     <tr>
-      <td>Math.pi() de javascript :</td>
-      <td>π ≈ <span id='mathPiApprox'></span></td>
-     </tr>
-    </table>
-    <br>
-   </div>
-  </div>
-  <hr>
-  <div class="row">
-   <div class="col-md-12">
-    <h2>Représentation graphique de PI</h2>
-    <p>Il existe de nombreuses représentations de pi notamment grâce à l'événement du PI Day.</p>
-    <p>Notement <a href="http://mkweb.bcgsc.ca/pi/art/">ICI</a></p>
-    <p>Nous avons recherché et finalement trouvé une représentation graphique animée et sonore de PI ci-dessous, cette vidéo montre à quel point le nombre PI se trouve partout dans le monde qui nous entour et quel rôle il peut jouer.</p>
-    <div id="embed">Loading video...</div>
-   </div>
-  </div>
-  <div class="row">
-   <div class="col-md-12">
-    <h2>Rapport</h2>
-    <h3>Contextualisation</h3>
-  <p>Ce travail avait pour but l'implémentation de la méthode de Simpson pour le calcul d'une intégrale permettant d'approximer une valeur de pi</p>
-    <h3>Méthodologie de développement</h3>
-  <p>Notre première étape a été d'implémenter la méthode de Simpson afin de pouvoir calculer une intégrale. Une fois cette étape franchie, nous avons implémenté l'affichage des résultats et offert la possibilité de comparer notre résultat à la vraie valeur de PI.</p>
-  <p>La dernière étape a été de trouver une représentation de Pi qui sorte de l'ordinaire.</p>
-    <h3>Conclusion et perspective</h3>
-  <p>L'implémentation que nous avons réalisé de la méthode est fonctionnelle et permet d'être facilement utilisable pour toute autre fonction. Nous avons trouvé une représentation de PI originale qui représente bien la complexité et la diversité des exemples ou se cache Pi dans notre quotidien.</p>
-   </div>
-  </div>
-  <hr>
-  <footer>
-   <h2>Références de développement</h2>
-   <ul class="a-autoFill">
-    <li><a href='http://www-groups.dcs.st-and.ac.uk/history/HistTopics/1000_places.html'></a></li>
-   </ul>
-  </footer>
- </div>
- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
- <script src="script.js"></script>
+    <div class="container">
+        <div class="page-header">
+            <h1>2231.3 - Algorithme numérique : Laboratoire n°5</h1>
+            <i>Groupe B1</i>
+            <p>Auteurs :</p>
+            <ul>
+                <li>Raphael Margueron</li>
+                <li>Damian Petroff</li>
+                <li>Bastien Wermeille</li>
+            </ul>
+            <p>Dernière mise à jour : 13 mai 2018</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <h2>Utilisation</h2>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <h2>Résultats</h2>
+                <table width="100%">
+                    <th colspan="2">Approximations</th>
+                    <th class='center'>Temps de calcul [ms]</th>
+                    <th class='center'>Nb chiffres calculés [u]</th>
+                    <th class='center'>Nb chiffres juste limite [u]</th>
+                    <th class='center'>Nb chiffres juste total [u]</th>
+                    <tr>
+                        <td>Notre approximation :</td>
+                        <td>π ≈ <span id='ourPiApprox'></span></td>
+                        <td class='center'><span id='calcTime'></span></td>
+                        <td class='center'><span id='nbDigits'></span></td>
+                        <td class='center'><span id='nbCorrectDigits'></span></td>
+                        <td class='center'><span id='nbCorrectDigitsTotal'></span></td>
+                    </tr>
+                    <tr>
+                        <td>Véritable approximation :</td>
+                        <td>π ≈ <span id='realPiApprox'></span></td>
+                    </tr>
+                    <tr>
+                        <td>Math.pi() de javascript :</td>
+                        <td>π ≈ <span id='mathPiApprox'></span></td>
+                    </tr>
+                </table>
+                <br>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Représentation graphique de PI</h2>
+                <p>Il existe de nombreuses représentations de pi notamment grâce à l'événement du PI Day.</p>
+                <p>Notement <a href="http://mkweb.bcgsc.ca/pi/art/">ICI</a></p>
+                <p>Nous avons recherché et finalement trouvé une représentation graphique animée et sonore de PI ci-dessous, cette vidéo montre à quel point le nombre PI se trouve partout dans le monde qui nous entour et quel rôle il peut jouer.</p>
+                <div id="embed">Loading video...</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Rapport</h2>
+                <h3>Contextualisation</h3>
+                <p>Ce travail avait pour but l'implémentation de la méthode de Simpson pour le calcul d'une intégrale permettant d'approximer une valeur de pi</p>
+                <h3>Méthodologie de développement</h3>
+                <p>Notre première étape a été d'implémenter la méthode de Simpson afin de pouvoir calculer une intégrale. Une fois cette étape franchie, nous avons implémenté l'affichage des résultats et offert la possibilité de comparer notre résultat à
+                    la vraie valeur de PI.</p>
+                <p>La dernière étape a été de trouver une représentation de Pi qui sorte de l'ordinaire.</p>
+                <h3>Conclusion et perspective</h3>
+                <p>L'implémentation que nous avons réalisé de la méthode est fonctionnelle et permet d'être facilement utilisable pour toute autre fonction. Nous avons trouvé une représentation de PI originale qui représente bien la complexité et la diversité
+                    des exemples ou se cache Pi dans notre quotidien.</p>
+            </div>
+        </div>
+        <hr>
+        <footer>
+            <h2>Références de développement</h2>
+            <ul class="a-autoFill">
+                <li><a href='http://www-groups.dcs.st-and.ac.uk/history/HistTopics/1000_places.html'></a></li>
+                <li><a href='https://vimeo.com/183741782'></a></li>
+            </ul>
+        </footer>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
